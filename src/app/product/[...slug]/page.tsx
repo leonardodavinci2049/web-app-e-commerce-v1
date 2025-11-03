@@ -24,7 +24,7 @@ interface ProductDetailsPageProps {
 export default async function ProductDetailsPage({
   params,
 }: ProductDetailsPageProps) {
-  // Await params as required by Next.js 15
+  // Await params as required by Next.js 16
   const resolvedParams = await params;
 
   // Extract product ID from slug (expected format: [category, id, name-slug])
@@ -114,7 +114,7 @@ export function generateStaticParams() {
  * Generate metadata for SEO
  */
 export async function generateMetadata({ params }: ProductDetailsPageProps) {
-  // Await params as required by Next.js 15
+  // Await params as required by Next.js 16
   const resolvedParams = await params;
 
   const productId = resolvedParams.slug[1] || resolvedParams.slug[0];

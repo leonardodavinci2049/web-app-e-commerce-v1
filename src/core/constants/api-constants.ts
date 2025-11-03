@@ -80,6 +80,12 @@ export const PRODUCT_ENDPOINTS = {
   UPDATE_METADATA: "/product/v2/product-upd-metadata",
 } as const;
 
+// Endpoints de Produto Web
+export const PRODUCT_WEB_ENDPOINTS = {
+  FIND_BY_ID: "/product/v2/product-web-find-id",
+  FIND: "/product/v2/product-web-find",
+} as const;
+
 // Endpoints de Carrinho
 export const CART_ENDPOINTS = {
   ADD_ITEM: "/cart/v1/cart-item-add",

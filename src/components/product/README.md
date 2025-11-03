@@ -212,7 +212,7 @@ Os produtos são importados de `@/lib/mock-data.ts`:
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Next.js 15**: App Router, Server/Client Components
+- **Next.js 16**: App Router, Server/Client Components
 - **TypeScript**: Tipagem forte
 - **Tailwind CSS v4**: Estilização
 - **Shadcn/UI**: Componentes base (Button, Badge, etc.)

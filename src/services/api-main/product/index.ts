@@ -1,34 +1,18 @@
-// Export product service and types
-
-export { ProductServiceApi } from "./product-service-api";
+export { ProductWebServiceApi } from "./product-service-api";
 
 export type {
-  // Request types - Create
-  CreateProductRequest,
-  // Response types
-  CreateProductResponse,
-  // Request types - Query
-  FindProductByIdRequest,
-  FindProductByIdResponse,
-  FindProductsRequest,
-  FindProductsResponse,
-  // Data types
-  MySQLMetadata,
-  ProductDetail,
-  ProductListItem,
+  ProductWebDetail,
+  ProductWebFindByIdRequest,
+  ProductWebFindByIdResponse,
+  ProductWebFindRequest,
+  ProductWebFindResponse,
+  ProductWebListItem,
+  ProductWebRelatedTaxonomy,
   StoredProcedureResponse,
-  // Request types - Update
-  UpdateProductBrandRequest,
-  UpdateProductCharacteristicsRequest,
-  UpdateProductDescriptionRequest,
-  UpdateProductFlagsRequest,
-  UpdateProductGeneralRequest,
-  UpdateProductNameRequest,
-  UpdateProductPriceRequest,
-  UpdateProductResponse,
-  UpdateProductShortDescriptionRequest,
-  UpdateProductStockRequest,
-  UpdateProductTaxValuesRequest,
-  UpdateProductTypeRequest,
-  UpdateProductVariousRequest,
+} from "./types/product-types";
+
+export {
+  ProductWebError,
+  ProductWebNotFoundError,
+  ProductWebValidationError,
 } from "./types/product-types";
