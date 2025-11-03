@@ -119,11 +119,12 @@ export default function CartSidebar({
               {cartItems.map((item) => (
                 <div key={item.id} className="flex gap-3 group">
                   {/* Product Image */}
-                  <div className="relative flex-shrink-0 w-20 h-20 rounded-md overflow-hidden bg-muted">
+                  <div className="relative shrink-0 w-20 h-20 rounded-md overflow-hidden bg-muted">
                     <Image
                       src={item.image}
                       alt={item.name}
                       fill
+                      sizes="80px"
                       className="object-cover"
                     />
                   </div>

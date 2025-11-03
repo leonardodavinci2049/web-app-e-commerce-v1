@@ -38,6 +38,7 @@ export function ProductImageGallery({
           src={imageError ? "/images/product/no-image.jpeg" : mainImage}
           alt={productName}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
           className="object-contain p-2"
           onError={() => setImageError(true)}
           priority

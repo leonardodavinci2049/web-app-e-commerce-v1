@@ -41,7 +41,7 @@ export default function AboutSection() {
             <ul className="space-y-3">
               {highlights.map((item) => (
                 <li key={item} className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
                   <span className="text-foreground">{item}</span>
                 </li>
               ))}
@@ -59,6 +59,7 @@ export default function AboutSection() {
                 src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600"
                 alt="Sobre a CAIXAFECHADA"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

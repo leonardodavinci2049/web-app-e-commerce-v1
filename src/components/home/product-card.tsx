@@ -36,6 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
 
@@ -59,7 +60,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Product Info */}
         <div className="p-4 space-y-2">
-          <h3 className="text-foreground font-medium text-sm line-clamp-2 min-h-[2.5rem]">
+          <h3 className="text-foreground font-medium text-sm line-clamp-2 min-h-10">
             {product.name}
           </h3>
 
