@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getProductsByCategory } from "@/app/products/actions";
 import Footer from "@/components/home/footer";
 import MainHeader from "@/components/home/main-header";
 import { BreadcrumbNav } from "@/components/product/breadcrumb-nav";
@@ -8,7 +9,11 @@ import { ProductInfo } from "@/components/product/product-info";
 import { ProductTabs } from "@/components/product/product-tabs";
 import { RelatedProducts } from "@/components/product/related-products";
 import { envs } from "@/core/config/envs";
-import { allProducts } from "@/data/mock-data";
+import { getProductDetail } from "./actions";
+import {
+  extractProductIdFromSlug,
+  extractProductSlugFromArray,
+} from "./helpers";
 
 interface ProductDetailsPageProps {
   params: Promise<{
@@ -20,6 +25,8 @@ interface ProductDetailsPageProps {
  * Product Details Page
  * Dynamic page that displays detailed information about a product
  * URL format: /product/[category]/[product-id]/[product-name-slug]
+ *
+ * Server Component that fetches real product data from API
  */
 export default async function ProductDetailsPage({
   params,
@@ -27,20 +34,34 @@ export default async function ProductDetailsPage({
   // Await params as required by Next.js 16
   const resolvedParams = await params;
 
-  // Extract product ID from slug (expected format: [category, id, name-slug])
-  const productId = resolvedParams.slug[1] || resolvedParams.slug[0];
+  // Extract product ID and slug from URL segments
+  const productId = extractProductIdFromSlug(resolvedParams.slug);
+  const productSlug = extractProductSlugFromArray(resolvedParams.slug);
 
-  // Find product in mock data
-  const product = allProducts.find((p) => p.id === productId);
-
-  // If product not found, show 404
-  if (!product) {
+  // If no valid product ID found, show 404
+  if (!productId) {
     notFound();
   }
 
+  // Fetch product detail from API
+  const result = await getProductDetail(productId, productSlug);
+
+  // If product not found or error occurred, show 404
+  if (!result.product) {
+    notFound();
+  }
+
+  const product = result.product;
+
   // Get related products from same category
-  const relatedProducts = allProducts.filter(
-    (p) => p.category === product.category && p.id !== product.id,
+  const relatedResult = await getProductsByCategory(
+    product.category.toLowerCase().replace(/\s+/g, "-"),
+    1,
+    8,
+  );
+
+  const relatedProducts = relatedResult.products.filter(
+    (p) => p.id !== product.id,
   );
 
   return (
@@ -97,37 +118,36 @@ export default async function ProductDetailsPage({
 }
 
 /**
- * Generate static params for all products (optional)
- * This enables static generation at build time
- */
-export function generateStaticParams() {
-  return allProducts.map((product) => ({
-    slug: [
-      product.category.toLowerCase().replace(/\s+/g, "-"),
-      product.id,
-      product.name.toLowerCase().replace(/\s+/g, "-"),
-    ],
-  }));
-}
-
-/**
  * Generate metadata for SEO
  */
 export async function generateMetadata({ params }: ProductDetailsPageProps) {
   // Await params as required by Next.js 16
   const resolvedParams = await params;
 
-  const productId = resolvedParams.slug[1] || resolvedParams.slug[0];
-  const product = allProducts.find((p) => p.id === productId);
+  const productId = extractProductIdFromSlug(resolvedParams.slug);
+  const productSlug = extractProductSlugFromArray(resolvedParams.slug);
 
-  if (!product) {
+  if (!productId) {
     return {
       title: "Produto não encontrado",
     };
   }
 
+  // Fetch product detail for metadata
+  const result = await getProductDetail(productId, productSlug);
+
+  if (!result.product) {
+    return {
+      title: "Produto não encontrado",
+    };
+  }
+
+  const product = result.product;
+
   return {
     title: `${product.name} | ${envs.NEXT_PUBLIC_COMPANY_NAME}`,
-    description: `Compre ${product.name} por R$ ${product.price.toFixed(2)}. ${product.category}. Frete grátis para pedidos acima de R$ 199.`,
+    description: product.description
+      ? `${product.description.substring(0, 160)}...`
+      : `Compre ${product.name} por R$ ${product.price.toFixed(2)}. ${product.category}. Frete grátis para pedidos acima de R$ 199.`,
   };
 }
