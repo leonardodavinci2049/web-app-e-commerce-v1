@@ -48,12 +48,13 @@ export default function CartItemCard({ item }: CartItemCardProps) {
     <div className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Product Image */}
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <div className="relative w-24 h-24 bg-muted rounded-md overflow-hidden">
             <Image
               src={item.image}
               alt={item.name}
               fill
+              sizes="96px"
               className="object-cover"
             />
           </div>
@@ -77,7 +78,7 @@ export default function CartItemCard({ item }: CartItemCardProps) {
             </div>
 
             {/* Link to Product */}
-            <Button variant="ghost" size="sm" asChild className="flex-shrink-0">
+            <Button variant="ghost" size="sm" asChild className="shrink-0">
               <Link href={`/product/${item.productId}`}>
                 <ExternalLink className="h-4 w-4" />
               </Link>

@@ -95,7 +95,7 @@ export default function HeroBanner() {
                   fill
                   className="object-contain"
                   priority={index === 0}
-                  sizes="100vw"
+                  sizes="(max-width: 767px) 100vw, 0px"
                 />
               </div>
 
@@ -107,7 +107,7 @@ export default function HeroBanner() {
                   fill
                   className="object-contain"
                   priority={index === 0}
-                  sizes="100vw"
+                  sizes="(min-width: 768px) 100vw, 0px"
                 />
               </div>
             </a>
