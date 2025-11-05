@@ -96,6 +96,34 @@ const envsSchema = z.object({
 
   // Resend Email Configuration
   RESEND_API_KEY: z.string().min(1, "RESEND_API_KEY is required"),
+
+  // Home Page Categories
+  HOME_CATEGORY1_ID: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive("HOME_CATEGORY1_ID must be a positive number")),
+  HOME_CATEGORY2_ID: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive("HOME_CATEGORY2_ID must be a positive number")),
+  HOME_CATEGORY3_ID: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive("HOME_CATEGORY3_ID must be a positive number")),
+  HOME_CATEGORY4_ID: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive("HOME_CATEGORY4_ID must be a positive number")),
+  HOME_CATEGORY5_ID: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .pipe(z.number().positive("HOME_CATEGORY5_ID must be a positive number")),
+  HOME_SECTION_1_TITLE: z.string().min(1, "HOME_SECTION_1_TITLE is required"),
+  HOME_SECTION_2_TITLE: z.string().min(1, "HOME_SECTION_2_TITLE is required"),
+  HOME_SECTION_3_TITLE: z.string().min(1, "HOME_SECTION_3_TITLE is required"),
+  HOME_SECTION_4_TITLE: z.string().min(1, "HOME_SECTION_4_TITLE is required"),
+  HOME_SECTION_5_TITLE: z.string().min(1, "HOME_SECTION_5_TITLE is required"),
+  HOME_SECTION_6_TITLE: z.string().min(1, "HOME_SECTION_6_TITLE is required"),
 });
 
 // Inferir o tipo automaticamente a partir do schema
@@ -153,6 +181,17 @@ if (typeof window === "undefined") {
     GOOGLE_CLIENT_ID: "",
     GOOGLE_CLIENT_SECRET: "",
     RESEND_API_KEY: "",
+    HOME_CATEGORY1_ID: 0,
+    HOME_CATEGORY2_ID: 0,
+    HOME_CATEGORY3_ID: 0,
+    HOME_CATEGORY4_ID: 0,
+    HOME_CATEGORY5_ID: 0,
+    HOME_SECTION_1_TITLE: "",
+    HOME_SECTION_2_TITLE: "",
+    HOME_SECTION_3_TITLE: "",
+    HOME_SECTION_4_TITLE: "",
+    HOME_SECTION_5_TITLE: "",
+    HOME_SECTION_6_TITLE: "",
   };
 }
 
@@ -205,4 +244,19 @@ export const envs = {
 
   // Resend Email Configuration
   RESEND_API_KEY: envVars.RESEND_API_KEY,
+
+  // Home Page Categories
+  HOME_CATEGORY1_ID: envVars.HOME_CATEGORY1_ID,
+  HOME_CATEGORY2_ID: envVars.HOME_CATEGORY2_ID,
+  HOME_CATEGORY3_ID: envVars.HOME_CATEGORY3_ID,
+  HOME_CATEGORY4_ID: envVars.HOME_CATEGORY4_ID,
+  HOME_CATEGORY5_ID: envVars.HOME_CATEGORY5_ID,
+
+  // Home Page Sections Titles
+  HOME_SECTION_1_TITLE: envVars.HOME_SECTION_1_TITLE,
+  HOME_SECTION_2_TITLE: envVars.HOME_SECTION_2_TITLE,
+  HOME_SECTION_3_TITLE: envVars.HOME_SECTION_3_TITLE,
+  HOME_SECTION_4_TITLE: envVars.HOME_SECTION_4_TITLE,
+  HOME_SECTION_5_TITLE: envVars.HOME_SECTION_5_TITLE,
+  HOME_SECTION_6_TITLE: envVars.HOME_SECTION_6_TITLE,
 };

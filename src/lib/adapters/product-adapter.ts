@@ -3,23 +3,9 @@
  * Transforms API ProductWebListItem to UI Product interface
  */
 
+import { slugify } from "@/lib/utils";
 import type { ProductWebListItem } from "@/services/api-main/product/types/product-types";
 import type { ProductWithMetadata } from "@/types/products";
-
-/**
- * Generates a URL-friendly slug from product name
- * Mirrors the logic from product-card.tsx
- */
-function generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
-}
 
 /**
  * Formats price string to number with 2 decimal places
@@ -85,7 +71,7 @@ export function adaptProductFromApi(
     ? calculateDiscount(corporatePrice, retailPrice)
     : undefined;
 
-  const slug = apiProduct.SLUG || generateSlug(apiProduct.PRODUTO);
+  const slug = apiProduct.SLUG || slugify(apiProduct.PRODUTO);
 
   return {
     id: apiProduct.ID_PRODUTO.toString(),

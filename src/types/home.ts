@@ -19,6 +19,7 @@ export interface Product {
   brand?: string;
   rating?: number;
   reviewCount?: number;
+  slug?: string;
 }
 
 export interface Category {

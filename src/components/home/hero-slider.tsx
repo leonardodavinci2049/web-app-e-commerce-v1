@@ -41,7 +41,7 @@ const slides = [
   },
 ];
 
-export default function HeroBanner() {
+export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isClient, setIsClient] = useState(false);
 
