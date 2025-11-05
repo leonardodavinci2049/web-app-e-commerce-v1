@@ -3,11 +3,11 @@
  * Modern table listing with brand filters and search
  */
 
-import { Suspense } from "react";
-import { Metadata } from "next";
-import TabelaPageContent from "./tabela-page-content";
-import { getBrands, getTableProducts } from "./actions";
 import { Loader2 } from "lucide-react";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { getBrands, getTableProducts } from "./actions";
+import TabelaPageContent from "./tabela-page-content";
 
 export const metadata: Metadata = {
   title: "Tabela de Produtos | Loja",
@@ -65,9 +65,9 @@ function TabelaPageLoading() {
           <div className="space-y-4">
             <div className="h-12 bg-muted rounded-lg animate-pulse" />
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-              {Array.from({ length: 12 }).map((_, i) => (
+              {Array.from({ length: 12 }).map((_, idx) => (
                 <div
-                  key={i}
+                  key={`filter-skeleton-item-${idx}-${Math.random()}`}
                   className="h-16 bg-muted rounded-lg animate-pulse"
                 />
               ))}

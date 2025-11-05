@@ -4,10 +4,10 @@
 
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ShoppingCart, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, Plus, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ProductWebListItem } from "@/services/api-main/product/types/product-types";
 
@@ -23,14 +23,16 @@ export const columns: ColumnDef<ProductTableItem>[] = [
     accessorKey: "PRODUTO",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-auto p-0 hover:bg-transparent font-semibold text-left justify-start"
-        >
-          Nome do Produto
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-start">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="h-auto p-0 hover:bg-transparent font-semibold text-left justify-start gap-1 sm:gap-2"
+          >
+            Nome do Produto
+            <ArrowUpDown className="ml-1 h-3 w-3 hidden sm:inline-flex sm:ml-2 sm:h-4 sm:w-4" />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
@@ -41,11 +43,19 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       const isNew = row.original.LANCAMENTO === 1;
       const isPromotional = row.original.PROMOCAO === 1;
       const isImported = row.original.IMPORTADO === 1;
+      const productName = produto?.trim() || "Produto sem nome";
+      const formattedMobileName =
+        productName.length > 40
+          ? productName.replace(/(.{40})/g, "$1\u200B")
+          : productName;
 
       return (
-        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 max-w-[160px] sm:max-w-none">
-          <div className="font-medium text-foreground leading-tight break-words text-xs sm:text-base hyphens-auto">
-            {produto || "Produto sem nome"}
+        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 max-w-[140px] sm:max-w-none">
+          <div className="font-medium text-foreground leading-tight wrap-break-word text-xs sm:text-base hyphens-auto">
+            <span className="sm:hidden block whitespace-normal wrap-break-word">
+              {formattedMobileName}
+            </span>
+            <span className="hidden sm:block">{productName}</span>
           </div>
 
           {/* Product metadata - Hide some on mobile */}
@@ -102,14 +112,16 @@ export const columns: ColumnDef<ProductTableItem>[] = [
     accessorKey: "displayPrice",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-auto p-0 hover:bg-transparent font-semibold text-right justify-end w-full"
-        >
-          Preço
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="h-auto p-0 hover:bg-transparent font-semibold text-right justify-end gap-1 sm:gap-2"
+          >
+            Preço
+            <ArrowUpDown className="ml-1 h-3 w-3 hidden sm:inline-flex sm:ml-2 sm:h-4 sm:w-4" />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
@@ -127,10 +139,10 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       };
 
       return (
-        <div className="text-right space-y-1 min-w-[80px] sm:min-w-[100px]">
+        <div className="text-right space-y-1 min-w-[72px] sm:min-w-[100px]">
           <div
             className={cn(
-              "font-bold text-sm sm:text-lg break-words",
+              "font-bold text-sm sm:text-lg wrap-break-word",
               isPromotional ? "text-red-600" : "text-foreground",
             )}
           >
@@ -164,9 +176,9 @@ export const columns: ColumnDef<ProductTableItem>[] = [
           <Button
             onClick={handleAddToCart}
             disabled={!hasStock}
-            size="sm"
+            size="icon"
             className={cn(
-              "w-10 h-10 p-0 relative",
+              "size-9 sm:size-10 p-0 relative",
               hasStock
                 ? "bg-orange-500 hover:bg-orange-600 text-white"
                 : "bg-muted text-muted-foreground cursor-not-allowed",
@@ -174,7 +186,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
           >
             <ShoppingCart className="w-4 h-4" />
             {hasStock && (
-              <Plus className="w-3 h-3 absolute -top-1 -right-1 bg-green-500 text-white rounded-full p-0.5" />
+              <Plus className="w-2.5 h-2.5 absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 bg-green-500 text-white rounded-full p-0.5" />
             )}
           </Button>
         </div>

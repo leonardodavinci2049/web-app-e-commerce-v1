@@ -5,17 +5,17 @@
 
 "use client";
 
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -24,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {

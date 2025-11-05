@@ -5,23 +5,23 @@
 
 "use client";
 
-import { useState, useCallback, useTransition } from "react";
+import { Package } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Package, Search, ShoppingBag } from "lucide-react";
-import { DataTable } from "@/components/tabela/data-table";
-import {
-  columns,
-  transformProductsForTable,
-  type ProductTableItem,
-} from "@/components/tabela/columns";
-import BrandFilter from "@/components/tabela/brand-filter";
+import Footer from "@/components/home/footer";
 import MainHeader from "@/components/home/main-header";
 import NavigationMenu from "@/components/home/navigation-menu";
-import Footer from "@/components/home/footer";
-import type { ProductTableResult, ProductTableFilters } from "./actions";
-import { getTableProducts, loadMoreProducts } from "./actions";
+import BrandFilter from "@/components/tabela/brand-filter";
+import {
+  columns,
+  type ProductTableItem,
+  transformProductsForTable,
+} from "@/components/tabela/columns";
+import { DataTable } from "@/components/tabela/data-table";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
+import type { ProductTableFilters, ProductTableResult } from "./actions";
+import { getTableProducts, loadMoreProducts } from "./actions";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
@@ -207,7 +207,7 @@ export default function TabelaPageContent({
         </div>
 
         {/* Brand Filter */}
-        <div className="bg-card border border-border rounded-lg shadow-sm p-3 sm:p-6">
+        <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
           <BrandFilter
             brands={brands}
             selectedBrandId={selectedBrandId}
@@ -218,7 +218,7 @@ export default function TabelaPageContent({
         </div>
 
         {/* Products Table */}
-        <div className="bg-card border border-border rounded-lg shadow-sm p-3 sm:p-6">
+        <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold">Lista de Produtos</h2>

@@ -6,9 +6,9 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useState, useMemo } from "react";
-import { Input } from "@/components/ui/input";
+import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 

@@ -7,12 +7,12 @@
 
 import { createLogger } from "@/core/logger";
 import { BrandServiceApi } from "@/services/api-main/brand/brand-service-api";
+import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 import { ProductWebServiceApi } from "@/services/api-main/product/product-service-api";
 import type {
   ProductWebFindRequest,
   ProductWebListItem,
 } from "@/services/api-main/product/types/product-types";
-import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 
 const logger = createLogger("TabelaActions");
 
@@ -64,7 +64,7 @@ export async function getTableProducts(
       pe_ordem_id: sortOrder,
     };
 
-    logger.info("Buscando produtos para tabela", { params });
+    /*    logger.info("Buscando produtos para tabela", { params }); */
 
     // Call the API service
     const response = await ProductWebServiceApi.findProducts(params);
