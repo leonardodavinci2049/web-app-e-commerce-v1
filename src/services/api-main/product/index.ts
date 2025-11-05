@@ -7,6 +7,7 @@ export type {
   ProductWebFindRequest,
   ProductWebFindResponse,
   ProductWebListItem,
+  ProductWebRelatedItem,
   ProductWebRelatedTaxonomy,
   StoredProcedureResponse,
 } from "./types/product-types";
