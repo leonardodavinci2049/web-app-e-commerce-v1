@@ -4,7 +4,7 @@
  */
 
 import type { Product } from "@/types/home";
-import ProductCard from "./product-card";
+import ProductCard from "../product-card";
 
 interface ProductsSectionProps {
   title: string;

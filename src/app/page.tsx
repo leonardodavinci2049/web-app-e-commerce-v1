@@ -3,20 +3,23 @@
  * Complete homepage with all sections in the correct order
  */
 
+
 import AboutSection from "@/components/home/about-section";
 import Advantages from "@/components/home/advantages";
 import CustomerSegments from "@/components/home/customer-segments";
 import DepartmentsNav from "@/components/home/departments-nav";
 import Footer from "@/components/home/footer";
-import HeroBanner from "@/components/home/hero-banner";
+import HeroSlider from "@/components/home/hero-slider";
+
 import LocationSection from "@/components/home/location-section";
 import MainHeader from "@/components/home/main-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
 import NavigationMenu from "@/components/home/navigation-menu";
 import Newsletter from "@/components/home/newsletter";
-import ProductsSection from "@/components/home/products-section";
+
 import PromoBanner from "@/components/home/promo-banner";
 import PromoBannersGrid from "@/components/home/promo-banners-grid";
+import ProductsSection from "@/components/home/sections/products-section";
 
 // Import mock data
 import { benchProducts, featuredProducts, newProducts } from "@/data/mock-data";
@@ -35,8 +38,8 @@ export default function HomePage() {
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* 4. Hero Banner */}
-        <HeroBanner />
+        {/* 4. Hero Slider */}
+        <HeroSlider />
 
         {/* 5. Departments Navigation */}
         <DepartmentsNav />
