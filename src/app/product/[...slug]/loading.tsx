@@ -3,8 +3,8 @@
  * Displays skeleton UI while product is being fetched
  */
 
+import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
-import MainHeader from "@/components/home/main-header";
 
 export default function ProductDetailLoading() {
   return (

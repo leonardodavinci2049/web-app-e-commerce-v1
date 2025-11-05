@@ -10,8 +10,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
 import Footer from "@/components/home/footer";
-import MainHeader from "@/components/home/main-header";
-import NavigationMenu from "@/components/home/navigation-menu";
 import BrandFilter from "@/components/tabela/brand-filter";
 import {
   columns,
@@ -185,11 +183,7 @@ export default function TabelaPageContent({
   }, [loading, hasMore, currentPage, searchTerm, selectedBrandId]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <MainHeader />
-      <NavigationMenu />
-
+    <>
       {/* Main Content */}
       <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-8">
         {/* Page Header */}
@@ -241,6 +235,6 @@ export default function TabelaPageContent({
 
       {/* Footer */}
       <Footer />
-    </div>
+    </>
   );
 }

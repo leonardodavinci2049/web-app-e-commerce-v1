@@ -4,19 +4,17 @@
  */
 
 import { Suspense } from "react";
+import MainHeader from "@/components/header/main-header";
+import MobileHeader from "@/components/header/mobile-header";
 import AboutSection from "@/components/home/about-section";
 import Advantages from "@/components/home/advantages";
 import CustomerSegments from "@/components/home/customer-segments";
 import DepartmentsNav from "@/components/home/departments-nav";
 import Footer from "@/components/home/footer";
 import HeroSlider from "@/components/home/hero-slider";
-
 import LocationSection from "@/components/home/location-section";
-import MainHeader from "@/components/home/main-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/home/navigation-menu";
 import Newsletter from "@/components/home/newsletter";
-
 import PromoBanner from "@/components/home/promo-banner";
 import PromoBannersGrid from "@/components/home/promo-banners-grid";
 import ProductSectionCat01 from "@/components/home/sections/ProductSectionCat01";
@@ -26,6 +24,7 @@ import ProductSectionHighlights from "@/components/home/sections/ProductSectionH
 import ProductSectionNewReleases from "@/components/home/sections/ProductSectionNewReleases";
 import ProductSectionPromotions from "@/components/home/sections/ProductSectionPromotions";
 import ProductsSection from "@/components/home/sections/products-section";
+import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import { envs } from "@/core/config/envs";
 
 export default function HomePage() {
@@ -37,6 +36,9 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
       {/* 1. Top Bar */}
       {/* <TopBar /> */}
+
+      {/* 2. Mobile Header */}
+      <MobileHeader />
 
       {/* 2. Main Header */}
       <MainHeader />

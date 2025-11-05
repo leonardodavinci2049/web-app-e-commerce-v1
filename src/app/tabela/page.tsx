@@ -6,6 +6,10 @@
 import { Loader2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import MainHeader from "@/components/header/main-header";
+import MobileHeader from "@/components/header/mobile-header";
+import MobileBottomNav from "@/components/home/mobile-bottom-nav";
+import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import { getBrands, getTableProducts } from "./actions";
 import TabelaPageContent from "./tabela-page-content";
 
@@ -53,6 +57,13 @@ async function TabelaPageData({ searchParams }: TabelaPageProps) {
 function TabelaPageLoading() {
   return (
     <div className="min-h-screen bg-background">
+      {/* Mobile Header */}
+      <MobileHeader />
+
+      {/* Main Header */}
+      <MainHeader />
+      <NavigationMenu />
+
       <div className="container mx-auto px-4 py-8">
         <div className="space-y-8">
           {/* Header skeleton */}
@@ -91,8 +102,20 @@ function TabelaPageLoading() {
 
 export default function TabelaPage(props: TabelaPageProps) {
   return (
-    <Suspense fallback={<TabelaPageLoading />}>
-      <TabelaPageData {...props} />
-    </Suspense>
+    <>
+      {/* Mobile Header */}
+      <MobileHeader />
+
+      {/* Main Header */}
+      <MainHeader />
+      <NavigationMenu hideOnMobile={true} />
+
+      <Suspense fallback={<TabelaPageLoading />}>
+        <TabelaPageData {...props} />
+      </Suspense>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+    </>
   );
 }

@@ -16,7 +16,7 @@ import { envs } from "@/core/config/envs";
 
 export default function MainHeader() {
   return (
-    <header className="bg-card border-b border-border py-4 px-4">
+    <header className="hidden md:block bg-card border-b border-border py-4 px-4">
       <div className="container mx-auto max-w-7xl flex items-center gap-4">
         {/* Logo */}
         <Link href="/" className="shrink-0 flex items-center gap-2">

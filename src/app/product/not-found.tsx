@@ -1,7 +1,7 @@
 import { Home, Search } from "lucide-react";
 import Link from "next/link";
+import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
-import MainHeader from "@/components/home/main-header";
 import { Button } from "@/components/ui/button";
 
 /**
