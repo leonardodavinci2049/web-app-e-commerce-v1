@@ -19,7 +19,7 @@ export default function MainHeader() {
     <header className="bg-card border-b border-border py-4 px-4">
       <div className="container mx-auto max-w-7xl flex items-center gap-4">
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+        <Link href="/" className="shrink-0 flex items-center gap-2">
           <Image
             src="/images/logo/logo-header.png"
             alt={`${envs.NEXT_PUBLIC_COMPANY_NAME} Logo`}
@@ -43,7 +43,7 @@ export default function MainHeader() {
         </div>
 
         {/* Action Icons */}
-        <div className="flex items-center gap-4 flex-shrink-0">
+        <div className="flex items-center gap-4 shrink-0">
           <Button
             variant="ghost"
             size="sm"

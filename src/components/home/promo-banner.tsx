@@ -11,7 +11,7 @@ export default function PromoBanner() {
       <div className="container mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
           {/* Logo/Brand Mark */}
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <div className="w-16 h-16 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
               <span className="text-4xl font-bold">M</span>
             </div>
