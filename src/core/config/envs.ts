@@ -118,6 +118,12 @@ const envsSchema = z.object({
     .string()
     .transform((val) => parseInt(val, 10))
     .pipe(z.number().positive("HOME_CATEGORY5_ID must be a positive number")),
+  HOME_SECTION_1_TITLE: z.string().min(1, "HOME_SECTION_1_TITLE is required"),
+  HOME_SECTION_2_TITLE: z.string().min(1, "HOME_SECTION_2_TITLE is required"),
+  HOME_SECTION_3_TITLE: z.string().min(1, "HOME_SECTION_3_TITLE is required"),
+  HOME_SECTION_4_TITLE: z.string().min(1, "HOME_SECTION_4_TITLE is required"),
+  HOME_SECTION_5_TITLE: z.string().min(1, "HOME_SECTION_5_TITLE is required"),
+  HOME_SECTION_6_TITLE: z.string().min(1, "HOME_SECTION_6_TITLE is required"),
 });
 
 // Inferir o tipo automaticamente a partir do schema
@@ -180,6 +186,12 @@ if (typeof window === "undefined") {
     HOME_CATEGORY3_ID: 0,
     HOME_CATEGORY4_ID: 0,
     HOME_CATEGORY5_ID: 0,
+    HOME_SECTION_1_TITLE: "",
+    HOME_SECTION_2_TITLE: "",
+    HOME_SECTION_3_TITLE: "",
+    HOME_SECTION_4_TITLE: "",
+    HOME_SECTION_5_TITLE: "",
+    HOME_SECTION_6_TITLE: "",
   };
 }
 
@@ -239,4 +251,12 @@ export const envs = {
   HOME_CATEGORY3_ID: envVars.HOME_CATEGORY3_ID,
   HOME_CATEGORY4_ID: envVars.HOME_CATEGORY4_ID,
   HOME_CATEGORY5_ID: envVars.HOME_CATEGORY5_ID,
+
+  // Home Page Sections Titles
+  HOME_SECTION_1_TITLE: envVars.HOME_SECTION_1_TITLE,
+  HOME_SECTION_2_TITLE: envVars.HOME_SECTION_2_TITLE,
+  HOME_SECTION_3_TITLE: envVars.HOME_SECTION_3_TITLE,
+  HOME_SECTION_4_TITLE: envVars.HOME_SECTION_4_TITLE,
+  HOME_SECTION_5_TITLE: envVars.HOME_SECTION_5_TITLE,
+  HOME_SECTION_6_TITLE: envVars.HOME_SECTION_6_TITLE,
 };

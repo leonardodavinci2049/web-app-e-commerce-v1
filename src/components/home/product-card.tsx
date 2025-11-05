@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { slugify } from "@/lib/utils";
 import type { Product } from "@/types/home";
 
 interface ProductCardProps {
@@ -20,12 +21,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       )
     : 0;
 
-  // Generate product URL
-  const productUrl = `/product/${product.category
-    .toLowerCase()
-    .replace(/\s+/g, "-")}/${product.id}/${product.name
-    .toLowerCase()
-    .replace(/\s+/g, "-")}`;
+  const categorySlug = slugify(product.category);
+  const productSlug = product.slug
+    ? slugify(product.slug)
+    : slugify(product.name);
+  const productUrl = `/product/${categorySlug}/${product.id}/${productSlug}`;
+
+  const productImage = product.image || "/images/product/no-image.jpeg";
 
   return (
     <div className="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group">
@@ -33,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <Image
-            src={product.image}
+            src={productImage}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

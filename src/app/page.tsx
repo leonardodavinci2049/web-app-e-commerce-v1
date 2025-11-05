@@ -3,7 +3,7 @@
  * Complete homepage with all sections in the correct order
  */
 
-
+import { Suspense } from "react";
 import AboutSection from "@/components/home/about-section";
 import Advantages from "@/components/home/advantages";
 import CustomerSegments from "@/components/home/customer-segments";
@@ -19,12 +19,20 @@ import Newsletter from "@/components/home/newsletter";
 
 import PromoBanner from "@/components/home/promo-banner";
 import PromoBannersGrid from "@/components/home/promo-banners-grid";
+import ProductSectionCat01 from "@/components/home/sections/ProductSectionCat01";
+import ProductSectionCat02 from "@/components/home/sections/ProductSectionCat02";
+import ProductSectionCat03 from "@/components/home/sections/ProductSectionCat03";
+import ProductSectionHighlights from "@/components/home/sections/ProductSectionHighlights";
+import ProductSectionNewReleases from "@/components/home/sections/ProductSectionNewReleases";
+import ProductSectionPromotions from "@/components/home/sections/ProductSectionPromotions";
 import ProductsSection from "@/components/home/sections/products-section";
-
-// Import mock data
-import { benchProducts, featuredProducts, newProducts } from "@/data/mock-data";
+import { envs } from "@/core/config/envs";
 
 export default function HomePage() {
+  const renderLoadingSection = (id: string, title: string) => (
+    <ProductsSection id={id} title={title} isLoading />
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* 1. Top Bar */}
@@ -45,48 +53,82 @@ export default function HomePage() {
         <DepartmentsNav />
 
         {/* 6. Featured Products Section */}
-        <ProductsSection
-          id="produtos-mais-procurados"
-          title="Produtos mais procurados"
-          subtitle="As melhores ofertas para você"
-          products={featuredProducts}
-        />
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-destaque",
+            envs.HOME_SECTION_1_TITLE,
+          )}
+        >
+          <ProductSectionHighlights />
+        </Suspense>
 
         {/* 7. Promo Banner - Novidades */}
         <PromoBanner />
 
         {/* 8. New Products Section */}
-        <ProductsSection
-          id="produtos-em-destaque"
-          title="Produtos em destaque"
-          subtitle="Lançamentos e novidades"
-          products={newProducts}
-        />
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-promocoes",
+            envs.HOME_SECTION_2_TITLE,
+          )}
+        >
+          <ProductSectionPromotions />
+        </Suspense>
 
-        {/* 9. Bench Products Section - Specific Category */}
-        <ProductsSection
-          id="ferramentas-de-bancada"
-          title="Ferramentas de bancada para sua loja!"
-          subtitle="Equipamentos profissionais de alta qualidade"
-          products={benchProducts}
-        />
+        {/* 9. New Releases Section */}
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-novidades",
+            envs.HOME_SECTION_3_TITLE,
+          )}
+        >
+          <ProductSectionNewReleases />
+        </Suspense>
 
         {/* 10. Promotional Banners Grid */}
         <PromoBannersGrid />
 
-        {/* 11. Customer Segments / Testimonials */}
+        {/* 11. Category Sections */}
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-categoria-1",
+            envs.HOME_SECTION_4_TITLE,
+          )}
+        >
+          <ProductSectionCat01 />
+        </Suspense>
+
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-categoria-2",
+            envs.HOME_SECTION_5_TITLE,
+          )}
+        >
+          <ProductSectionCat02 />
+        </Suspense>
+
+        <Suspense
+          fallback={renderLoadingSection(
+            "home-produtos-categoria-3",
+            envs.HOME_SECTION_6_TITLE,
+          )}
+        >
+          <ProductSectionCat03 />
+        </Suspense>
+
+        {/* 12. Customer Segments / Testimonials */}
         <CustomerSegments />
 
-        {/* 12. Advantages Section */}
+        {/* 13. Advantages Section */}
         <Advantages />
 
-        {/* 13. About Section */}
+        {/* 14. About Section */}
         <AboutSection />
 
-        {/* 14. Location Section */}
+        {/* 15. Location Section */}
         <LocationSection />
 
-        {/* 15. Newsletter */}
+        {/* 16. Newsletter */}
         <Newsletter />
       </main>
 

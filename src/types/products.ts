@@ -17,7 +17,6 @@ export interface ProductWithMetadata extends Product {
   isPromotion?: boolean;
   isLaunch?: boolean;
   createdAt?: string;
-  slug?: string;
 }
 
 /**
