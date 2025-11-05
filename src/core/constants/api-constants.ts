@@ -47,6 +47,7 @@ export const PRODUCT_ENDPOINTS = {
 export const PRODUCT_WEB_ENDPOINTS = {
   FIND_BY_ID: "/product/v2/product-web-find-id",
   FIND: "/product/v2/product-web-find",
+  SECTIONS: "/product/v2/product-web-sections",
 } as const;
 
 // Endpoints de Carrinho

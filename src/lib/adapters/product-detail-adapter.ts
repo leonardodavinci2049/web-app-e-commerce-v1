@@ -21,11 +21,20 @@ function generateSlug(name: string): string {
 }
 
 /**
- * Formats price string to number with 2 decimal places
+ * Formats price value to number with 2 decimal places
  */
-function formatPrice(priceString: string): number {
-  const price = Number.parseFloat(priceString);
-  return Number.isNaN(price) ? 0 : Number(price.toFixed(2));
+function formatPrice(priceInput: string | number | null | undefined): number {
+  if (priceInput === null || priceInput === undefined) {
+    return 0;
+  }
+
+  const rawValue =
+    typeof priceInput === "number" ? priceInput : Number(priceInput);
+  if (Number.isNaN(rawValue)) {
+    return 0;
+  }
+
+  return Number(rawValue.toFixed(2));
 }
 
 /**
@@ -57,13 +66,13 @@ function getCategoryName(tipo: string | null): string {
  * Determines badge based on product flags
  */
 function getBadge(
-  isPromotion: number,
-  isDestaque: number,
-  isImported: number,
+  isPromotion: number | null | undefined,
+  isDestaque: number | null | undefined,
+  isImported: number | null | undefined,
 ): string | undefined {
-  if (isPromotion === 1) return "Promoção";
-  if (isDestaque === 1) return "Destaque";
-  if (isImported === 1) return "Importado";
+  if ((isPromotion ?? 0) === 1) return "Promoção";
+  if ((isDestaque ?? 0) === 1) return "Destaque";
+  if ((isImported ?? 0) === 1) return "Importado";
   return undefined;
 }
 
@@ -74,6 +83,7 @@ function getBadge(
 export function adaptProductDetailFromApi(
   apiProduct: ProductWebDetail,
 ): ProductWithMetadata {
+  const productName = apiProduct.PRODUTO || "Produto sem nome";
   const retailPrice = formatPrice(apiProduct.VL_VAREJO);
   const corporatePrice = formatPrice(apiProduct.VL_CORPORATIVO);
 
@@ -84,12 +94,26 @@ export function adaptProductDetailFromApi(
     ? calculateDiscount(corporatePrice, retailPrice)
     : undefined;
 
-  const slug = apiProduct.SLUG || generateSlug(apiProduct.PRODUTO);
+  const slugCandidate = apiProduct.SLUG?.trim();
+  const slug =
+    slugCandidate && slugCandidate.length > 0
+      ? slugCandidate
+      : generateSlug(productName);
+
+  const resolvedSku =
+    typeof apiProduct.SKU === "number" && !Number.isNaN(apiProduct.SKU)
+      ? apiProduct.SKU
+      : apiProduct.ID_PRODUTO;
+  const stock = apiProduct.ESTOQUE_LOJA ?? 0;
+  const warranty = apiProduct.TEMPODEGARANTIA_DIA ?? 0;
+  const isImported = (apiProduct.IMPORTADO ?? 0) === 1;
+  const isPromotion = (apiProduct.PROMOCAO ?? 0) === 1;
+  const isHighlight = (apiProduct.DESTAQUE ?? 0) === 1;
 
   return {
     id: apiProduct.ID_PRODUTO.toString(),
-    sku: apiProduct.SKU,
-    name: apiProduct.PRODUTO,
+    sku: resolvedSku,
+    name: productName,
     price: retailPrice,
     originalPrice,
     discount,
@@ -102,13 +126,14 @@ export function adaptProductDetailFromApi(
       apiProduct.IMPORTADO,
     ),
     slug,
-    stock: apiProduct.ESTOQUE_LOJA,
-    warranty: apiProduct.TEMPODEGARANTIA_DIA,
-    isImported: apiProduct.IMPORTADO === 1,
-    isPromotion: apiProduct.PROMOCAO === 1,
-    isNew: apiProduct.DESTAQUE === 1,
-    inStock: apiProduct.ESTOQUE_LOJA > 0,
-    description: apiProduct.DESCRICAO_VENDA || undefined,
+    stock,
+    warranty,
+    isImported,
+    isPromotion,
+    isNew: isHighlight,
+    inStock: stock > 0,
+    description:
+      apiProduct.DESCRICAO_VENDA || apiProduct.DESCRICAO_TAB || undefined,
     rating: undefined, // Não disponível na API
     reviewCount: undefined, // Não disponível na API
   };
