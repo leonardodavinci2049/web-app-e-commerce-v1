@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
     <div className={cn("space-y-4", className)}>
       {/* Table Container */}
       <div className="rounded-lg border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-gray-900 shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 overflow-hidden">
-        <div className="overflow-x-auto sm:overflow-x-visible">
+        <div className="md:[&_div[data-slot='table-container']]:overflow-visible md:[&_div[data-slot='table-container']]:overflow-x-visible">
           <Table className="min-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -100,17 +100,26 @@ export function DataTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                     className="hover:bg-blue-50/70 dark:hover:bg-blue-950/30 transition-colors border-b border-blue-100 dark:border-blue-900/50"
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className="py-2 sm:py-4 px-2 sm:px-4"
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
+                    {row.getVisibleCells().map((cell) => {
+                      const isProductColumn = cell.column.id === "PRODUTO";
+
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={cn(
+                            "py-2 sm:py-4 px-2 sm:px-4",
+                            isProductColumn
+                              ? "sm:whitespace-normal align-top min-w-0"
+                              : undefined,
+                          )}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ))
               ) : (

@@ -79,11 +79,11 @@ export async function getTableProducts(
       currentPage: page,
     };
 
-    logger.info("Produtos carregados com sucesso", {
+    /*     logger.info("Produtos carregados com sucesso", {
       count: products.length,
       total: result.total,
       hasMore: result.hasMore,
-    });
+    }); */
 
     return result;
   } catch (error) {
@@ -103,7 +103,7 @@ export async function getTableProducts(
  */
 export async function getBrands(): Promise<BrandsResult> {
   try {
-    logger.info("Buscando marcas para filtro");
+    // logger.info("Buscando marcas para filtro");
 
     // Call the brand service
     const response = await BrandServiceApi.findBrands({
@@ -113,7 +113,7 @@ export async function getBrands(): Promise<BrandsResult> {
     // Extract brands from response
     const brands = BrandServiceApi.extractBrandList(response);
 
-    logger.info("Marcas carregadas com sucesso", { count: brands.length });
+    // logger.info("Marcas carregadas com sucesso", { count: brands.length });
 
     return {
       brands: brands.filter(

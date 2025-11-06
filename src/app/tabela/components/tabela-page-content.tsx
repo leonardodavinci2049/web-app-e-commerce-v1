@@ -187,9 +187,9 @@ export default function TabelaPageContent({
     <>
       {/* Main Layout with Sidebar */}
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <div className="flex gap-6">
+        <div className="flex flex-col gap-6 lg:gap-8">
           {/* Main Content */}
-          <main className="flex-1 space-y-4 sm:space-y-8">
+          <main className="space-y-4 sm:space-y-8">
             {/* Page Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
@@ -217,28 +217,31 @@ export default function TabelaPageContent({
 
             {/* Products Table */}
             <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+              <div className="space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-4">
                   <h2 className="text-xl font-semibold">Lista de Produtos</h2>
                   <div className="text-sm text-muted-foreground">
                     {products.length} produtos carregados
                   </div>
                 </div>
 
-                <DataTable
-                  columns={columns}
-                  data={products}
-                  loading={loading || isPending}
-                  onLoadMore={handleLoadMore}
-                  hasMore={hasMore}
-                  totalCount={totalCount}
-                />
+                <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
+                  <div className="min-w-0">
+                    <DataTable
+                      columns={columns}
+                      data={products}
+                      loading={loading || isPending}
+                      onLoadMore={handleLoadMore}
+                      hasMore={hasMore}
+                      totalCount={totalCount}
+                    />
+                  </div>
+
+                  <CartSidebar className="hidden md:block md:sticky md:top-6 md:max-w-xs md:w-full" />
+                </div>
               </div>
             </div>
           </main>
-
-          {/* Cart Sidebar - Only visible on large screens */}
-          <CartSidebar />
         </div>
       </div>
 
