@@ -11,7 +11,7 @@ import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
 import Footer from "@/components/home/footer";
 import BrandFilter from "@/components/tabela/brand-filter";
-import CartSidebar from "@/components/tabela/cart-sidebar";
+import CartSidebarFixo from "@/components/tabela/cart-sidebar-fixo";
 import {
   columns,
   type ProductTableItem,
@@ -237,7 +237,7 @@ export default function TabelaPageContent({
                     />
                   </div>
 
-                  <CartSidebar className="hidden md:block md:sticky md:top-6 md:max-w-xs md:w-full" />
+                  <CartSidebarFixo className="hidden md:block md:sticky md:top-6 md:max-w-xs md:w-full" />
                 </div>
               </div>
             </div>
