@@ -10,7 +10,6 @@ import MainHeader from "@/components/header/main-header";
 import MobileHeader from "@/components/header/mobile-header";
 import Footer from "@/components/home/footer";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import ProductFilters, {
   type FilterState,
 } from "@/components/products/product-filters";
@@ -37,7 +36,7 @@ export default function ProductsPageContent({
       {/* <TopBar /> */}
       <MobileHeader />
       <MainHeader />
-      <NavigationMenu />
+      {/* <NavigationMenu /> */}
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
