@@ -8,40 +8,49 @@
 import { ExternalLink, Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { CartItem } from "@/types/cart";
+import { useCart } from "./cart-provider";
 
 interface CartItemCardProps {
   item: CartItem;
 }
 
 export default function CartItemCard({ item }: CartItemCardProps) {
-  const [quantity, setQuantity] = useState(item.quantity);
+  const { updateQuantity, removeItem } = useCart();
+
+  const maxQuantity = item.maxQuantity ?? item.stock;
+  const formattedPrice = new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(item.price);
 
   const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    if (item.quantity > 1) {
+      updateQuantity(item.productId, item.quantity - 1);
     }
   };
 
   const handleIncrease = () => {
-    if (quantity < item.stock) {
-      setQuantity(quantity + 1);
+    if (item.quantity < maxQuantity) {
+      updateQuantity(item.productId, item.quantity + 1);
     }
   };
 
   const handleQuantityChange = (value: string) => {
     const num = parseInt(value, 10);
-    if (!Number.isNaN(num) && num > 0 && num <= item.stock) {
-      setQuantity(num);
+    if (Number.isNaN(num)) {
+      return;
+    }
+
+    if (num > 0 && num <= maxQuantity) {
+      updateQuantity(item.productId, num);
     }
   };
 
   const handleRemove = () => {
-    // TODO: Implement remove functionality
-    console.log("Remove item:", item.id);
+    removeItem(item.productId);
   };
 
   return (
@@ -93,7 +102,7 @@ export default function CartItemCard({ item }: CartItemCardProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleDecrease}
-                disabled={quantity <= 1}
+                disabled={item.quantity <= 1}
                 className="h-8 w-8 p-0"
               >
                 <Minus className="h-3 w-3" />
@@ -101,18 +110,18 @@ export default function CartItemCard({ item }: CartItemCardProps) {
 
               <Input
                 type="number"
-                value={quantity}
+                value={item.quantity}
                 onChange={(e) => handleQuantityChange(e.target.value)}
                 className="h-8 w-16 text-center"
                 min={1}
-                max={item.stock}
+                max={maxQuantity}
               />
 
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleIncrease}
-                disabled={quantity >= item.stock}
+                disabled={item.quantity >= maxQuantity}
                 className="h-8 w-8 p-0"
               >
                 <Plus className="h-3 w-3" />
@@ -121,9 +130,7 @@ export default function CartItemCard({ item }: CartItemCardProps) {
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <p className="text-lg font-bold text-primary">
-                R$ {item.price.toFixed(2)}
-              </p>
+              <p className="text-lg font-bold text-primary">{formattedPrice}</p>
 
               {/* Remove Button */}
               <Button

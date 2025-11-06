@@ -20,42 +20,21 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { calculateCartSummary, mockCartItems } from "@/data/cart-data";
+import { useCart } from "./cart-provider";
 
 interface CartSidebarProps {
   trigger?: React.ReactNode;
-  itemCount?: number;
 }
 
-export default function CartSidebar({
-  trigger,
-  itemCount = 3,
-}: CartSidebarProps) {
+export default function CartSidebar({ trigger }: CartSidebarProps) {
   const [open, setOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(mockCartItems);
-  const summary = calculateCartSummary(cartItems);
-
-  // Update item quantity
-  const updateQuantity = (itemId: string, newQuantity: number) => {
-    setCartItems((items) =>
-      items.map((item) =>
-        item.id === itemId
-          ? {
-              ...item,
-              quantity: Math.max(
-                1,
-                Math.min(newQuantity, item.maxQuantity || 99),
-              ),
-            }
-          : item,
-      ),
-    );
-  };
-
-  // Remove item from cart
-  const removeItem = (itemId: string) => {
-    setCartItems((items) => items.filter((item) => item.id !== itemId));
-  };
+  const {
+    items: cartItems,
+    summary,
+    itemCount,
+    updateQuantity,
+    removeItem,
+  } = useCart();
 
   // Format currency
   const formatCurrency = (value: number) => {
@@ -146,7 +125,7 @@ export default function CartSidebar({
                           size="icon"
                           className="h-7 w-7"
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
+                            updateQuantity(item.productId, item.quantity - 1)
                           }
                           disabled={item.quantity <= 1}
                         >
@@ -160,9 +139,11 @@ export default function CartSidebar({
                           size="icon"
                           className="h-7 w-7"
                           onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
+                            updateQuantity(item.productId, item.quantity + 1)
                           }
-                          disabled={item.quantity >= (item.maxQuantity || 99)}
+                          disabled={
+                            item.quantity >= (item.maxQuantity ?? item.stock)
+                          }
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
@@ -186,7 +167,7 @@ export default function CartSidebar({
                       variant="ghost"
                       size="sm"
                       className="mt-2 h-auto p-0 text-xs text-destructive hover:text-destructive hover:bg-transparent opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.productId)}
                     >
                       <X className="h-3 w-3 mr-1" />
                       Remover

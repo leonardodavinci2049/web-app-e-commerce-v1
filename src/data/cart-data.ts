@@ -39,19 +39,24 @@ export function calculateCartSummary(items: CartItem[]) {
   );
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  // Free shipping for orders above R$ 299
-  const shipping = subtotal >= 299 ? 0 : 14.5;
+  const hasItems = items.length > 0;
+
+  // Free shipping for orders above R$ 299 (only when there are items)
+  const shipping = !hasItems ? 0 : subtotal >= 299 ? 0 : 14.5;
 
   // Mock discount calculation
   const discount = 0;
 
-  const total = subtotal + shipping - discount;
+  const total = hasItems ? subtotal + shipping - discount : 0;
 
   // Calculate installments (up to 12x without interest)
-  const installments = {
-    count: 12,
-    value: total / 12,
-  };
+  const installments =
+    total > 0
+      ? {
+          count: 12,
+          value: total / 12,
+        }
+      : undefined;
 
   return {
     subtotal,

@@ -9,6 +9,7 @@
 import { Heart, Menu, Package, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useCart } from "@/components/cart/cart-provider";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,7 @@ import { navigationItems } from "@/data/mock-data";
 
 export default function MobileBottomNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
@@ -91,7 +93,6 @@ export default function MobileBottomNav() {
 
           {/* Carrinho - Cart Sidebar */}
           <CartSidebar
-            itemCount={2}
             trigger={
               <button
                 type="button"
@@ -99,12 +100,14 @@ export default function MobileBottomNav() {
               >
                 <div className="relative">
                   <ShoppingCart className="h-5 w-5" />
-                  <Badge
-                    variant="destructive"
-                    className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs"
-                  >
-                    2
-                  </Badge>
+                  {itemCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs"
+                    >
+                      {itemCount}
+                    </Badge>
+                  )}
                 </div>
                 <span className="text-xs font-medium">Carrinho</span>
               </button>

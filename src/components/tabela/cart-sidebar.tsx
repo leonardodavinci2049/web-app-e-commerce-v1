@@ -7,45 +7,19 @@
 
 import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/components/cart/cart-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { Separator } from "@/components/ui/separator";
-import { calculateCartSummary, mockCartItems } from "@/data/cart-data";
 import { cn } from "@/lib/utils";
-import type { CartItem } from "@/types/cart";
 
 interface CartSidebarProps {
   className?: string;
 }
 
 export default function CartSidebar({ className }: CartSidebarProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>(mockCartItems);
+  const { items: cartItems, summary, updateQuantity, removeItem } = useCart();
   const [paymentMethod, setPaymentMethod] = useState("dinheiro");
-
-  const cartSummary = calculateCartSummary(cartItems);
-
-  const updateQuantity = (productId: string, newQuantity: number) => {
-    if (newQuantity <= 0) {
-      removeItem(productId);
-      return;
-    }
-
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.productId === productId
-          ? {
-              ...item,
-              quantity: Math.min(newQuantity, item.maxQuantity ?? item.stock),
-            }
-          : item,
-      ),
-    );
-  };
-
-  const removeItem = (productId: string) => {
-    setCartItems((prev) => prev.filter((item) => item.productId !== productId));
-  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -186,7 +160,7 @@ export default function CartSidebar({ className }: CartSidebarProps) {
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold">Total:</span>
               <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                {formatPrice(cartSummary.total)}
+                {formatPrice(summary.total)}
               </span>
             </div>
           </div>

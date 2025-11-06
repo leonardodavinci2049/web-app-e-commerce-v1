@@ -137,7 +137,7 @@ export default function MainHeader() {
           </Button>
 
           {/* Cart Sidebar */}
-          <CartSidebar itemCount={2} />
+          <CartSidebar />
 
           {/* Theme Toggle */}
           <ModeToggle />

@@ -4,14 +4,12 @@
  * 
  * ## Components Structure
  * 
- * ### Server Components (RSC)
+ * ### Client Components
  * - `cart-header.tsx` - Simple header with logo and back button
  * - `cart-items-list.tsx` - List wrapper for cart items
  * - `cart-summary.tsx` - Order summary with totals
  * - `cart-info-banner.tsx` - Informational banners
  * - `empty-cart.tsx` - Empty state display
- * 
- * ### Client Components
  * - `cart-item-card.tsx` - Individual cart item with quantity controls
  * - `cart-coupon.tsx` - Coupon code input and application
  * - `continue-shopping-button.tsx` - Navigation button
@@ -38,13 +36,10 @@
  * import CartSidebar from "@/components/cart/cart-sidebar";
  * 
  * // Default trigger (shopping cart icon with badge)
- * <CartSidebar itemCount={2} />
+ * <CartSidebar />
  * 
  * // Custom trigger
- * <CartSidebar
- *   itemCount={3}
- *   trigger={<button>Custom Button</button>}
- * />
+ * <CartSidebar trigger={<button>Custom Button</button>} />
  * ```
  * 
  * ### Implementation Locations:
@@ -65,19 +60,19 @@
  * - ✅ Stock warnings
  * - ✅ Product images with fallback
  * - ✅ Link back to product page
+ * - ✅ CartProvider com persistência em `localStorage`
  * 
  * ## Mock Data
  * 
  * Cart data is defined in `/src/lib/cart-data.ts`:
- * - `mockCartItems` - Sample cart items
+ * - `mockCartItems` - Sample cart items (apenas para prototipação)
  * - `calculateCartSummary()` - Calculate totals
  * - `deliveryInfo` - Delivery estimates
  * - `availableCoupons` - Demo coupons
  * 
  * ## Future Enhancements
  * 
- * - [ ] Connect to real cart state management (Context/Zustand)
- * - [ ] Persist cart to localStorage/session
+ * - [ ] Integração com backend para sincronizar carrinho autenticado
  * - [ ] Add wishlist functionality
  * - [ ] Implement real coupon validation
  * - [ ] Add shipping calculator by ZIP code

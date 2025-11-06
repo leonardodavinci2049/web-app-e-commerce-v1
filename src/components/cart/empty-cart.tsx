@@ -1,5 +1,7 @@
+"use client";
+
 /**
- * Empty Cart Component (Server Component)
+ * Empty Cart Component
  * Display when cart is empty
  */
 
