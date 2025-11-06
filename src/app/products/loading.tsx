@@ -3,10 +3,10 @@
  * Displays skeleton UI while products are being fetched
  */
 
+import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
-import MainHeader from "@/components/home/main-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/home/navigation-menu";
+import NavigationMenu from "@/components/mainmenu/navigation-menu";
 
 export default function ProductsLoading() {
   return (

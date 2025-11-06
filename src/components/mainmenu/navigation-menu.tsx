@@ -18,12 +18,18 @@ import {
 } from "@/components/ui/sheet";
 import { navigationItems } from "@/data/mock-data";
 
-export default function NavigationMenu() {
+export default function NavigationMenu({
+  hideOnMobile = false,
+}: {
+  hideOnMobile?: boolean;
+}) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="bg-primary text-primary-foreground sticky top-0 z-50">
+    <nav
+      className={`bg-primary text-primary-foreground sticky top-0 z-50 ${hideOnMobile ? "hidden md:block" : ""}`}
+    >
       <div className="container mx-auto max-w-7xl px-4">
         {/* Desktop Menu */}
         <ul className="hidden lg:flex items-center justify-center gap-1 py-3">

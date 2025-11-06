@@ -5,7 +5,7 @@
 
 "use client";
 
-import { MessageCircle, Search, User } from "lucide-react";
+import { Search, Table, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import CartSidebar from "@/components/cart/cart-sidebar";
@@ -16,10 +16,10 @@ import { envs } from "@/core/config/envs";
 
 export default function MainHeader() {
   return (
-    <header className="bg-card border-b border-border py-4 px-4">
+    <header className="hidden md:block bg-card border-b border-border py-4 px-4">
       <div className="container mx-auto max-w-7xl flex items-center gap-4">
         {/* Logo */}
-        <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+        <Link href="/" className="shrink-0 flex items-center gap-2">
           <Image
             src="/images/logo/logo-header.png"
             alt={`${envs.NEXT_PUBLIC_COMPANY_NAME} Logo`}
@@ -43,16 +43,16 @@ export default function MainHeader() {
         </div>
 
         {/* Action Icons */}
-        <div className="flex items-center gap-4 flex-shrink-0">
+        <div className="flex items-center gap-4 shrink-0">
           <Button
-            variant="ghost"
+            variant="default"
             size="sm"
-            className="hidden lg:flex items-center gap-2"
+            className="hidden lg:flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-md hover:shadow-lg transition-all duration-200"
             asChild
           >
-            <Link href="/contact">
-              <MessageCircle className="h-5 w-5" />
-              <span className="text-sm">Fale Conosco</span>
+            <Link href="/tabela">
+              <Table className="h-4 w-4" />
+              <span className="text-sm">Ver Tabela</span>
             </Link>
           </Button>
 

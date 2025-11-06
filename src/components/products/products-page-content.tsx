@@ -6,10 +6,11 @@
 "use client";
 
 import { useState } from "react";
+import MainHeader from "@/components/header/main-header";
+import MobileHeader from "@/components/header/mobile-header";
 import Footer from "@/components/home/footer";
-import MainHeader from "@/components/home/main-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/home/navigation-menu";
+import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import ProductFilters, {
   type FilterState,
 } from "@/components/products/product-filters";
@@ -34,6 +35,7 @@ export default function ProductsPageContent({
     <div className="min-h-screen flex flex-col">
       {/* Reutilizar Header completo da homepage */}
       {/* <TopBar /> */}
+      <MobileHeader />
       <MainHeader />
       <NavigationMenu />
 
