@@ -11,6 +11,7 @@ import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
 import Footer from "@/components/home/footer";
 import BrandFilter from "@/components/tabela/brand-filter";
+import CartSidebar from "@/components/tabela/cart-sidebar";
 import {
   columns,
   type ProductTableItem,
@@ -18,8 +19,8 @@ import {
 } from "@/components/tabela/columns";
 import { DataTable } from "@/components/tabela/data-table";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
-import type { ProductTableFilters, ProductTableResult } from "./actions";
-import { getTableProducts, loadMoreProducts } from "./actions";
+import type { ProductTableFilters, ProductTableResult } from "../actions";
+import { getTableProducts, loadMoreProducts } from "../actions";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
@@ -184,54 +185,62 @@ export default function TabelaPageContent({
 
   return (
     <>
-      {/* Main Content */}
-      <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8 space-y-4 sm:space-y-8">
-        {/* Page Header */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Package className="w-6 h-6 text-primary" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground">
-                Tabela de Produtos
-              </h1>
-            </div>
-          </div>
-        </div>
-
-        {/* Brand Filter */}
-        <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
-          <BrandFilter
-            brands={brands}
-            selectedBrandId={selectedBrandId}
-            onBrandSelect={handleBrandSelect}
-            searchTerm={searchTerm}
-            onSearchChange={handleSearchChange}
-          />
-        </div>
-
-        {/* Products Table */}
-        <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Lista de Produtos</h2>
-              <div className="text-sm text-muted-foreground">
-                {products.length} produtos carregados
+      {/* Main Layout with Sidebar */}
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <div className="flex gap-6">
+          {/* Main Content */}
+          <main className="flex-1 space-y-4 sm:space-y-8">
+            {/* Page Header */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Package className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground">
+                    Tabela de Produtos
+                  </h1>
+                </div>
               </div>
             </div>
 
-            <DataTable
-              columns={columns}
-              data={products}
-              loading={loading || isPending}
-              onLoadMore={handleLoadMore}
-              hasMore={hasMore}
-              totalCount={totalCount}
-            />
-          </div>
+            {/* Brand Filter */}
+            <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
+              <BrandFilter
+                brands={brands}
+                selectedBrandId={selectedBrandId}
+                onBrandSelect={handleBrandSelect}
+                searchTerm={searchTerm}
+                onSearchChange={handleSearchChange}
+              />
+            </div>
+
+            {/* Products Table */}
+            <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">Lista de Produtos</h2>
+                  <div className="text-sm text-muted-foreground">
+                    {products.length} produtos carregados
+                  </div>
+                </div>
+
+                <DataTable
+                  columns={columns}
+                  data={products}
+                  loading={loading || isPending}
+                  onLoadMore={handleLoadMore}
+                  hasMore={hasMore}
+                  totalCount={totalCount}
+                />
+              </div>
+            </div>
+          </main>
+
+          {/* Cart Sidebar - Only visible on large screens */}
+          <CartSidebar />
         </div>
-      </main>
+      </div>
 
       {/* Footer */}
       <Footer />

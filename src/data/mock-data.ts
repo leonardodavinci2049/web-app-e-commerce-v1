@@ -82,29 +82,41 @@ export const navigationItems: NavigationItem[] = [
     dropdownItems: categories,
   },
   {
-    id: "CATALOGO DE PRODUTOS",
-    label: "CATALOGO DE PRODUTOS",
+    id: "catalogo",
+    label: "CATALOGO",
     href: "/products",
   },
   {
-    id: "monte-seu-pc",
-    label: "MONTE SEU PC",
+    id: "pecas-e-componentes",
+    label: "PEÇAS E COMPONENTES",
     href: "/products",
   },
   {
-    id: "pcs-gamers",
-    label: "PCs GAMERS",
+    id: "flontal",
+    label: "FLONTAL",
     href: "/products",
   },
   {
-    id: "promocoes",
-    label: "PROMOÇÕES",
+    id: "capas-e-peliculas",
+    label: "CAPAS E PELÍCULAS",
+    href: "/products",
+  },
+
+  {
+    id: "baterias-e-carregadores  ",
+    label: "BATERIAS E CARREGADORES",
     href: "/products",
   },
   {
-    id: "openbox",
-    label: "OPENBOX",
+    id: "suprimentos",
+    label: "SUPRIMENTOS",
     href: "/products",
+  },
+
+  {
+    id: "tabela",
+    label: "TABELA",
+    href: "/tabela",
   },
 ];
 

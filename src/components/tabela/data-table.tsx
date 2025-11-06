@@ -67,16 +67,19 @@ export function DataTable<TData, TValue>({
   return (
     <div className={cn("space-y-4", className)}>
       {/* Table Container */}
-      <div className="rounded-lg border border-border bg-card shadow-sm overflow-hidden">
+      <div className="rounded-lg border-2 border-blue-200 dark:border-blue-800 bg-white dark:bg-gray-900 shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 overflow-hidden">
         <div className="overflow-x-auto sm:overflow-x-visible">
           <Table className="min-w-full">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-muted/50">
+                <TableRow
+                  key={headerGroup.id}
+                  className="bg-blue-50 dark:bg-blue-950/50 border-b-2 border-blue-200 dark:border-blue-800"
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="font-semibold px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm"
+                      className="font-semibold px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-blue-800 dark:text-blue-200"
                     >
                       {header.isPlaceholder
                         ? null
@@ -95,7 +98,7 @@ export function DataTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className="hover:bg-muted/30 transition-colors"
+                    className="hover:bg-blue-50/70 dark:hover:bg-blue-950/30 transition-colors border-b border-blue-100 dark:border-blue-900/50"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
@@ -140,8 +143,8 @@ export function DataTable<TData, TValue>({
 
         {/* Loading overlay for when loading more data */}
         {loading && data.length > 0 && (
-          <div className="border-t bg-muted/20 p-4">
-            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+          <div className="border-t border-blue-200 dark:border-blue-800 bg-blue-50/50 dark:bg-blue-950/30 p-4">
+            <div className="flex items-center justify-center gap-2 text-blue-700 dark:text-blue-300">
               <Loader2 className="h-4 w-4 animate-spin" />
               <span>Carregando mais produtos...</span>
             </div>
@@ -196,7 +199,7 @@ export function DataTable<TData, TValue>({
             <Button
               onClick={onLoadMore}
               disabled={loading}
-              className="bg-primary hover:bg-primary/90"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white border-blue-600 dark:border-blue-500"
             >
               {loading ? (
                 <>

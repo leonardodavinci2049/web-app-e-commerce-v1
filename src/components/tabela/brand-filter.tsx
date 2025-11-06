@@ -41,7 +41,7 @@ export default function BrandFilter({
   onSearchChange,
   className,
 }: BrandFilterProps) {
-  const [showAllBrands, setShowAllBrands] = useState(false);
+  const [showAllBrands, _setShowAllBrands] = useState(false);
 
   // Filter brands based on search term
   const filteredBrands = useMemo(() => {
@@ -84,21 +84,6 @@ export default function BrandFilter({
 
       {/* Brand Filter Blocks */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="font-medium text-foreground">Filtrar por marca</h3>
-          {filteredBrands.length > 9 && !searchTerm.trim() && (
-            <button
-              type="button"
-              onClick={() => setShowAllBrands(!showAllBrands)}
-              className="text-sm text-primary hover:text-primary/80 transition-colors"
-            >
-              {showAllBrands
-                ? "Ver menos"
-                : `Ver todas (${filteredBrands.length})`}
-            </button>
-          )}
-        </div>
-
         {/* Brand Blocks Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {visibleBrands.map((brand, index) => {

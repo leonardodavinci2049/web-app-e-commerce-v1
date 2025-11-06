@@ -50,7 +50,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
           : productName;
 
       return (
-        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 max-w-[140px] sm:max-w-none">
+        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 max-w-[180px] sm:max-w-none">
           <div className="font-medium text-foreground leading-tight wrap-break-word text-xs sm:text-base hyphens-auto">
             <span className="sm:hidden block whitespace-normal wrap-break-word">
               {formattedMobileName}

@@ -5,7 +5,7 @@
 
 "use client";
 
-import { MessageCircle, Search, User } from "lucide-react";
+import { Search, Table, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import CartSidebar from "@/components/cart/cart-sidebar";
@@ -45,14 +45,14 @@ export default function MainHeader() {
         {/* Action Icons */}
         <div className="flex items-center gap-4 shrink-0">
           <Button
-            variant="ghost"
+            variant="default"
             size="sm"
-            className="hidden lg:flex items-center gap-2"
+            className="hidden lg:flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-md hover:shadow-lg transition-all duration-200"
             asChild
           >
-            <Link href="/contact">
-              <MessageCircle className="h-5 w-5" />
-              <span className="text-sm">Fale Conosco</span>
+            <Link href="/tabela">
+              <Table className="h-4 w-4" />
+              <span className="text-sm">Ver Tabela</span>
             </Link>
           </Button>
 
