@@ -23,8 +23,11 @@ export default function MobileHeader() {
             height={32}
             className="h-8 w-16"
           />
-        </Link>
 
+        </Link>
+          <h1 className="text-xl font-bold text-primary sm:text-2xl">
+            {envs.NEXT_PUBLIC_COMPANY_NAME}
+          </h1>
         {/* Theme Toggle */}
         <ModeToggle />
       </div>
