@@ -1,5 +1,7 @@
+"use client";
+
 /**
- * Cart Items List Component (Server Component)
+ * Cart Items List Component
  * List of all cart items
  */
 

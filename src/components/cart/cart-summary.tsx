@@ -1,5 +1,7 @@
+"use client";
+
 /**
- * Cart Summary Component (Server Component)
+ * Cart Summary Component
  * Order summary with totals and checkout button
  */
 

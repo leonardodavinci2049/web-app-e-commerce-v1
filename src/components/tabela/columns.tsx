@@ -6,6 +6,8 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Plus, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
+import { useCart } from "@/components/cart/cart-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -165,13 +167,59 @@ export const columns: ColumnDef<ProductTableItem>[] = [
     id: "actions",
     header: "Ação",
     cell: ({ row }) => {
+      const { addItem } = useCart();
       const hasStock = row.original.ESTOQUE_LOJA > 0;
-      const produto = row.original.PRODUTO;
 
       const handleAddToCart = () => {
-        // TODO: Implement add to cart functionality
-        console.log("Adicionar ao carrinho:", produto);
-        // You can add toast notification here
+        if (!hasStock) {
+          return;
+        }
+
+        const product = row.original;
+        const productId = product.ID_PRODUTO.toString();
+        const rawPrice = product.VL_ATACADO ?? "0";
+        const normalizedPrice = parseFloat(rawPrice.replace(",", "."));
+        const price = Number.isFinite(normalizedPrice) ? normalizedPrice : 0;
+        const image =
+          product.PATH_IMAGEM && product.PATH_IMAGEM.trim().length > 0
+            ? product.PATH_IMAGEM
+            : "/images/product/no-image.jpeg";
+        const name = product?.PRODUTO?.trim() || "Produto sem nome";
+        const result = addItem({
+          id: productId,
+          productId,
+          name,
+          sku: product.SKU ? product.SKU.toString() : productId,
+          image,
+          price,
+          stock: product.ESTOQUE_LOJA,
+          maxQuantity: product.ESTOQUE_LOJA,
+          quantity: 1,
+        });
+
+        const formattedQuantity = result.item.quantity;
+        const formattedPrice = price.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+
+        if (result.status === "added") {
+          toast.success("Produto adicionado", {
+            description: `${name} foi incluído no carrinho (${formattedPrice}).`,
+          });
+          return;
+        }
+
+        if (result.status === "updated") {
+          toast.success("Quantidade atualizada", {
+            description: `${formattedQuantity} unidades de ${name} no carrinho.`,
+          });
+          return;
+        }
+
+        toast.warning("Estoque máximo atingido", {
+          description: `Você já possui ${formattedQuantity} unidades de ${name} no carrinho.`,
+        });
       };
 
       return (

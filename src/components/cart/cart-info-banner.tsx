@@ -1,5 +1,7 @@
+"use client";
+
 /**
- * Cart Info Banner Component (Server Component)
+ * Cart Info Banner Component
  * Informational banners for cart page
  */
 
