@@ -44,18 +44,21 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       const isPromotional = row.original.PROMOCAO === 1;
       const isImported = row.original.IMPORTADO === 1;
       const productName = produto?.trim() || "Produto sem nome";
+      const productNameWithBreaks = productName.replace(/\//g, "/\u200B");
       const formattedMobileName =
-        productName.length > 40
-          ? productName.replace(/(.{40})/g, "$1\u200B")
-          : productName;
+        productNameWithBreaks.length > 40
+          ? productNameWithBreaks.replace(/(.{40})/g, "$1\u200B")
+          : productNameWithBreaks;
 
       return (
-        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 max-w-[180px] sm:max-w-none">
-          <div className="font-medium text-foreground leading-tight wrap-break-word text-xs sm:text-base hyphens-auto">
-            <span className="sm:hidden block whitespace-normal wrap-break-word">
+        <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 min-w-0">
+          <div className="font-medium text-foreground leading-tight whitespace-normal break-words text-xs sm:text-base hyphens-auto">
+            <span className="sm:hidden block whitespace-normal break-words">
               {formattedMobileName}
             </span>
-            <span className="hidden sm:block">{productName}</span>
+            <span className="hidden sm:block whitespace-normal break-words">
+              {productNameWithBreaks}
+            </span>
           </div>
 
           {/* Product metadata - Hide some on mobile */}

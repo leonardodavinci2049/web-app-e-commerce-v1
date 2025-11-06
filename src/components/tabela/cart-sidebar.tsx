@@ -56,7 +56,7 @@ export default function CartSidebar({ className }: CartSidebarProps) {
 
   if (cartItems.length === 0) {
     return (
-      <div className={cn("hidden xl:block w-80 h-fit", className)}>
+      <div className={cn("w-full", className)}>
         <Card className="border-2 border-blue-200 dark:border-blue-800">
           <CardHeader className="bg-blue-50 dark:bg-blue-950/50">
             <CardTitle className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
@@ -79,7 +79,7 @@ export default function CartSidebar({ className }: CartSidebarProps) {
   }
 
   return (
-    <div className={cn("hidden xl:block w-80 h-fit sticky top-4", className)}>
+    <div className={cn("w-full", className)}>
       <Card className="border-2 border-blue-200 dark:border-blue-800">
         <CardHeader className="bg-blue-50 dark:bg-blue-950/50">
           <CardTitle className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
