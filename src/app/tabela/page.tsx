@@ -9,7 +9,6 @@ import { Suspense } from "react";
 import MainHeader from "@/components/header/main-header";
 import MobileHeader from "@/components/header/mobile-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import { getBrands, getTableProducts } from "./actions";
 import TabelaPageContent from "./components/tabela-page-content";
 

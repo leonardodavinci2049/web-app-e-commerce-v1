@@ -24,7 +24,6 @@ import ProductSectionHighlights from "@/components/home/sections/ProductSectionH
 import ProductSectionNewReleases from "@/components/home/sections/ProductSectionNewReleases";
 import ProductSectionPromotions from "@/components/home/sections/ProductSectionPromotions";
 import ProductsSection from "@/components/home/sections/products-section";
-import NavigationMenu from "@/components/mainmenu/navigation-menu";
 import { envs } from "@/core/config/envs";
 
 export default function HomePage() {
@@ -44,7 +43,7 @@ export default function HomePage() {
       <MainHeader />
 
       {/* 3. Navigation Menu */}
-      <NavigationMenu />
+      {/* <NavigationMenu /> */}
 
       {/* Main Content */}
       <main className="flex-1">
