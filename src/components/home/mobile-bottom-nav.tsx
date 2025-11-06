@@ -6,7 +6,7 @@
 
 "use client";
 
-import { Heart, Menu, Package, ShoppingCart, User } from "lucide-react";
+import { Menu, Package, ShoppingCart, Table, User } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
@@ -66,20 +66,20 @@ export default function MobileBottomNav() {
 
           {/* Pedidos */}
           <Link
-            href="/pedidos"
+            href="/products"
             className="flex flex-col items-center gap-1 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Package className="h-5 w-5" />
-            <span className="text-xs font-medium">Pedidos</span>
+            <span className="text-xs font-medium">Catalogo</span>
           </Link>
 
           {/* Favoritos */}
           <Link
-            href="/favoritos"
+            href="/tabela"
             className="flex flex-col items-center gap-1 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors relative"
           >
-            <Heart className="h-5 w-5" />
-            <span className="text-xs font-medium">Favoritos</span>
+            <Table className="h-5 w-5" />
+            <span className="text-xs font-medium">Tabela</span>
           </Link>
 
           {/* Conta */}
