@@ -10,6 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
 import CartSidebarFixo from "@/app/(table)/tabela/components/sidebar/cart-sidebar-fixo";
+import FilterSidebar from "@/app/(table)/tabela/components/sidebar/filter-sidebar";
 import BrandFilter from "@/app/(table)/tabela/components/tabela/brand-filter";
 import {
   columns,
@@ -185,63 +186,67 @@ export default function TabelaPageContent({
 
   return (
     <>
-      {/* Main Layout with Sidebar */}
+      {/* Main Layout with Sidebars */}
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="flex flex-col gap-6 lg:gap-8">
-          {/* Main Content */}
-          <main className="space-y-4 sm:space-y-8">
-            {/* Page Header */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Package className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-foreground">
-                    Tabela de Produtos
-                  </h1>
-                </div>
-              </div>
-            </div>
+          <div className="lg:grid lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-6">
+            <FilterSidebar className="hidden lg:block lg:sticky lg:top-28" />
 
-            {/* Brand Filter */}
-            <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
-              <BrandFilter
-                brands={brands}
-                selectedBrandId={selectedBrandId}
-                onBrandSelect={handleBrandSelect}
-                searchTerm={searchTerm}
-                onSearchChange={handleSearchChange}
-              />
-            </div>
-
-            {/* Products Table */}
-            <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
-              <div className="space-y-6">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <h2 className="text-xl font-semibold">Lista de Produtos</h2>
-                  <div className="text-sm text-muted-foreground">
-                    {products.length} produtos carregados
+            {/* Main Content */}
+            <main className="space-y-4 sm:space-y-8">
+              {/* Page Header */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Package className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-bold text-foreground">
+                      Tabela de Produtos
+                    </h1>
                   </div>
                 </div>
+              </div>
 
-                <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
-                  <div className="min-w-0">
-                    <DataTable
-                      columns={columns}
-                      data={products}
-                      loading={loading || isPending}
-                      onLoadMore={handleLoadMore}
-                      hasMore={hasMore}
-                      totalCount={totalCount}
-                    />
+              {/* Brand Filter - Mobile / Tablet */}
+              <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6 lg:hidden">
+                <BrandFilter
+                  brands={brands}
+                  selectedBrandId={selectedBrandId}
+                  onBrandSelect={handleBrandSelect}
+                  searchTerm={searchTerm}
+                  onSearchChange={handleSearchChange}
+                />
+              </div>
+
+              {/* Products Table */}
+              <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
+                <div className="space-y-6">
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <h2 className="text-xl font-semibold">Lista de Produtos</h2>
+                    <div className="text-sm text-muted-foreground">
+                      {products.length} produtos carregados
+                    </div>
                   </div>
 
-                  <CartSidebarFixo className="hidden md:block md:sticky md:top-6 md:max-w-xs md:w-full" />
+                  <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
+                    <div className="min-w-0">
+                      <DataTable
+                        columns={columns}
+                        data={products}
+                        loading={loading || isPending}
+                        onLoadMore={handleLoadMore}
+                        hasMore={hasMore}
+                        totalCount={totalCount}
+                      />
+                    </div>
+
+                    <CartSidebarFixo className="hidden md:block md:sticky md:top-6 md:max-w-xs md:w-full" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </main>
+            </main>
+          </div>
         </div>
       </div>
 
