@@ -115,10 +115,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <CardTitle className="flex items-center gap-2 text-lg">
             <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
             Filtros principais
-          </CardTitle>
-          <CardDescription>
-            Utilize os filtros para refinar a visualização da tabela.
-          </CardDescription>
+          </CardTitle> 
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
           <label className="text-sm font-medium" htmlFor="sidebar-search">
@@ -130,7 +127,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
               <Input
                 id="sidebar-search"
                 type="search"
-                placeholder="Digite o modelo..."
+                placeholder="Digite um termo ou modelo..."
                 value={inputValue}
                 onChange={handleChange}
                 className="pl-10 h-11"
