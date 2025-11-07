@@ -52,7 +52,7 @@ export default function ProductsPageContent({
         </div>
  */}
         {/* Filters - Horizontal bar */}
-        <ProductFilters categories={categories} onFilterChange={setFilters} />
+       {/* <ProductFilters categories={categories} onFilterChange={setFilters} /> */}
 
         {/* Products Grid with Infinite Scroll */}
         <ProductGrid products={products} filters={filters} />

@@ -9,10 +9,21 @@ import ProductsPageContent from "@/components/products/products-page-content";
 import { categories } from "@/data/mock-data";
 import { getProducts } from "./actions";
 
-export default async function ProductsPage() {
-  // Fetch real products from API
+interface ProductsPageProps {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+}
+
+export default async function ProductsPage({
+  searchParams,
+}: ProductsPageProps) {
+  const params = await searchParams;
+  const searchTerm = params.search?.trim() ?? "";
+
   const result = await getProducts({
-    pageSize: 48, // Load more products initially
+    pageSize: 48,
+    searchTerm: searchTerm || undefined,
   });
 
   return (
