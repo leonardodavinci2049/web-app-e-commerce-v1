@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
                         <TableCell
                           key={cell.id}
                           className={cn(
-                            "py-2 sm:py-4 px-2 sm:px-4",
+                            "py-1.5 sm:py-3 px-2 sm:px-4",
                             isProductColumn
                               ? "sm:whitespace-normal align-top min-w-0"
                               : undefined,

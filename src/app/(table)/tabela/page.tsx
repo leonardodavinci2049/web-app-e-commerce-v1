@@ -1,25 +1,24 @@
 /**
  * Products Table Page
- * Modern table listing with brand filters and search
+ * Modern table listing with search interface
  */
 
 import { Loader2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import { getBrands, getTableProducts } from "./actions";
+import { getTableProducts } from "./actions";
 import TabelaPageContent from "./components/table/tabela-page-content";
 
 export const metadata: Metadata = {
   title: "Tabela de Produtos | Loja",
   description:
-    "Navegue por nossa completa tabela de produtos com filtros por marca e busca inteligente. Encontre os melhores produtos com preços competitivos.",
+    "Navegue pela tabela completa de produtos com busca inteligente e confira preços competitivos em tempo real.",
 };
 
 interface TabelaPageProps {
   searchParams: Promise<{
     search?: string;
-    brand?: string;
     page?: string;
   }>;
 }
@@ -27,26 +26,18 @@ interface TabelaPageProps {
 async function TabelaPageData({ searchParams }: TabelaPageProps) {
   const params = await searchParams;
   const searchTerm = params.search || "";
-  const brandId = params.brand ? parseInt(params.brand, 10) : undefined;
   const page = params.page ? parseInt(params.page, 10) : 0;
 
-  // Fetch data in parallel
-  const [productsResult, brandsResult] = await Promise.all([
-    getTableProducts({
-      searchTerm,
-      brandId,
-      page,
-      pageSize: 100,
-    }),
-    getBrands(),
-  ]);
+  const productsResult = await getTableProducts({
+    searchTerm,
+    page,
+    pageSize: 100,
+  });
 
   return (
     <TabelaPageContent
       initialProducts={productsResult}
-      brands={brandsResult.brands}
       initialSearchTerm={searchTerm}
-      initialBrandId={brandId}
     />
   );
 }
@@ -59,19 +50,6 @@ function TabelaPageLoading() {
         <div className="space-y-4">
           <div className="h-8 bg-muted rounded-lg w-1/3 animate-pulse" />
           <div className="h-4 bg-muted rounded w-2/3 animate-pulse" />
-        </div>
-
-        {/* Filters skeleton */}
-        <div className="space-y-4">
-          <div className="h-12 bg-muted rounded-lg animate-pulse" />
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            {Array.from({ length: 12 }).map((_, idx) => (
-              <div
-                key={`filter-skeleton-item-${idx}-${Math.random()}`}
-                className="h-16 bg-muted rounded-lg animate-pulse"
-              />
-            ))}
-          </div>
         </div>
 
         {/* Table skeleton */}

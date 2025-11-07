@@ -11,7 +11,7 @@ import { useCart } from "@/components/cart/cart-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrencyBRL } from "@/lib/utils";
 
 interface CartSidebarProps {
   className?: string;
@@ -55,8 +55,8 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
   const handleSendOrder = () => {
     const paymentLabel = PAYMENT_LABELS[paymentMethod] ?? paymentMethod;
     const lines = cartItems.map((item, index) => {
-      const subtotal = formatPrice(item.price * item.quantity);
-      return `${index + 1}. ${item.name} - ${item.quantity}x ${formatPrice(item.price)} = ${subtotal}`;
+      const subtotal = formatCurrencyBRL(item.price * item.quantity);
+      return `${index + 1}. ${item.name} - ${item.quantity}x ${formatCurrencyBRL(item.price)} = ${subtotal}`;
     });
 
     const message = [
@@ -65,7 +65,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
       "Itens:",
       ...lines,
       "",
-      `Total: ${formatPrice(summary.total)}`,
+      `Total: ${formatCurrencyBRL(summary.total)}`,
       `Forma de pagamento: ${paymentLabel}`,
     ].join("\n");
 
@@ -74,13 +74,6 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
     if (typeof window !== "undefined") {
       window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     }
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(price);
   };
 
   if (cartItems.length === 0) {
@@ -151,7 +144,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
                       {item.name}
                     </h4>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {formatPrice(item.price)}
+                      {formatCurrencyBRL(item.price)}
                     </p>
                   </div>
                   <Button
@@ -196,7 +189,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
                     </Button>
                   </div>
                   <p className="text-sm font-medium">
-                    {formatPrice(item.price * item.quantity)}
+                    {formatCurrencyBRL(item.price * item.quantity)}
                   </p>
                 </div>
               </div>
@@ -235,7 +228,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold">Total:</span>
               <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                {formatPrice(summary.total)}
+                {formatCurrencyBRL(summary.total)}
               </span>
             </div>
           </div>
