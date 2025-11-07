@@ -50,15 +50,21 @@ export default function TabelaPageContent({
     (filters: { searchTerm: string }) => {
       const params = new URLSearchParams(searchParams.toString());
 
+      // Ensure catalog search params do not leak into tabela route
+      params.delete("search");
+
       if (filters.searchTerm) {
-        params.set("search", filters.searchTerm);
+        params.set("tableSearch", filters.searchTerm);
       } else {
-        params.delete("search");
+        params.delete("tableSearch");
       }
 
       params.delete("page");
 
-      const newURL = `${window.location.pathname}?${params.toString()}`;
+      const queryString = params.toString();
+      const newURL = queryString
+        ? `${window.location.pathname}?${queryString}`
+        : window.location.pathname;
       router.replace(newURL, { scroll: false });
     },
     [router, searchParams],

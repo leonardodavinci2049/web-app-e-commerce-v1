@@ -18,14 +18,14 @@ export const metadata: Metadata = {
 
 interface TabelaPageProps {
   searchParams: Promise<{
-    search?: string;
+    tableSearch?: string;
     page?: string;
   }>;
 }
 
 async function TabelaPageData({ searchParams }: TabelaPageProps) {
   const params = await searchParams;
-  const searchTerm = params.search || "";
+  const searchTerm = params.tableSearch || "";
   const page = params.page ? parseInt(params.page, 10) : 0;
 
   const productsResult = await getTableProducts({
