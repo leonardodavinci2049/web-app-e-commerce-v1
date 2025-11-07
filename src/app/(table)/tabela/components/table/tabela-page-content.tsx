@@ -7,7 +7,7 @@
 
 import { Package } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import CartSidebarFixo from "@/app/(table)/tabela/components/sidebar/cart-sidebar-fixo";
 import FilterSidebar from "@/app/(table)/tabela/components/sidebar/filter-sidebar";
@@ -22,6 +22,7 @@ import Footer from "@/components/home/footer";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
+import { useTableSearch } from "./table-search-context";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
@@ -39,9 +40,15 @@ export default function TabelaPageContent({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+  const {
+    setInputValue: setHeaderInputValue,
+    resetInput: resetHeaderInput,
+    registerSearchHandler,
+  } = useTableSearch();
 
   // State management
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [productSearchTerm, setProductSearchTerm] = useState(initialSearchTerm);
+  const [brandSearchTerm, setBrandSearchTerm] = useState("");
   const [selectedBrandId, setSelectedBrandId] = useState<number | undefined>(
     initialBrandId,
   );
@@ -85,7 +92,7 @@ export default function TabelaPageContent({
     try {
       const result = await getTableProducts({
         ...newFilters,
-        page: 1, // Reset to first page when filtering
+        page: 0, // Reset to first page when filtering
         pageSize: 100,
       });
 
@@ -99,7 +106,7 @@ export default function TabelaPageContent({
       setProducts(transformProductsForTable(result.products));
       setHasMore(result.hasMore);
       setTotalCount(result.total);
-      setCurrentPage(1);
+      setCurrentPage(0);
 
       // Show success message if filters are applied
       if (newFilters.searchTerm || newFilters.brandId) {
@@ -115,36 +122,53 @@ export default function TabelaPageContent({
     }
   }, []);
 
-  // Handle search term change
-  const handleSearchChange = useCallback(
-    (newSearchTerm: string) => {
-      setSearchTerm(newSearchTerm);
+  // Apply search triggered by the header form
+  const applySearch = useCallback(
+    (rawTerm: string) => {
+      const normalizedTerm = rawTerm.trim();
+      setHeaderInputValue(normalizedTerm);
+      setProductSearchTerm(normalizedTerm);
 
-      // Debounce the search
-      const timeoutId = setTimeout(() => {
-        startTransition(() => {
-          updateURL({ searchTerm: newSearchTerm, brandId: selectedBrandId });
-          handleFilter({ searchTerm: newSearchTerm, brandId: selectedBrandId });
-        });
-      }, 500);
-
-      return () => clearTimeout(timeoutId);
+      startTransition(() => {
+        updateURL({ searchTerm: normalizedTerm, brandId: selectedBrandId });
+        handleFilter({ searchTerm: normalizedTerm, brandId: selectedBrandId });
+      });
     },
-    [selectedBrandId, handleFilter, updateURL],
+    [handleFilter, selectedBrandId, setHeaderInputValue, updateURL],
   );
+
+  // Handle brand search (filters the brand list only)
+  const handleBrandSearchChange = useCallback((value: string) => {
+    setBrandSearchTerm(value);
+  }, []);
 
   // Handle brand selection
   const handleBrandSelect = useCallback(
     (brandId: number | undefined) => {
       setSelectedBrandId(brandId);
+      if (productSearchTerm) {
+        setProductSearchTerm("");
+      }
+
+      resetHeaderInput();
 
       startTransition(() => {
-        updateURL({ searchTerm, brandId });
-        handleFilter({ searchTerm, brandId });
+        updateURL({ searchTerm: "", brandId });
+        handleFilter({ searchTerm: "", brandId });
       });
     },
-    [searchTerm, handleFilter, updateURL],
+    [productSearchTerm, handleFilter, resetHeaderInput, updateURL],
   );
+
+  useEffect(() => {
+    setProductSearchTerm(initialSearchTerm);
+    setHeaderInputValue(initialSearchTerm);
+  }, [initialSearchTerm, setHeaderInputValue]);
+
+  useEffect(() => {
+    const unregister = registerSearchHandler(applySearch);
+    return unregister;
+  }, [registerSearchHandler, applySearch]);
 
   // Load more products
   const handleLoadMore = useCallback(async () => {
@@ -156,7 +180,7 @@ export default function TabelaPageContent({
       const nextPage = currentPage + 1;
       const result = await loadMoreProducts(
         {
-          searchTerm,
+          searchTerm: productSearchTerm,
           brandId: selectedBrandId,
         },
         nextPage,
@@ -182,7 +206,7 @@ export default function TabelaPageContent({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, currentPage, searchTerm, selectedBrandId]);
+  }, [loading, hasMore, currentPage, productSearchTerm, selectedBrandId]);
 
   return (
     <>
@@ -214,8 +238,8 @@ export default function TabelaPageContent({
                   brands={brands}
                   selectedBrandId={selectedBrandId}
                   onBrandSelect={handleBrandSelect}
-                  searchTerm={searchTerm}
-                  onSearchChange={handleSearchChange}
+                  searchTerm={brandSearchTerm}
+                  onSearchChange={handleBrandSearchChange}
                 />
               </div>
 

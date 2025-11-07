@@ -43,7 +43,7 @@ A chamada deve respeitar o modelo multitenant do ERP. Informe sempre:
 | `pe_id_marca` | `number` | Não | ID da marca para filtrar produtos. Retorna apenas produtos da marca especificada. |
 | `pe_flag_estoque` | `number` | Não | Flag de estoque (0 ou 1). Se `1`, retorna apenas produtos com estoque disponível na loja (`ESTOQUE_LOJA > 0`). |
 | `pe_qt_registros` | `number` | Não | Quantidade de registros por página (limite). Padrão: 20. Máximo recomendado: 100. |
-| `pe_pagina_id` | `number` | Não | Número da página para paginação (baseado em 1). Padrão: 1. |
+| `pe_pagina_id` | `number` | Não | Número da página para paginação (baseado em 0). Padrão: 1. |
 | `pe_coluna_id` | `number` | Não | ID da coluna para ordenação (ex.: 1=PRODUTO, 2=PRECO, 3=DATA). Consulte documentação técnica para mapeamento completo. |
 | `pe_ordem_id` | `number` | Não | Direção da ordenação (1=ASC, 2=DESC). Padrão: 1. |
 
@@ -94,7 +94,7 @@ interface ProductWebFindRequest {
   "pe_id_marca": 0,
   "pe_flag_estoque": 0,
   "pe_qt_registros": 10,
-  "pe_pagina_id": 1,
+  "pe_pagina_id": 0,
   "pe_coluna_id": 1,
   "pe_ordem_id": 1
 }

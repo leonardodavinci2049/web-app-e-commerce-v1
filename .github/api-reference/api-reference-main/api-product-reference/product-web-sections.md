@@ -90,7 +90,7 @@ interface ProductWebSectionsRequest {
  "pe_flag_highlight": 1,
  "pe_flag_lancamento": 1,
  "pe_qt_registros": 10,
- "pe_pagina_id": 1,
+ "pe_pagina_id": 0,
  "pe_coluna_id": 1,
  "pe_ordem_id": 1
 }
