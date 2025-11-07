@@ -12,7 +12,6 @@ import { useState } from "react";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import ModeToggle from "@/components/theme/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { ClientOnly } from "@/components/ui/client-only";
 import {
   Sheet,
   SheetContent,
@@ -93,15 +92,9 @@ export default function MainHeader() {
             height={32}
             className="h-8 w-16 sm:h-10 sm:w-20"
           />
-          <ClientOnly
-            fallback={
-              <div className="h-6 w-24 bg-muted animate-pulse rounded" />
-            }
-          >
-            <h1 className="text-xl font-bold text-primary sm:text-2xl">
-              {envs.NEXT_PUBLIC_COMPANY_NAME}
-            </h1>
-          </ClientOnly>
+          <h1 className="text-xl font-bold text-primary sm:text-2xl">
+            {envs.NEXT_PUBLIC_COMPANY_NAME}
+          </h1>
         </Link>
 
         {/* Action Icons */}

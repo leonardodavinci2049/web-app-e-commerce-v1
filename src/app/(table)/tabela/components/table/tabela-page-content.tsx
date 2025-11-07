@@ -91,12 +91,6 @@ export default function TabelaPageContent({
       setHasMore(result.hasMore);
       setTotalCount(result.total);
       setCurrentPage(0);
-
-      if (newFilters.searchTerm) {
-        toast.success("Filtros aplicados com sucesso", {
-          description: `${result.products.length} produtos encontrados`,
-        });
-      }
     } catch (error) {
       console.error("Erro ao filtrar produtos:", error);
       toast.error("Erro inesperado ao filtrar produtos");
@@ -154,8 +148,6 @@ export default function TabelaPageContent({
       setProducts((prev) => [...prev, ...newProducts]);
       setHasMore(result.hasMore);
       setCurrentPage(nextPage);
-
-      toast.success(`${result.products.length} produtos adicionados`);
     } catch (error) {
       console.error("Erro ao carregar mais produtos:", error);
       toast.error("Erro inesperado ao carregar mais produtos");
