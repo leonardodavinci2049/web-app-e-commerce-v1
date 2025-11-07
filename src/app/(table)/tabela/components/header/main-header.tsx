@@ -12,6 +12,7 @@ import { useState } from "react";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import ModeToggle from "@/components/theme/mode-toggle";
 import { Button } from "@/components/ui/button";
+import { ClientOnly } from "@/components/ui/client-only";
 import {
   Sheet,
   SheetContent,
@@ -87,14 +88,20 @@ export default function MainHeader() {
         <Link href="/" className="shrink-0 flex items-center gap-2">
           <Image
             src="/images/logo/logo-header.png"
-            alt={`${envs.NEXT_PUBLIC_COMPANY_NAME} Logo`}
+            alt="Logo"
             width={64}
             height={32}
             className="h-8 w-16 sm:h-10 sm:w-20"
           />
-          <h1 className="text-xl font-bold text-primary sm:text-2xl">
-            {envs.NEXT_PUBLIC_COMPANY_NAME}
-          </h1>
+          <ClientOnly
+            fallback={
+              <div className="h-6 w-24 bg-muted animate-pulse rounded" />
+            }
+          >
+            <h1 className="text-xl font-bold text-primary sm:text-2xl">
+              {envs.NEXT_PUBLIC_COMPANY_NAME}
+            </h1>
+          </ClientOnly>
         </Link>
 
         {/* Action Icons */}
