@@ -1,6 +1,5 @@
 import { Home, Search } from "lucide-react";
 import Link from "next/link";
-import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
 import { Button } from "@/components/ui/button";
 
@@ -11,8 +10,6 @@ import { Button } from "@/components/ui/button";
 export default function ProductNotFound() {
   return (
     <>
-      <MainHeader />
-
       <main className="min-h-screen bg-background">
         <div className="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-16 text-center">
           <div className="mb-8 text-9xl font-bold text-muted">404</div>

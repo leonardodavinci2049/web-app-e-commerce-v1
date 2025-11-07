@@ -1,4 +1,4 @@
-import { getNewReleasesSectionProducts } from "@/app/home/actions";
+import { getNewReleasesSectionProducts } from "@/app/(home)/actions";
 import { envs } from "@/core/config/envs";
 import ProductsSection from "./products-section";
 

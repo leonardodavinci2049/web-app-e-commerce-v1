@@ -6,11 +6,9 @@
 import { Loader2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import MainHeader from "@/components/header/main-header";
-import MobileHeader from "@/components/header/mobile-header";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
 import { getBrands, getTableProducts } from "./actions";
-import TabelaPageContent from "./components/tabela-page-content";
+import TabelaPageContent from "./components/table/tabela-page-content";
 
 export const metadata: Metadata = {
   title: "Tabela de Produtos | Loja",
@@ -93,18 +91,6 @@ function TabelaPageLoading() {
 export default function TabelaPage(props: TabelaPageProps) {
   return (
     <>
-      {/* Mobile Header - Only visible on mobile */}
-      <div className="block md:hidden">
-        <MobileHeader />
-      </div>
-
-      {/* Desktop Header - Only visible on desktop */}
-      <div className="hidden md:block">
-        <MainHeader />
-      </div>
-
-      {/* <NavigationMenu hideOnMobile={true} /> */}
-
       <Suspense fallback={<TabelaPageLoading />}>
         <TabelaPageData {...props} />
       </Suspense>

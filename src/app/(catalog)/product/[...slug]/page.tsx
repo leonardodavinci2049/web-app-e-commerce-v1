@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProductsByCategory } from "@/app/products/actions";
-import MainHeader from "@/components/header/main-header";
-import MobileHeader from "@/components/header/mobile-header";
+import { getProductsByCategory } from "@/app/(catalog)/products/actions";
 import Footer from "@/components/home/footer";
 import { BreadcrumbNav } from "@/components/product/breadcrumb-nav";
 import { ProductActions } from "@/components/product/product-actions";
@@ -67,9 +65,6 @@ export default async function ProductDetailsPage({
 
   return (
     <>
-      <MobileHeader />
-      <MainHeader />
-
       <main className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-6 md:py-8">
           {/* Breadcrumb Navigation */}

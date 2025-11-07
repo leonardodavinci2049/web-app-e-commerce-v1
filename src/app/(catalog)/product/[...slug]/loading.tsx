@@ -3,14 +3,11 @@
  * Displays skeleton UI while product is being fetched
  */
 
-import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
 
 export default function ProductDetailLoading() {
   return (
     <>
-      <MainHeader />
-
       <main className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-6 md:py-8">
           {/* Breadcrumb Skeleton */}

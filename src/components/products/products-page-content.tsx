@@ -6,8 +6,6 @@
 "use client";
 
 import { useState } from "react";
-import MainHeader from "@/components/header/main-header";
-import MobileHeader from "@/components/header/mobile-header";
 import Footer from "@/components/home/footer";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
 import ProductFilters, {
@@ -32,12 +30,6 @@ export default function ProductsPageContent({
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Reutilizar Header completo da homepage */}
-      {/* <TopBar /> */}
-      <MobileHeader />
-      <MainHeader />
-      {/* <NavigationMenu /> */}
-
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-8">
         {/* Breadcrumb */}

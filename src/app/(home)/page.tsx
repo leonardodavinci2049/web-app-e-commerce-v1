@@ -4,8 +4,6 @@
  */
 
 import { Suspense } from "react";
-import MainHeader from "@/components/header/main-header";
-import MobileHeader from "@/components/header/mobile-header";
 import AboutSection from "@/components/home/about-section";
 import Advantages from "@/components/home/advantages";
 import CustomerSegments from "@/components/home/customer-segments";
@@ -35,15 +33,6 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col">
       {/* 1. Top Bar */}
       {/* <TopBar /> */}
-
-      {/* 2. Mobile Header */}
-      <MobileHeader />
-
-      {/* 2. Main Header */}
-      <MainHeader />
-
-      {/* 3. Navigation Menu */}
-      {/* <NavigationMenu /> */}
 
       {/* Main Content */}
       <main className="flex-1">

@@ -9,18 +9,18 @@ import { Package } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition } from "react";
 import { toast } from "sonner";
-import Footer from "@/components/home/footer";
-import BrandFilter from "@/components/tabela/brand-filter";
-import CartSidebarFixo from "@/components/tabela/cart-sidebar-fixo";
+import CartSidebarFixo from "@/app/(table)/tabela/components/sidebar/cart-sidebar-fixo";
+import BrandFilter from "@/app/(table)/tabela/components/tabela/brand-filter";
 import {
   columns,
   type ProductTableItem,
   transformProductsForTable,
-} from "@/components/tabela/columns";
-import { DataTable } from "@/components/tabela/data-table";
+} from "@/app/(table)/tabela/components/tabela/columns";
+import { DataTable } from "@/app/(table)/tabela/components/tabela/data-table";
+import Footer from "@/components/home/footer";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
-import type { ProductTableFilters, ProductTableResult } from "../actions";
-import { getTableProducts, loadMoreProducts } from "../actions";
+import type { ProductTableFilters, ProductTableResult } from "../../actions";
+import { getTableProducts, loadMoreProducts } from "../../actions";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
