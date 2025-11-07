@@ -220,7 +220,6 @@ export default function TabelaPageContent({
             <main className="space-y-4 sm:space-y-8">
               {/* Page Header */}
 
-
               {/* Brand Filter - Mobile / Tablet */}
               <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6 lg:hidden">
                 <BrandFilter
