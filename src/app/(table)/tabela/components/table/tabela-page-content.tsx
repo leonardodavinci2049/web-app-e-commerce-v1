@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import CartSidebarFixo from "@/app/(table)/tabela/components/sidebar/cart-sidebar-fixo";
 import FilterSidebar from "@/app/(table)/tabela/components/sidebar/filter-sidebar";
-import BrandFilter from "@/app/(table)/tabela/components/tabela/brand-filter";
 import {
   columns,
   type ProductTableItem,
@@ -19,39 +18,26 @@ import {
 } from "@/app/(table)/tabela/components/tabela/columns";
 import { DataTable } from "@/app/(table)/tabela/components/tabela/data-table";
 import Footer from "@/components/home/footer";
-import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
 import { useTableSearch } from "./table-search-context";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
-  brands: BrandData[];
   initialSearchTerm: string;
-  initialBrandId?: number;
 }
 
 export default function TabelaPageContent({
   initialProducts,
-  brands,
   initialSearchTerm,
-  initialBrandId,
 }: TabelaPageContentProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const {
-    setInputValue: setHeaderInputValue,
-    resetInput: resetHeaderInput,
-    registerSearchHandler,
-  } = useTableSearch();
+  const { setInputValue: setHeaderInputValue, registerSearchHandler } =
+    useTableSearch();
 
-  // State management
   const [productSearchTerm, setProductSearchTerm] = useState(initialSearchTerm);
-  const [brandSearchTerm, setBrandSearchTerm] = useState("");
-  const [selectedBrandId, setSelectedBrandId] = useState<number | undefined>(
-    initialBrandId,
-  );
   const [products, setProducts] = useState<ProductTableItem[]>(
     transformProductsForTable(initialProducts.products),
   );
@@ -60,9 +46,8 @@ export default function TabelaPageContent({
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
   const [loading, setLoading] = useState(false);
 
-  // Update URL parameters without causing a page reload
   const updateURL = useCallback(
-    (filters: { searchTerm: string; brandId?: number }) => {
+    (filters: { searchTerm: string }) => {
       const params = new URLSearchParams(searchParams.toString());
 
       if (filters.searchTerm) {
@@ -71,13 +56,7 @@ export default function TabelaPageContent({
         params.delete("search");
       }
 
-      if (filters.brandId) {
-        params.set("brand", filters.brandId.toString());
-      } else {
-        params.delete("brand");
-      }
-
-      params.delete("page"); // Reset page when filters change
+      params.delete("page");
 
       const newURL = `${window.location.pathname}?${params.toString()}`;
       router.replace(newURL, { scroll: false });
@@ -85,14 +64,13 @@ export default function TabelaPageContent({
     [router, searchParams],
   );
 
-  // Filter products
   const handleFilter = useCallback(async (newFilters: ProductTableFilters) => {
     setLoading(true);
 
     try {
       const result = await getTableProducts({
         ...newFilters,
-        page: 0, // Reset to first page when filtering
+        page: 0,
         pageSize: 100,
       });
 
@@ -108,8 +86,7 @@ export default function TabelaPageContent({
       setTotalCount(result.total);
       setCurrentPage(0);
 
-      // Show success message if filters are applied
-      if (newFilters.searchTerm || newFilters.brandId) {
+      if (newFilters.searchTerm) {
         toast.success("Filtros aplicados com sucesso", {
           description: `${result.products.length} produtos encontrados`,
         });
@@ -122,7 +99,6 @@ export default function TabelaPageContent({
     }
   }, []);
 
-  // Apply search triggered by the header form
   const applySearch = useCallback(
     (rawTerm: string) => {
       const normalizedTerm = rawTerm.trim();
@@ -130,34 +106,11 @@ export default function TabelaPageContent({
       setProductSearchTerm(normalizedTerm);
 
       startTransition(() => {
-        updateURL({ searchTerm: normalizedTerm, brandId: selectedBrandId });
-        handleFilter({ searchTerm: normalizedTerm, brandId: selectedBrandId });
+        updateURL({ searchTerm: normalizedTerm });
+        handleFilter({ searchTerm: normalizedTerm });
       });
     },
-    [handleFilter, selectedBrandId, setHeaderInputValue, updateURL],
-  );
-
-  // Handle brand search (filters the brand list only)
-  const handleBrandSearchChange = useCallback((value: string) => {
-    setBrandSearchTerm(value);
-  }, []);
-
-  // Handle brand selection
-  const handleBrandSelect = useCallback(
-    (brandId: number | undefined) => {
-      setSelectedBrandId(brandId);
-      if (productSearchTerm) {
-        setProductSearchTerm("");
-      }
-
-      resetHeaderInput();
-
-      startTransition(() => {
-        updateURL({ searchTerm: "", brandId });
-        handleFilter({ searchTerm: "", brandId });
-      });
-    },
-    [productSearchTerm, handleFilter, resetHeaderInput, updateURL],
+    [handleFilter, setHeaderInputValue, updateURL],
   );
 
   useEffect(() => {
@@ -170,7 +123,6 @@ export default function TabelaPageContent({
     return unregister;
   }, [registerSearchHandler, applySearch]);
 
-  // Load more products
   const handleLoadMore = useCallback(async () => {
     if (loading || !hasMore) return;
 
@@ -181,7 +133,6 @@ export default function TabelaPageContent({
       const result = await loadMoreProducts(
         {
           searchTerm: productSearchTerm,
-          brandId: selectedBrandId,
         },
         nextPage,
       );
@@ -193,7 +144,6 @@ export default function TabelaPageContent({
         return;
       }
 
-      // Append new products to existing ones
       const newProducts = transformProductsForTable(result.products);
       setProducts((prev) => [...prev, ...newProducts]);
       setHasMore(result.hasMore);
@@ -206,33 +156,16 @@ export default function TabelaPageContent({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, currentPage, productSearchTerm, selectedBrandId]);
+  }, [loading, hasMore, currentPage, productSearchTerm]);
 
   return (
     <>
-      {/* Main Layout with Sidebars */}
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="flex flex-col gap-6 lg:gap-8">
           <div className="lg:grid lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-6">
             <FilterSidebar className="hidden lg:block lg:sticky lg:top-28" />
 
-            {/* Main Content */}
             <main className="space-y-4 sm:space-y-8">
-              {/* Page Header */}
-
-
-              {/* Brand Filter - Mobile / Tablet */}
-              <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6 lg:hidden">
-                <BrandFilter
-                  brands={brands}
-                  selectedBrandId={selectedBrandId}
-                  onBrandSelect={handleBrandSelect}
-                  searchTerm={brandSearchTerm}
-                  onSearchChange={handleBrandSearchChange}
-                />
-              </div>
-
-              {/* Products Table */}
               <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
@@ -266,7 +199,6 @@ export default function TabelaPageContent({
         </div>
       </div>
 
-      {/* Footer */}
       <Footer />
     </>
   );

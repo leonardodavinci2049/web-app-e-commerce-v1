@@ -5,10 +5,7 @@
 
 "use client";
 
-import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 
@@ -16,8 +13,6 @@ interface BrandFilterProps {
   brands: BrandData[];
   selectedBrandId?: number;
   onBrandSelect: (brandId: number | undefined) => void;
-  searchTerm: string;
-  onSearchChange: (search: string) => void;
   className?: string;
 }
 
@@ -37,28 +32,9 @@ export default function BrandFilter({
   brands,
   selectedBrandId,
   onBrandSelect,
-  searchTerm,
-  onSearchChange,
   className,
 }: BrandFilterProps) {
-  const [showAllBrands, _setShowAllBrands] = useState(false);
-
-  // Filter brands based on search term
-  const filteredBrands = useMemo(() => {
-    if (!searchTerm.trim()) return brands;
-
-    return brands.filter((brand) =>
-      brand.MARCA?.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
-  }, [brands, searchTerm]);
-
-  // Show only first 9 brands initially, unless showing all or searching
-  const visibleBrands = useMemo(() => {
-    if (showAllBrands || searchTerm.trim()) {
-      return filteredBrands;
-    }
-    return filteredBrands.slice(0, 9);
-  }, [filteredBrands, showAllBrands, searchTerm]);
+  const visibleBrands = brands;
 
   const handleBrandClick = (brandId: number) => {
     if (selectedBrandId === brandId) {
@@ -70,18 +46,6 @@ export default function BrandFilter({
 
   return (
     <div className={cn("space-y-6", className)}>
-      {/* Search Input */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="text"
-          placeholder="Digite o modelo..."
-          value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-10 h-12 text-base bg-background"
-        />
-      </div>
-
       {/* Brand Filter Blocks */}
       <div className="space-y-4">
         {/* Brand Blocks Grid */}
@@ -132,27 +96,10 @@ export default function BrandFilter({
         )}
 
         {/* No Results Message */}
-        {searchTerm.trim() && filteredBrands.length === 0 && (
-          <div className="text-center p-6 text-muted-foreground">
-            <p>Nenhuma marca encontrada para "{searchTerm}"</p>
-          </div>
-        )}
-
         {/* Total Brands Info */}
         {brands.length > 0 && (
           <div className="text-xs text-muted-foreground text-center">
-            {searchTerm.trim() ? (
-              <>
-                Mostrando {filteredBrands.length} de {brands.length} marcas
-              </>
-            ) : (
-              <>
-                Mostrando {visibleBrands.length} de {brands.length} marcas
-                {!showAllBrands &&
-                  brands.length > 9 &&
-                  " • Clique em 'Ver todas' para mostrar mais"}
-              </>
-            )}
+            Mostrando {visibleBrands.length} de {brands.length} marcas
           </div>
         )}
       </div>

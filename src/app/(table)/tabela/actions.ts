@@ -6,8 +6,6 @@
 "use server";
 
 import { createLogger } from "@/core/logger";
-import { BrandServiceApi } from "@/services/api-main/brand/brand-service-api";
-import type { BrandData } from "@/services/api-main/brand/types/brand-types";
 import { ProductWebServiceApi } from "@/services/api-main/product/product-service-api";
 import type {
   ProductWebFindRequest,
@@ -30,11 +28,6 @@ export interface ProductTableResult {
   total: number;
   hasMore: boolean;
   currentPage: number;
-  error?: string;
-}
-
-export interface BrandsResult {
-  brands: BrandData[];
   error?: string;
 }
 
@@ -93,37 +86,6 @@ export async function getTableProducts(
       total: 0,
       hasMore: false,
       currentPage: 0,
-      error: error instanceof Error ? error.message : "Erro desconhecido",
-    };
-  }
-}
-
-/**
- * Fetches all brands for the filter dropdown
- */
-export async function getBrands(): Promise<BrandsResult> {
-  try {
-    // logger.info("Buscando marcas para filtro");
-
-    // Call the brand service
-    const response = await BrandServiceApi.findBrands({
-      pe_limit: 200, // Get more brands for the filter
-    });
-
-    // Extract brands from response
-    const brands = BrandServiceApi.extractBrandList(response);
-
-    // logger.info("Marcas carregadas com sucesso", { count: brands.length });
-
-    return {
-      brands: brands.filter(
-        (brand) => brand.MARCA && brand.MARCA.trim() !== "",
-      ),
-    };
-  } catch (error) {
-    logger.error("Erro ao carregar marcas", error);
-    return {
-      brands: [],
       error: error instanceof Error ? error.message : "Erro desconhecido",
     };
   }

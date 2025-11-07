@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useCart } from "@/components/cart/cart-provider";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrencyBRL } from "@/lib/utils";
 import type { ProductWebListItem } from "@/services/api-main/product/types/product-types";
 
 // Define the product type for the table
@@ -136,13 +136,6 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       // Convert string price to number for display
       const precoAtacado = parseFloat(vlAtacado || "0");
 
-      const formatPrice = (price: number) => {
-        return new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price);
-      };
-
       return (
         <div className="text-right space-y-1 min-w-[72px] sm:min-w-[100px]">
           <div
@@ -152,7 +145,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
             )}
           >
             {precoAtacado > 0 ? (
-              formatPrice(precoAtacado)
+              formatCurrencyBRL(precoAtacado)
             ) : (
               <span className="text-muted-foreground text-xs sm:text-sm">
                 Consultar preço
@@ -198,10 +191,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
         });
 
         const formattedQuantity = result.item.quantity;
-        const formattedPrice = price.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        });
+        const formattedPrice = formatCurrencyBRL(price);
 
         if (result.status === "added") {
           toast.success("Produto adicionado", {

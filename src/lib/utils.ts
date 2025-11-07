@@ -15,3 +15,17 @@ export function slugify(value: string): string {
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 }
+
+export function formatCurrencyBRL(
+  value: number,
+  options?: { withSymbol?: boolean },
+): string {
+  const safeValue = Number.isFinite(value) ? value : 0;
+  const formatted = safeValue.toFixed(2).replace(".", ",");
+
+  if (options?.withSymbol === false) {
+    return formatted;
+  }
+
+  return `R$ ${formatted}`;
+}

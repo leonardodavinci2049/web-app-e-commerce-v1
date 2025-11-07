@@ -1,19 +1,13 @@
-/**
- * Products Data Table Component
- * Modern table implementation with sorting, pagination and loading states
- */
-
 "use client";
 
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,21 +40,16 @@ export function DataTable<TData, TValue>({
   className,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const showLoadMore = Boolean(onLoadMore && (hasMore || loading));
 
   const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     state: {
       sorting,
-    },
-    initialState: {
-      pagination: {
-        pageSize: 50, // Show more items per page for better UX
-      },
     },
   });
 
@@ -107,7 +96,7 @@ export function DataTable<TData, TValue>({
                         <TableCell
                           key={cell.id}
                           className={cn(
-                            "py-2 sm:py-4 px-2 sm:px-4",
+                            "py-1.5 sm:py-3 px-2 sm:px-4",
                             isProductColumn
                               ? "sm:whitespace-normal align-top min-w-0"
                               : undefined,
@@ -161,92 +150,29 @@ export function DataTable<TData, TValue>({
         )}
       </div>
 
-      {/* Table Info and Actions */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
-        {/* Results Info */}
-        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <span>
-            Mostrando {data.length} de{" "}
-            {totalCount > 0 ? totalCount : data.length} produtos
-          </span>
+      {showLoadMore && onLoadMore && (
+        <div className="rounded-2xl border-2 border-blue-200 dark:border-blue-800 bg-blue-50/40 dark:bg-blue-950/20 shadow-lg shadow-blue-100/30 dark:shadow-blue-900/10 px-4 py-8 flex justify-center">
+          <Button
+            onClick={onLoadMore}
+            disabled={loading || !hasMore}
+            className="h-12 px-8 text-base font-semibold bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-3 animate-spin" />
+                Carregando...
+              </>
+            ) : (
+              <span>
+                Carregar Mais Produtos
+                {totalCount > data.length
+                  ? ` (${data.length}/${totalCount})`
+                  : ""}
+              </span>
+            )}
+          </Button>
         </div>
-
-        {/* Pagination and Load More */}
-        <div className="flex items-center gap-2">
-          {/* Table Pagination Controls */}
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="hidden sm:flex"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Anterior
-            </Button>
-
-            <div className="text-sm text-muted-foreground">
-              Página {table.getState().pagination.pageIndex + 1} de{" "}
-              {table.getPageCount()}
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="hidden sm:flex"
-            >
-              Próxima
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-
-          {/* Load More Button */}
-          {hasMore && onLoadMore && (
-            <Button
-              onClick={onLoadMore}
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white border-blue-600 dark:border-blue-500"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Carregando...
-                </>
-              ) : (
-                "CARREGAR MAIS"
-              )}
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* Mobile Pagination */}
-      <div className="flex sm:hidden items-center justify-center gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-
-        <span className="text-sm text-muted-foreground px-4">
-          {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
-        </span>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
+      )}
     </div>
   );
 }
