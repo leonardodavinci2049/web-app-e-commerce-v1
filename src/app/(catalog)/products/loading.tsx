@@ -3,7 +3,6 @@
  * Displays skeleton UI while products are being fetched
  */
 
-import MainHeader from "@/components/header/main-header";
 import Footer from "@/components/home/footer";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
 import NavigationMenu from "@/components/mainmenu/navigation-menu";
@@ -11,7 +10,6 @@ import NavigationMenu from "@/components/mainmenu/navigation-menu";
 export default function ProductsLoading() {
   return (
     <div className="min-h-screen flex flex-col">
-      <MainHeader />
       <NavigationMenu />
 
       <main className="flex-1 container mx-auto px-4 py-8">

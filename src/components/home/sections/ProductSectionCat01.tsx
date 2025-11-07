@@ -1,4 +1,4 @@
-import { getCategoryOneSectionProducts } from "@/app/home/actions";
+import { getCategoryOneSectionProducts } from "@/app/(home)/actions";
 import { envs } from "@/core/config/envs";
 import ProductsSection from "./products-section";
 
