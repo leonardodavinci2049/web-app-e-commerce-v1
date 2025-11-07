@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import MainHeader from "@/components/header/main-header";
 import MobileHeader from "@/components/header/mobile-header";
 
@@ -9,7 +10,9 @@ const HomeLayout = ({
   return (
     <>
       <MobileHeader />
-      <MainHeader />
+      <Suspense fallback={<div className="h-16" />}>
+        <MainHeader />
+      </Suspense>
       {children}
     </>
   );
