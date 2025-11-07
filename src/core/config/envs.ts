@@ -132,6 +132,37 @@ type EnvVars = z.infer<typeof envsSchema>;
 // ✅ Só executar validação no servidor, nunca no cliente
 let envVars: EnvVars;
 
+// Para prevenir problemas de hidratação, vamos criar um schema separado para variáveis públicas
+const publicEnvSchema = z.object({
+  NEXT_PUBLIC_COMPANY_NAME: z
+    .string()
+    .min(1, "NEXT_PUBLIC_COMPANY_NAME is required"),
+  NEXT_PUBLIC_COMPANY_PHONE: z
+    .string()
+    .regex(
+      /^\(\d{2}\) \d{4}-\d{4}$/,
+      "NEXT_PUBLIC_COMPANY_PHONE must be in format (XX) XXXX-XXXX",
+    ),
+  NEXT_PUBLIC_COMPANY_EMAIL: z
+    .string()
+    .email("NEXT_PUBLIC_COMPANY_EMAIL must be a valid email"),
+  NEXT_PUBLIC_COMPANY_WHATSAPP: z
+    .string()
+    .regex(
+      /^55\d{11}$/,
+      "NEXT_PUBLIC_COMPANY_WHATSAPP must be in format 55XXXXXXXXXXX (country code + area code + number)",
+    ),
+  NEXT_PUBLIC_COMPANY_ADDRESS: z
+    .string()
+    .min(1, "NEXT_PUBLIC_COMPANY_ADDRESS is required"),
+  NEXT_PUBLIC_DEVELOPER_NAME: z
+    .string()
+    .min(1, "NEXT_PUBLIC_DEVELOPER_NAME is required"),
+  NEXT_PUBLIC_DEVELOPER_URL: z
+    .string()
+    .url("NEXT_PUBLIC_DEVELOPER_URL must be a valid URL"),
+});
+
 if (typeof window === "undefined") {
   // Estamos no servidor - fazer validação completa
   const validationResult = envsSchema.safeParse(process.env);
@@ -145,8 +176,32 @@ if (typeof window === "undefined") {
 
   envVars = validationResult.data;
 } else {
-  // Estamos no cliente - usar valores vazios ou default para variáveis privadas
-  // e valores reais para variáveis públicas (NEXT_PUBLIC_*)
+  // Estamos no cliente - validar apenas variáveis públicas para garantir consistência
+  const publicValidationResult = publicEnvSchema.safeParse(process.env);
+
+  if (!publicValidationResult.success) {
+    console.warn(
+      "⚠️ Some public environment variables are missing on client:",
+      publicValidationResult.error.issues.map((issue) => issue.path.join(".")),
+    );
+  }
+
+  const publicVars = publicValidationResult.success
+    ? publicValidationResult.data
+    : {
+        NEXT_PUBLIC_COMPANY_NAME: process.env.NEXT_PUBLIC_COMPANY_NAME || "",
+        NEXT_PUBLIC_COMPANY_PHONE: process.env.NEXT_PUBLIC_COMPANY_PHONE || "",
+        NEXT_PUBLIC_COMPANY_EMAIL: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "",
+        NEXT_PUBLIC_COMPANY_WHATSAPP:
+          process.env.NEXT_PUBLIC_COMPANY_WHATSAPP || "",
+        NEXT_PUBLIC_COMPANY_ADDRESS:
+          process.env.NEXT_PUBLIC_COMPANY_ADDRESS || "",
+        NEXT_PUBLIC_DEVELOPER_NAME:
+          process.env.NEXT_PUBLIC_DEVELOPER_NAME || "",
+        NEXT_PUBLIC_DEVELOPER_URL: process.env.NEXT_PUBLIC_DEVELOPER_URL || "",
+      };
+
+  // Usar valores vazios ou default para variáveis privadas no cliente
   envVars = {
     APP_PORT: 0,
     EXTERNAL_API_MAIN_URL: "",
@@ -160,17 +215,8 @@ if (typeof window === "undefined") {
     PERSON_ID: 0,
     TYPE_BUSINESS: 0,
 
-    // Variáveis públicas da empresa - disponíveis no cliente
-    NEXT_PUBLIC_COMPANY_NAME: process.env.NEXT_PUBLIC_COMPANY_NAME || "",
-    NEXT_PUBLIC_COMPANY_PHONE: process.env.NEXT_PUBLIC_COMPANY_PHONE || "",
-    NEXT_PUBLIC_COMPANY_EMAIL: process.env.NEXT_PUBLIC_COMPANY_EMAIL || "",
-    NEXT_PUBLIC_COMPANY_WHATSAPP:
-      process.env.NEXT_PUBLIC_COMPANY_WHATSAPP || "",
-    NEXT_PUBLIC_COMPANY_ADDRESS: process.env.NEXT_PUBLIC_COMPANY_ADDRESS || "",
-
-    // Variáveis públicas do desenvolvedor - disponíveis no cliente
-    NEXT_PUBLIC_DEVELOPER_NAME: process.env.NEXT_PUBLIC_DEVELOPER_NAME || "",
-    NEXT_PUBLIC_DEVELOPER_URL: process.env.NEXT_PUBLIC_DEVELOPER_URL || "",
+    // Usar as variáveis públicas validadas
+    ...publicVars,
 
     EMAIL_SENDER_NAME: "",
     EMAIL_SENDER_ADDRESS: "",

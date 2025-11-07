@@ -11,6 +11,7 @@ import Link from "next/link";
 import { type ChangeEvent, type FormEvent, useCallback, useState } from "react";
 import ModeToggle from "@/components/theme/mode-toggle";
 import { Button } from "@/components/ui/button";
+import { ClientOnly } from "@/components/ui/client-only";
 import { Input } from "@/components/ui/input";
 import {
   Sheet,
@@ -114,15 +115,21 @@ export default function MobileHeader() {
             <Link href="/" className="shrink-0">
               <Image
                 src="/images/logo/logo-header.png"
-                alt={`${envs.NEXT_PUBLIC_COMPANY_NAME} Logo`}
+                alt="Logo"
                 width={64}
                 height={32}
                 className="h-8 w-16"
               />
             </Link>
-            <h1 className="text-lg font-bold text-primary">
-              {envs.NEXT_PUBLIC_COMPANY_NAME}
-            </h1>
+            <ClientOnly
+              fallback={
+                <div className="h-5 w-20 bg-muted animate-pulse rounded" />
+              }
+            >
+              <h1 className="text-lg font-bold text-primary">
+                {envs.NEXT_PUBLIC_COMPANY_NAME}
+              </h1>
+            </ClientOnly>
           </div>
 
           {/* Theme Toggle */}
