@@ -50,6 +50,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
     itemCount,
     updateQuantity,
     removeItem,
+    isHydrated,
   } = useCart();
 
   // Format currency
@@ -95,7 +96,8 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
         {trigger || (
           <Button variant="ghost" size="sm" className="relative">
             <ShoppingCart className="h-5 w-5" />
-            {itemCount > 0 && (
+            {/* Only render badge after hydration is complete to prevent hydration mismatch */}
+            {isHydrated && itemCount > 0 && (
               <Badge
                 variant="destructive"
                 className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
@@ -133,7 +135,17 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
 
         {/* Cart Items - Scrollable */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {cartItems.length === 0 ? (
+          {!isHydrated ? (
+            <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
+              <ShoppingBag className="h-16 w-16 text-muted-foreground/50 animate-pulse" />
+              <div>
+                <h3 className="font-semibold text-lg mb-1">Carregando...</h3>
+                <p className="text-sm text-muted-foreground">
+                  Aguarde enquanto carregamos seu carrinho
+                </p>
+              </div>
+            </div>
+          ) : cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
               <ShoppingBag className="h-16 w-16 text-muted-foreground/50" />
               <div>
@@ -231,7 +243,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
         </div>
 
         {/* Summary and Actions - Fixed at bottom */}
-        {cartItems.length > 0 && (
+        {isHydrated && cartItems.length > 0 && (
           <div className="border-t bg-card">
             <div className="px-6 py-4 space-y-3">
               {/* Subtotal */}

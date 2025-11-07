@@ -50,15 +50,21 @@ export default function TabelaPageContent({
     (filters: { searchTerm: string }) => {
       const params = new URLSearchParams(searchParams.toString());
 
+      // Ensure catalog search params do not leak into tabela route
+      params.delete("search");
+
       if (filters.searchTerm) {
-        params.set("search", filters.searchTerm);
+        params.set("tableSearch", filters.searchTerm);
       } else {
-        params.delete("search");
+        params.delete("tableSearch");
       }
 
       params.delete("page");
 
-      const newURL = `${window.location.pathname}?${params.toString()}`;
+      const queryString = params.toString();
+      const newURL = queryString
+        ? `${window.location.pathname}?${queryString}`
+        : window.location.pathname;
       router.replace(newURL, { scroll: false });
     },
     [router, searchParams],
@@ -85,12 +91,6 @@ export default function TabelaPageContent({
       setHasMore(result.hasMore);
       setTotalCount(result.total);
       setCurrentPage(0);
-
-      if (newFilters.searchTerm) {
-        toast.success("Filtros aplicados com sucesso", {
-          description: `${result.products.length} produtos encontrados`,
-        });
-      }
     } catch (error) {
       console.error("Erro ao filtrar produtos:", error);
       toast.error("Erro inesperado ao filtrar produtos");
@@ -148,8 +148,6 @@ export default function TabelaPageContent({
       setProducts((prev) => [...prev, ...newProducts]);
       setHasMore(result.hasMore);
       setCurrentPage(nextPage);
-
-      toast.success(`${result.products.length} produtos adicionados`);
     } catch (error) {
       console.error("Erro ao carregar mais produtos:", error);
       toast.error("Erro inesperado ao carregar mais produtos");

@@ -24,7 +24,7 @@ import { navigationItems } from "@/data/mock-data";
 
 export default function MobileBottomNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { itemCount } = useCart();
+  const { itemCount, isHydrated } = useCart();
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
@@ -100,7 +100,7 @@ export default function MobileBottomNav() {
               >
                 <div className="relative">
                   <ShoppingCart className="h-5 w-5" />
-                  {itemCount > 0 && (
+                  {isHydrated && itemCount > 0 && (
                     <Badge
                       variant="destructive"
                       className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs"
