@@ -32,7 +32,7 @@ export async function getProducts(
       pe_id_marca: filters?.brandId,
       pe_flag_estoque: filters?.inStockOnly ? 1 : 0,
       pe_qt_registros: filters?.pageSize || 20,
-      pe_pagina_id: filters?.page || 1,
+      pe_pagina_id: filters?.page || 0,
       pe_coluna_id: filters?.sortColumn || 1,
       pe_ordem_id: filters?.sortOrder || 1,
     };
@@ -48,7 +48,7 @@ export async function getProducts(
 
     // Calculate pagination metadata
     const pageSize = params.pe_qt_registros || 20;
-    const currentPage = params.pe_pagina_id || 1;
+    const currentPage = params.pe_pagina_id || 0;
     const totalCount = response.quantity || 0;
     const hasMore = adaptedProducts.length >= pageSize;
 

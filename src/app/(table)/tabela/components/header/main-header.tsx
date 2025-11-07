@@ -8,7 +8,7 @@
 import { ChevronDown, Menu, Search, Table, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { type ChangeEvent, type FormEvent, useCallback, useState } from "react";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import ModeToggle from "@/components/theme/mode-toggle";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,34 @@ import {
 } from "@/components/ui/sheet";
 import { envs } from "@/core/config/envs";
 import { navigationItems } from "@/data/mock-data";
+import { useTableSearch } from "../table/table-search-context";
 
 export default function MainHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { inputValue, setInputValue, submitSearch, clearSearch } =
+    useTableSearch();
+
+  const handleSearchSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      submitSearch();
+    },
+    [submitSearch],
+  );
+
+  const handleInputChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+
+      if (value === "") {
+        clearSearch();
+        return;
+      }
+
+      setInputValue(value);
+    },
+    [clearSearch, setInputValue],
+  );
 
   return (
     <header className="hidden md:block bg-card border-b border-border py-4 px-4">
@@ -99,14 +124,28 @@ export default function MainHeader() {
         </Link>
 
         {/* Search Bar */}
-        <div className="flex-1 max-w-2xl relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            type="search"
-            placeholder="O que você procura?"
-            className="w-full pl-10 bg-background"
-          />
-        </div>
+        <form
+          className="flex-1 max-w-2xl flex items-center gap-3"
+          onSubmit={handleSearchSubmit}
+        >
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="O que você procura?"
+              className="w-full pl-10 h-11 bg-background"
+              value={inputValue}
+              onChange={handleInputChange}
+            />
+          </div>
+          <Button
+            type="submit"
+            size="sm"
+            className="h-11 px-5 font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+          >
+            Buscar
+          </Button>
+        </form>
 
         {/* Action Icons */}
         <div className="flex items-center gap-4 shrink-0">

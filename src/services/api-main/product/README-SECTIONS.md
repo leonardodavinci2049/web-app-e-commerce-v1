@@ -68,7 +68,7 @@ async function getHighlightedProductsByCategory(taxonomyId: number) {
       pe_id_taxonomy: taxonomyId,
       pe_flag_highlight: 1,
       pe_qt_registros: 12,
-      pe_pagina_id: 1,
+      pe_pagina_id: 0,
       pe_coluna_id: 1,
       pe_ordem_id: 1,
     });
@@ -125,7 +125,7 @@ async function getFilteredSection() {
       pe_flag_promotions: 1, // Apenas promoções
       pe_flag_highlight: 0, // Não destacados
       pe_qt_registros: 15,
-      pe_pagina_id: 1,
+      pe_pagina_id: 0,
       pe_coluna_id: 1,
       pe_ordem_id: 1,
     });
@@ -154,7 +154,7 @@ async function getFilteredSection() {
 | `pe_flag_highlight` | `number` | Não | Flag de destaque (0/1) | `0` |
 | `pe_flag_lancamento` | `number` | Não | Flag de lançamento (0/1) | `0` |
 | `pe_qt_registros` | `number` | Não | Quantidade de registros | `20` |
-| `pe_pagina_id` | `number` | Não | ID da página | `1` |
+| `pe_pagina_id` | `number` | Não | ID da página | `0` |
 | `pe_coluna_id` | `number` | Não | ID da coluna | `1` |
 | `pe_ordem_id` | `number` | Não | ID da ordenação | `1` |
 

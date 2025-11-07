@@ -28,7 +28,7 @@ async function TabelaPageData({ searchParams }: TabelaPageProps) {
   const params = await searchParams;
   const searchTerm = params.search || "";
   const brandId = params.brand ? parseInt(params.brand, 10) : undefined;
-  const page = params.page ? parseInt(params.page, 10) : 1;
+  const page = params.page ? parseInt(params.page, 10) : 0;
 
   // Fetch data in parallel
   const [productsResult, brandsResult] = await Promise.all([

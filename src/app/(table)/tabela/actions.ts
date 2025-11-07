@@ -48,7 +48,7 @@ export async function getTableProducts(
     const {
       searchTerm = "",
       brandId = 0,
-      page = 1,
+      page = 0,
       pageSize = 100,
       sortColumn = 1,
       sortOrder = 1,
@@ -92,7 +92,7 @@ export async function getTableProducts(
       products: [],
       total: 0,
       hasMore: false,
-      currentPage: 1,
+      currentPage: 0,
       error: error instanceof Error ? error.message : "Erro desconhecido",
     };
   }
