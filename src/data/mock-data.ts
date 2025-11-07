@@ -16,60 +16,12 @@ import type {
 export const categories: Category[] = [
   {
     id: "ferramentas-eletricas",
-    name: "Ferramentas Elétricas",
+    name: "Assistência Técnica",
     icon: "drill",
     href: "#ferramentas-eletricas",
-    description: "Furadeiras, parafusadeiras e mais",
+    description: "Ferramentas elétricas para todos os tipos de reparos e construções.",
   },
-  {
-    id: "ferramentas-manuais",
-    name: "Ferramentas Manuais",
-    icon: "wrench",
-    href: "#ferramentas-manuais",
-    description: "Chaves, alicates e martelos",
-  },
-  {
-    id: "equipamentos-seguranca",
-    name: "Equipamentos de Segurança",
-    icon: "shield",
-    href: "#equipamentos-seguranca",
-    description: "EPIs e proteção",
-  },
-  {
-    id: "materiais-eletricos",
-    name: "Materiais Elétricos",
-    icon: "zap",
-    href: "#materiais-eletricos",
-    description: "Fios, tomadas e disjuntores",
-  },
-  {
-    id: "hidraulica",
-    name: "Hidráulica",
-    icon: "droplet",
-    href: "#hidraulica",
-    description: "Tubos, conexões e registros",
-  },
-  {
-    id: "parafusos-fixadores",
-    name: "Parafusos e Fixadores",
-    icon: "tool",
-    href: "#parafusos-fixadores",
-    description: "Parafusos, buchas e pregos",
-  },
-  {
-    id: "tintas-vernizes",
-    name: "Tintas e Vernizes",
-    icon: "paintbrush",
-    href: "#tintas-vernizes",
-    description: "Tintas, pincéis e rolos",
-  },
-  {
-    id: "equipamentos-industriais",
-    name: "Equipamentos Industriais",
-    icon: "factory",
-    href: "#equipamentos-industriais",
-    description: "Máquinas e equipamentos pesados",
-  },
+
 ];
 
 // Navigation menu items
@@ -81,10 +33,16 @@ export const navigationItems: NavigationItem[] = [
     hasDropdown: true,
     dropdownItems: categories,
   },
+
   {
     id: "catalogo",
     label: "CATALOGO",
     href: "/products",
+  },
+  {
+    id: "tabela",
+    label: "TABELA",
+    href: "/tabela",
   },
   {
     id: "pecas-e-componentes",
@@ -113,11 +71,7 @@ export const navigationItems: NavigationItem[] = [
     href: "/products",
   },
 
-  {
-    id: "tabela",
-    label: "TABELA",
-    href: "/tabela",
-  },
+  
 ];
 
 // Products mock data

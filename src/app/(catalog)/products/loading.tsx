@@ -5,13 +5,10 @@
 
 import Footer from "@/components/home/footer";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import NavigationMenu from "@/components/mainmenu/navigation-menu";
 
 export default function ProductsLoading() {
   return (
     <div className="min-h-screen flex flex-col">
-      <NavigationMenu />
-
       <main className="flex-1 container mx-auto px-4 py-8">
         {/* Breadcrumb Skeleton */}
         <nav className="mb-6 bg-card border border-border rounded-lg shadow-sm p-3">
