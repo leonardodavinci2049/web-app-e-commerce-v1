@@ -5,29 +5,18 @@
 
 "use client";
 
-import { useState } from "react";
 import Footer from "@/components/home/footer";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import ProductFilters, {
-  type FilterState,
-} from "@/components/products/product-filters";
 import ProductGrid from "@/components/products/product-grid";
-import type { Category, Product } from "@/types/home";
+import type { Product } from "@/types/home";
 
 interface ProductsPageContentProps {
   products: Product[];
-  categories: Category[];
 }
 
 export default function ProductsPageContent({
   products,
-  categories,
 }: ProductsPageContentProps) {
-  const [filters, setFilters] = useState<FilterState>({
-    category: "",
-    subcategory: "",
-  });
-
   return (
     <div className="min-h-screen flex flex-col">
       {/* Main Content */}
@@ -52,7 +41,7 @@ export default function ProductsPageContent({
         </div>
  */}
         {/* Filters - Horizontal bar */}
-       {/* <ProductFilters categories={categories} onFilterChange={setFilters} /> */}
+        {/* <ProductFilters categories={categories} onFilterChange={setFilters} /> */}
 
         {/* Products Grid with Infinite Scroll */}
         <ProductGrid products={products} filters={filters} />

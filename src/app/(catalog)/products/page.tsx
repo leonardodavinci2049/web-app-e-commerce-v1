@@ -6,7 +6,6 @@
  */
 
 import ProductsPageContent from "@/components/products/products-page-content";
-import { categories } from "@/data/mock-data";
 import { getProducts } from "./actions";
 
 interface ProductsPageProps {
@@ -26,7 +25,5 @@ export default async function ProductsPage({
     searchTerm: searchTerm || undefined,
   });
 
-  return (
-    <ProductsPageContent products={result.products} categories={categories} />
-  );
+  return <ProductsPageContent products={result.products} />;
 }

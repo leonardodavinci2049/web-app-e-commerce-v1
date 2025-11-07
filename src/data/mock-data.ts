@@ -19,9 +19,9 @@ export const categories: Category[] = [
     name: "Assistência Técnica",
     icon: "drill",
     href: "#ferramentas-eletricas",
-    description: "Ferramentas elétricas para todos os tipos de reparos e construções.",
+    description:
+      "Ferramentas elétricas para todos os tipos de reparos e construções.",
   },
-
 ];
 
 // Navigation menu items
@@ -70,8 +70,6 @@ export const navigationItems: NavigationItem[] = [
     label: "SUPRIMENTOS",
     href: "/products",
   },
-
-  
 ];
 
 // Products mock data
