@@ -8,6 +8,7 @@
 import { ChevronDown, Menu, Search, Table, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   type ChangeEvent,
   type FormEvent,
@@ -15,7 +16,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import ModeToggle from "@/components/theme/mode-toggle";
 import { Button } from "@/components/ui/button";

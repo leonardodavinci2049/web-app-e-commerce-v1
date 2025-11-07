@@ -12,22 +12,21 @@ import ProductFilters, {
   type FilterState,
 } from "@/components/products/product-filters";
 import ProductGrid from "@/components/products/product-grid";
-import type { Category, Product } from "@/types/home";
+import { categories } from "@/data/mock-data";
+import type { Product } from "@/types/home";
 
 interface ProductsPageContentProps {
   products: Product[];
-  categories: Category[];
 }
 
 export default function ProductsPageContent({
   products,
-  categories,
 }: ProductsPageContentProps) {
+  // State for filters
   const [filters, setFilters] = useState<FilterState>({
     category: "",
     subcategory: "",
   });
-
   return (
     <div className="min-h-screen flex flex-col">
       {/* Main Content */}
@@ -52,7 +51,7 @@ export default function ProductsPageContent({
         </div>
  */}
         {/* Filters - Horizontal bar */}
-       {/* <ProductFilters categories={categories} onFilterChange={setFilters} /> */}
+        <ProductFilters categories={categories} onFilterChange={setFilters} />
 
         {/* Products Grid with Infinite Scroll */}
         <ProductGrid products={products} filters={filters} />
