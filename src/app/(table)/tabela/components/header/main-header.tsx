@@ -60,7 +60,7 @@ export default function MainHeader() {
             <Button
               variant="outline"
               size="sm"
-              className="shrink-0 border-2 shadow-md hover:shadow-lg bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-200 hover:bg-accent flex flex-col items-center gap-1 h-auto py-2 px-3"
+              className="shrink-0 border-2 shadow-md hover:shadow-lg bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 transition-all duration-200 hover:bg-accent flex flex-col items-center gap-1 h-auto py-2 px-3"
             >
               <Menu className="h-4 w-4" />
               <span className="text-xs font-medium">Menu</span>

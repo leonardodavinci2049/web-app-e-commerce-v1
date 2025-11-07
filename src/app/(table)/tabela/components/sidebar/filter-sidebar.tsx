@@ -3,7 +3,13 @@
  * Displays placeholder UI for upcoming filtering features
  */
 
+"use client";
+
 import { Search, SlidersHorizontal, Tags } from "lucide-react";
+
+import { type ChangeEvent, type FormEvent, useCallback } from "react";
+
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -13,69 +19,95 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useTableSearch } from "../table/table-search-context";
 
 interface FilterSidebarProps {
   className?: string;
 }
 
 const BRAND_PRESETS: Array<{
-  name: string;
   className: string;
+  name: string;
   textClassName?: string;
 }> = [
   {
-    name: "Samsung",
     className: "bg-[#1428a0]",
+    name: "Samsung",
     textClassName: "text-white",
   },
   {
-    name: "Motorola",
     className: "bg-[#43b02a]",
+    name: "Motorola",
     textClassName: "text-white",
   },
   {
-    name: "Apple",
     className: "bg-[#1e1e1e]",
+    name: "Apple",
     textClassName: "text-white",
   },
   {
-    name: "Xiaomi",
     className: "bg-[#ff6900]",
+    name: "Xiaomi",
     textClassName: "text-white",
   },
   {
-    name: "Realme",
     className: "bg-[#ffd500]",
+    name: "Realme",
     textClassName: "text-slate-900",
   },
   {
-    name: "Asus",
     className: "bg-[#0b64c0]",
+    name: "Asus",
     textClassName: "text-white",
   },
   {
-    name: "Infinit",
     className: "bg-[#6c1d8d]",
+    name: "Infinit",
     textClassName: "text-white",
   },
   {
-    name: "Pouco",
     className: "bg-[#f6c000]",
+    name: "Pouco",
     textClassName: "text-slate-900",
   },
   {
-    name: "LG",
     className: "bg-[#a50034]",
+    name: "LG",
     textClassName: "text-white",
   },
   {
-    name: "Outros",
     className: "bg-[#4e5d78]",
+    name: "Outros",
     textClassName: "text-white",
   },
 ];
 
 export default function FilterSidebar({ className }: FilterSidebarProps) {
+  const { inputValue, setInputValue, submitSearch, clearSearch } =
+    useTableSearch();
+
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+
+      if (value === "") {
+        clearSearch();
+        return;
+      }
+
+      setInputValue(value);
+    },
+    [clearSearch, setInputValue],
+  );
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      submitSearch();
+    },
+    [submitSearch],
+  );
+
   return (
     <aside className={cn("space-y-6", className)}>
       <Card className="gap-4">
@@ -92,18 +124,22 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <label className="text-sm font-medium" htmlFor="sidebar-search">
             Pesquisa por nome
           </label>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              id="sidebar-search"
-              type="search"
-              placeholder="Digite o modelo..."
-              className="pl-10 h-11"
-            />
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Função de busca avançada disponível em breve.
-          </p>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                id="sidebar-search"
+                type="search"
+                placeholder="Digite o modelo..."
+                value={inputValue}
+                onChange={handleChange}
+                className="pl-10 h-11"
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Buscar
+            </Button>
+          </form>
         </CardContent>
       </Card>
 

@@ -98,7 +98,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
               <span className="sr-only">{emptyCartAriaLabel}</span>
               <span
                 aria-hidden="true"
-                className="inline-flex h-6 min-w-[3rem] items-center justify-center rounded-full bg-blue-600 px-2 text-xs font-semibold text-white dark:bg-blue-500"
+                className="inline-flex h-6 min-w-12 items-center justify-center rounded-full bg-blue-600 px-2 text-xs font-semibold text-white dark:bg-blue-500"
               >
                 0/0
               </span>
@@ -130,7 +130,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
             <span className="sr-only">{cartQuantityAriaLabel}</span>
             <span
               aria-hidden="true"
-              className="inline-flex h-6 min-w-[3rem] items-center justify-center rounded-full bg-blue-600 px-2 text-xs font-semibold text-white dark:bg-blue-500"
+              className="inline-flex h-6 min-w-12 items-center justify-center rounded-full bg-blue-600 px-2 text-xs font-semibold text-white dark:bg-blue-500"
             >
               {cartQuantityDisplay}
             </span>
@@ -242,7 +242,7 @@ export default function CartSidebarFixo({ className }: CartSidebarProps) {
 
           {/* Action Button */}
           <Button
-            className="w-full flex items-center justify-center gap-4 rounded-2xl border border-white/20 bg-gradient-to-br from-[#32e26e] via-[#25D366] to-[#128C7E] p-6 text-white shadow-lg shadow-[#128C7E]/30 transition-transform transition-shadow hover:-translate-y-0.5 hover:shadow-xl dark:border-white/10 dark:from-[#1cc08c] dark:via-[#128C7E] dark:to-[#0f7c6d]"
+            className="w-full flex items-center justify-center gap-4 rounded-2xl border border-white/20 bg-linear-to-br from-[#32e26e] via-[#25D366] to-[#128C7E] p-6 text-white shadow-lg shadow-[#128C7E]/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl dark:border-white/10 dark:from-[#1cc08c] dark:via-[#128C7E] dark:to-[#0f7c6d]"
             size="lg"
             onClick={handleSendOrder}
           >
