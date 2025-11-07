@@ -219,18 +219,7 @@ export default function TabelaPageContent({
             {/* Main Content */}
             <main className="space-y-4 sm:space-y-8">
               {/* Page Header */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <Package className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h1 className="text-3xl font-bold text-foreground">
-                      Tabela de Produtos
-                    </h1>
-                  </div>
-                </div>
-              </div>
+
 
               {/* Brand Filter - Mobile / Tablet */}
               <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6 lg:hidden">
@@ -247,7 +236,10 @@ export default function TabelaPageContent({
               <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
-                    <h2 className="text-xl font-semibold">Lista de Produtos</h2>
+                    <h1 className="flex items-center gap-2 text-3xl font-semibold">
+                      <Package className="h-5 w-5 text-primary" />
+                      Tabela de Produtos
+                    </h1>
                     <div className="text-sm text-muted-foreground">
                       {products.length} produtos carregados
                     </div>
