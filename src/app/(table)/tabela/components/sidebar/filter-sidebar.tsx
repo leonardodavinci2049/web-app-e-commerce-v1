@@ -115,7 +115,7 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           <CardTitle className="flex items-center gap-2 text-lg">
             <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
             Filtros principais
-          </CardTitle> 
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 pt-0">
           <label className="text-sm font-medium" htmlFor="sidebar-search">
