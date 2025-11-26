@@ -23,7 +23,7 @@ export default function CartHeader() {
               </Link>
             </Button>
 
-            <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+            <Link href="/" className="shrink-0 flex items-center gap-2">
               <Image
                 src="/images/logo/logo-header.png"
                 alt={`${envs.NEXT_PUBLIC_COMPANY_NAME} Logo`}

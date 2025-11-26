@@ -125,7 +125,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
               </span>
               <span
                 aria-hidden="true"
-                className="inline-flex h-6 min-w-[3rem] items-center justify-center rounded-full bg-primary px-2 text-xs font-semibold text-primary-foreground"
+                className="inline-flex h-6 min-w-12 items-center justify-center rounded-full bg-primary px-2 text-xs font-semibold text-primary-foreground"
               >
                 {cartItems.length}/{summary.itemCount}
               </span>
@@ -287,7 +287,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Button
-                  className="w-full flex items-center justify-center gap-4 rounded-2xl border border-white/20 bg-gradient-to-br from-[#32e26e] via-[#25D366] to-[#128C7E] p-6 text-white shadow-lg shadow-[#128C7E]/30 transition-transform transition-shadow hover:-translate-y-0.5 hover:shadow-xl dark:border-white/10 dark:from-[#1cc08c] dark:via-[#128C7E] dark:to-[#0f7c6d]"
+                  className="w-full flex items-center justify-center gap-4 rounded-2xl border border-white/20 bg-linear-to-br from-[#32e26e] via-[#25D366] to-[#128C7E] p-6 text-white shadow-lg shadow-[#128C7E]/30 transition-transform hover:-translate-y-0.5 hover:shadow-xl dark:border-white/10 dark:from-[#1cc08c] dark:via-[#128C7E] dark:to-[#0f7c6d]"
                   size="lg"
                   onClick={handleFinalizePurchase}
                 >

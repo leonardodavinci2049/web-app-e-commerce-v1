@@ -6,6 +6,11 @@
 "use server";
 
 import { createLogger } from "@/core/logger";
+import { BrandServiceApi } from "@/services/api-main/brand/brand-service-api";
+import type {
+  BrandData,
+  FindBrandRequest,
+} from "@/services/api-main/brand/types/brand-types";
 import { ProductWebServiceApi } from "@/services/api-main/product/product-service-api";
 import type {
   ProductWebFindRequest,
@@ -29,6 +34,11 @@ export interface ProductTableResult {
   hasMore: boolean;
   currentPage: number;
   error?: string;
+}
+
+export interface BrandFilterItem {
+  id: number;
+  name: string;
 }
 
 /**
@@ -88,6 +98,49 @@ export async function getTableProducts(
       currentPage: 0,
       error: error instanceof Error ? error.message : "Erro desconhecido",
     };
+  }
+}
+
+export async function findBrandsForFilter(
+  params: Partial<FindBrandRequest> = {},
+): Promise<BrandFilterItem[]> {
+  try {
+    const response = await BrandServiceApi.findBrands(params);
+
+    if (!BrandServiceApi.isValidBrandResponse(response)) {
+      return [
+        {
+          id: 0,
+          name: "TODAS",
+        },
+      ];
+    }
+
+    const brands = BrandServiceApi.extractBrandList(response).filter(
+      (brand: BrandData) => Boolean(brand.MARCA),
+    );
+
+    const mapped = brands.map((brand) => ({
+      id: brand.ID_MARCA,
+      name: brand.MARCA?.toUpperCase() ?? "",
+    }));
+
+    return [
+      {
+        id: 0,
+        name: "TODAS",
+      },
+      ...mapped,
+    ];
+  } catch (error) {
+    logger.error("Erro ao carregar marcas para filtro", error);
+
+    return [
+      {
+        id: 0,
+        name: "TODAS",
+      },
+    ];
   }
 }
 
