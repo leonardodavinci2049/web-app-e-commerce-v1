@@ -3,13 +3,7 @@
 import { Tags } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { BrandFilterItem } from "../../actions";
 import { findBrandsForFilter } from "../../actions";
@@ -43,15 +37,12 @@ export function BrandFilter({
   );
 
   return (
-    <Card className={cn("gap-4", className)}>
+    <Card className={cn("gap-2", className)}>
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-lg">
           <Tags className="h-5 w-5 text-muted-foreground" />
           Filtro por marcas
         </CardTitle>
-        <CardDescription>
-          Selecione uma marca para visualizar os produtos relacionados.
-        </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-3 pt-0">
         {brands.map((brand) => (
