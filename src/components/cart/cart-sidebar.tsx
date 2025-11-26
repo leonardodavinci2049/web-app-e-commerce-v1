@@ -7,7 +7,6 @@
 "use client";
 
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { type SVGProps, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -171,16 +170,6 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                   >
                     <X className="h-3 w-3" />
                   </Button>
-                  {/* Product Image */}
-                  <div className="relative shrink-0 w-20 h-20 rounded-md overflow-hidden bg-muted">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  </div>
 
                   {/* Product Info */}
                   <div className="flex-1 min-w-0">
