@@ -54,11 +54,11 @@ export const columns: ColumnDef<ProductTableItem>[] = [
 
       return (
         <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 min-w-0">
-          <div className="font-medium text-foreground leading-tight whitespace-normal break-words text-xs sm:text-base hyphens-auto">
-            <span className="sm:hidden block whitespace-normal break-words">
+          <div className="font-medium text-foreground leading-tight whitespace-normal wrap-break-word text-xs sm:text-base hyphens-auto">
+            <span className="sm:hidden block whitespace-normal wrap-break-word">
               {formattedMobileName}
             </span>
-            <span className="hidden sm:block whitespace-normal break-words">
+            <span className="hidden sm:block whitespace-normal wrap-break-word">
               {productNameWithBreaks}
             </span>
           </div>

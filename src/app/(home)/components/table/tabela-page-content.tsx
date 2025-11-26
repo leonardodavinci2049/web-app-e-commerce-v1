@@ -41,13 +41,14 @@ export default function TabelaPageContent({
   const [products, setProducts] = useState<ProductTableItem[]>(
     transformProductsForTable(initialProducts.products),
   );
+  const [selectedBrandId, setSelectedBrandId] = useState<number>(0);
   const [hasMore, setHasMore] = useState(initialProducts.hasMore);
   const [totalCount, setTotalCount] = useState(initialProducts.total);
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
   const [loading, setLoading] = useState(false);
 
   const updateURL = useCallback(
-    (filters: { searchTerm: string }) => {
+    (filters: { searchTerm: string; brandId?: number }) => {
       const params = new URLSearchParams(searchParams.toString());
 
       // Ensure catalog search params do not leak into tabela route
@@ -57,6 +58,14 @@ export default function TabelaPageContent({
         params.set("tableSearch", filters.searchTerm);
       } else {
         params.delete("tableSearch");
+      }
+
+      if (typeof filters.brandId === "number") {
+        if (filters.brandId > 0) {
+          params.set("brandId", String(filters.brandId));
+        } else {
+          params.delete("brandId");
+        }
       }
 
       params.delete("page");
@@ -106,11 +115,23 @@ export default function TabelaPageContent({
       setProductSearchTerm(normalizedTerm);
 
       startTransition(() => {
-        updateURL({ searchTerm: normalizedTerm });
-        handleFilter({ searchTerm: normalizedTerm });
+        updateURL({ searchTerm: normalizedTerm, brandId: selectedBrandId });
+        handleFilter({ searchTerm: normalizedTerm, brandId: selectedBrandId });
       });
     },
-    [handleFilter, setHeaderInputValue, updateURL],
+    [handleFilter, selectedBrandId, setHeaderInputValue, updateURL],
+  );
+
+  const handleBrandFilter = useCallback(
+    (brandId: number) => {
+      setSelectedBrandId(brandId);
+
+      startTransition(() => {
+        updateURL({ searchTerm: productSearchTerm, brandId });
+        handleFilter({ searchTerm: productSearchTerm, brandId });
+      });
+    },
+    [handleFilter, productSearchTerm, updateURL],
   );
 
   useEffect(() => {
@@ -133,6 +154,7 @@ export default function TabelaPageContent({
       const result = await loadMoreProducts(
         {
           searchTerm: productSearchTerm,
+          brandId: selectedBrandId,
         },
         nextPage,
       );
@@ -154,14 +176,18 @@ export default function TabelaPageContent({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, currentPage, productSearchTerm]);
+  }, [loading, hasMore, currentPage, productSearchTerm, selectedBrandId]);
 
   return (
     <>
       <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="flex flex-col gap-6 lg:gap-8">
           <div className="lg:grid lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-6">
-            <FilterSidebar className="hidden lg:block lg:sticky lg:top-28" />
+            <FilterSidebar
+              className="hidden lg:block lg:sticky lg:top-28"
+              selectedBrandId={selectedBrandId}
+              onSelectBrand={handleBrandFilter}
+            />
 
             <main className="space-y-4 sm:space-y-8">
               <div className="bg-card border border-border rounded-lg shadow-sm p-2 sm:p-6">

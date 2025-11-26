@@ -7,7 +7,13 @@
 
 import { Search, SlidersHorizontal, Tags } from "lucide-react";
 
-import { type ChangeEvent, type FormEvent, useCallback } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,72 +25,40 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import type { BrandFilterItem } from "../../actions";
+import { findBrandsForFilter } from "../../actions";
 import { useTableSearch } from "../table/table-search-context";
 
 interface FilterSidebarProps {
   className?: string;
+  selectedBrandId?: number;
+  onSelectBrand?: (brandId: number) => void;
 }
 
-const BRAND_PRESETS: Array<{
-  className: string;
-  name: string;
-  textClassName?: string;
-}> = [
-  {
-    className: "bg-[#1428a0]",
-    name: "Samsung",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#43b02a]",
-    name: "Motorola",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#1e1e1e]",
-    name: "Apple",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#ff6900]",
-    name: "Xiaomi",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#ffd500]",
-    name: "Realme",
-    textClassName: "text-slate-900",
-  },
-  {
-    className: "bg-[#0b64c0]",
-    name: "Asus",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#6c1d8d]",
-    name: "Infinit",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#f6c000]",
-    name: "Pouco",
-    textClassName: "text-slate-900",
-  },
-  {
-    className: "bg-[#a50034]",
-    name: "LG",
-    textClassName: "text-white",
-  },
-  {
-    className: "bg-[#4e5d78]",
-    name: "Outros",
-    textClassName: "text-white",
-  },
-];
-
-export default function FilterSidebar({ className }: FilterSidebarProps) {
+export default function FilterSidebar({
+  className,
+  selectedBrandId,
+  onSelectBrand,
+}: FilterSidebarProps) {
   const { inputValue, setInputValue, submitSearch, clearSearch } =
     useTableSearch();
+
+  const [brands, setBrands] = useState<BrandFilterItem[]>([]);
+
+  useEffect(() => {
+    void (async () => {
+      const result = await findBrandsForFilter();
+      setBrands(result);
+    })();
+  }, []);
+
+  const handleSelectBrand = useCallback(
+    (brandId: number) => {
+      if (!onSelectBrand) return;
+      onSelectBrand(brandId);
+    },
+    [onSelectBrand],
+  );
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -151,18 +125,21 @@ export default function FilterSidebar({ className }: FilterSidebarProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-3 pt-0">
-          {BRAND_PRESETS.map((brand) => (
-            <div
-              key={brand.name}
+          {brands.map((brand) => (
+            <button
+              key={brand.id}
+              type="button"
               className={cn(
-                "rounded-xl border border-white/20 p-3 text-center text-sm font-semibold shadow-sm transition-transform",
-                "hover:-translate-y-0.5 hover:shadow-md",
-                brand.className,
-                brand.textClassName ?? "text-white",
+                "flex h-11 w-full items-center justify-center rounded-xl border px-3 text-center text-sm font-semibold shadow-sm transition-transform",
+                "hover:-translate-y-0.5 hover:shadow-md cursor-pointer",
+                brand.id === selectedBrandId
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-muted-foreground/20 bg-card",
               )}
+              onClick={() => handleSelectBrand(brand.id)}
             >
               {brand.name}
-            </div>
+            </button>
           ))}
         </CardContent>
       </Card>
