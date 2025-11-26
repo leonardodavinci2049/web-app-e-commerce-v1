@@ -130,15 +130,19 @@ export default function FilterSidebar({
               key={brand.id}
               type="button"
               className={cn(
-                "flex h-11 w-full items-center justify-center rounded-xl border px-3 text-center text-sm font-semibold shadow-sm transition-transform",
-                "hover:-translate-y-0.5 hover:shadow-md cursor-pointer",
+                "flex h-11 w-full items-center justify-start gap-2 rounded-xl border px-3 text-left text-sm font-semibold",
+                "bg-gradient-to-b from-card/95 via-card to-accent/40 shadow-sm transition-all duration-150",
+                "hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/70 hover:from-primary/10 hover:via-card hover:to-accent/70",
+                "active:translate-y-px active:shadow-md",
+                "cursor-pointer",
                 brand.id === selectedBrandId
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-muted-foreground/20 bg-card",
+                  ? "border-primary/80 text-primary shadow-md ring-1 ring-primary/40"
+                  : "border-muted-foreground/20 text-foreground/90 hover:text-primary",
               )}
               onClick={() => handleSelectBrand(brand.id)}
             >
-              {brand.name}
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r from-primary to-primary/40 shadow-[0_0_8px_rgba(0,0,0,0.12)]" />
+              <span className="truncate">{brand.name}</span>
             </button>
           ))}
         </CardContent>
