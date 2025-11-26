@@ -54,7 +54,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
 
       return (
         <div className="space-y-1 sm:space-y-2 py-1 sm:py-2 min-w-0">
-          <div className="font-medium text-foreground leading-tight whitespace-normal wrap-break-word text-xs sm:text-base hyphens-auto">
+          <div className="font-medium text-foreground/90 sm:text-foreground leading-tight whitespace-normal wrap-break-word text-xs sm:text-base hyphens-auto">
             <span className="sm:hidden block whitespace-normal wrap-break-word">
               {formattedMobileName}
             </span>
@@ -64,20 +64,20 @@ export const columns: ColumnDef<ProductTableItem>[] = [
           </div>
 
           {/* Product metadata - Hide some on mobile */}
-          <div className="flex flex-wrap gap-0.5 sm:gap-1 text-xs text-muted-foreground">
+          <div className="flex flex-wrap gap-0.5 sm:gap-1 text-[10px] text-muted-foreground">
             {marca && (
-              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-xs">
+              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-[10px]">
                 {marca}
               </span>
             )}
             {modelo && (
-              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-xs hidden sm:inline">
-                Modelo: {modelo}
+              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-[10px]">
+                {modelo}
               </span>
             )}
             {ref && (
-              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-xs hidden sm:inline">
-                Ref: {ref}
+              <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-[10px]">
+                - {ref}
               </span>
             )}
           </div>
@@ -137,10 +137,10 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       const precoAtacado = parseFloat(vlAtacado || "0");
 
       return (
-        <div className="text-right space-y-1 min-w-[72px] sm:min-w-[100px]">
+        <div className="text-right space-y-1 min-w-[64px] sm:min-w-[100px]">
           <div
             className={cn(
-              "font-bold text-sm sm:text-lg wrap-break-word",
+              "font-bold text-[13px] sm:text-lg wrap-break-word",
               isPromotional ? "text-red-600" : "text-foreground",
             )}
           >
@@ -159,6 +159,9 @@ export const columns: ColumnDef<ProductTableItem>[] = [
   {
     id: "actions",
     header: "Ação",
+    size: 80,
+    minSize: 72,
+    maxSize: 96,
     cell: ({ row }) => {
       const { addItem } = useCart();
       const hasStock = row.original.ESTOQUE_LOJA > 0;
@@ -213,7 +216,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
       };
 
       return (
-        <div className="text-center">
+        <div className="text-center pr-5 sm:pr-2">
           <Button
             onClick={handleAddToCart}
             disabled={!hasStock}
