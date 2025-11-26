@@ -65,19 +65,25 @@ export function DataTable<TData, TValue>({
                   key={headerGroup.id}
                   className="bg-blue-50 dark:bg-blue-950/50 border-b-2 border-blue-200 dark:border-blue-800"
                 >
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className="font-semibold px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-blue-800 dark:text-blue-200"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  ))}
+                  {headerGroup.headers.map((header) => {
+                    const isActionsColumn = header.column.id === "actions";
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className={cn(
+                          "font-semibold px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-blue-800 dark:text-blue-200",
+                          isActionsColumn ? "pr-4 sm:pr-6" : undefined,
+                        )}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
               ))}
             </TableHeader>
@@ -91,6 +97,7 @@ export function DataTable<TData, TValue>({
                   >
                     {row.getVisibleCells().map((cell) => {
                       const isProductColumn = cell.column.id === "PRODUTO";
+                      const isActionsColumn = cell.column.id === "actions";
 
                       return (
                         <TableCell
@@ -98,8 +105,9 @@ export function DataTable<TData, TValue>({
                           className={cn(
                             "py-1.5 sm:py-3 px-2 sm:px-4",
                             isProductColumn
-                              ? "sm:whitespace-normal align-top min-w-0"
+                              ? "sm:whitespace-normal align-top min-w-[220px] sm:min-w-0"
                               : undefined,
+                            isActionsColumn ? "pr-4 sm:pr-6" : undefined,
                           )}
                         >
                           {flexRender(
