@@ -6,12 +6,12 @@
 "use client";
 
 import { ChevronDown, Menu, Moon, ShoppingCart, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import { type SVGProps, useEffect, useState } from "react";
-import CartSidebar from "@/components/cart/cart-sidebar";
 import { useCart } from "@/components/cart/cart-provider";
+import CartSidebar from "@/components/cart/cart-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {

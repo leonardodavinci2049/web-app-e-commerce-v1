@@ -71,7 +71,6 @@ function CartContent() {
       `Forma de pagamento: ${paymentLabel}`,
     ].join("\n");
 
-    
     const whatsappUrl = `https://wa.me/5516992770660?text=${encodeURIComponent(message)}`;
 
     if (typeof window !== "undefined") {

@@ -6,7 +6,7 @@
 
 "use client";
 
-import { Menu, Package, ShoppingCart, Table } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { type SVGProps, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
