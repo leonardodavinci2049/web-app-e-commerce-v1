@@ -77,7 +77,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
             )}
             {ref && (
               <span className="bg-muted px-1 sm:px-2 py-0.5 rounded text-[10px]">
-                - {ref}
+                {ref}
               </span>
             )}
           </div>
