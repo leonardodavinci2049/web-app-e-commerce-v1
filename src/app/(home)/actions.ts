@@ -1,141 +1,105 @@
+/**
+ * Server Actions for Products Table Page
+ * Fetches products and brands data from API
+ */
+
 "use server";
 
-import { envs } from "@/core/config/envs";
 import { createLogger } from "@/core/logger";
-import { adaptHomeSectionProducts } from "@/lib/adapters/product-sections-adapter";
 import { ProductWebServiceApi } from "@/services/api-main/product/product-service-api";
-import type { ProductWebSectionsRequest } from "@/services/api-main/product/types/product-types";
-import type { ProductWithMetadata } from "@/types/products";
+import type {
+  ProductWebFindRequest,
+  ProductWebListItem,
+} from "@/services/api-main/product/types/product-types";
 
-const logger = createLogger("HomeSectionsActions");
+const logger = createLogger("TabelaActions");
 
-const DEFAULT_SECTION_LIMIT = 8;
-const DEFAULT_PAGE_ID = 1;
-const DEFAULT_COLUMN_ID = 1;
-const DEFAULT_ORDER_ID = 1;
-
-function shouldBypassApi(): boolean {
-  const flag = process.env.BUILDING;
-  return flag === "true" || flag === "1";
+export interface ProductTableFilters {
+  searchTerm?: string;
+  brandId?: number;
+  page?: number;
+  pageSize?: number;
+  sortColumn?: number;
+  sortOrder?: number;
 }
 
-async function fetchSectionProducts(
-  params: Partial<ProductWebSectionsRequest>,
-  sectionName: string,
-): Promise<ProductWithMetadata[]> {
-  if (shouldBypassApi()) {
-    return [];
-  }
+export interface ProductTableResult {
+  products: ProductWebListItem[];
+  total: number;
+  hasMore: boolean;
+  currentPage: number;
+  error?: string;
+}
 
+/**
+ * Fetches products for the table with pagination and filters
+ */
+export async function getTableProducts(
+  filters: ProductTableFilters = {},
+): Promise<ProductTableResult> {
   try {
-    const response = await ProductWebServiceApi.findProductWebSections(params);
-    const sectionItems = ProductWebServiceApi.extractProductSections(response);
+    const {
+      searchTerm = "",
+      brandId = 0,
+      page = 0,
+      pageSize = 100,
+      sortColumn = 1,
+      sortOrder = 1,
+    } = filters;
 
-    if (!sectionItems || sectionItems.length === 0) {
-      return [];
-    }
+    // Build request parameters
+    const params: Partial<ProductWebFindRequest> = {
+      pe_produto: searchTerm,
+      pe_id_marca: brandId,
+      pe_qt_registros: pageSize,
+      pe_pagina_id: page,
+      pe_coluna_id: sortColumn,
+      pe_ordem_id: sortOrder,
+    };
 
-    return adaptHomeSectionProducts(sectionItems);
+    /*    logger.info("Buscando produtos para tabela", { params }); */
+
+    // Call the API service
+    const response = await ProductWebServiceApi.findProducts(params);
+
+    // Extract products from response
+    const products = ProductWebServiceApi.extractProductList(response);
+
+    const result: ProductTableResult = {
+      products,
+      total: response.quantity || products.length,
+      hasMore: products.length === pageSize,
+      currentPage: page,
+    };
+
+    /*     logger.info("Produtos carregados com sucesso", {
+      count: products.length,
+      total: result.total,
+      hasMore: result.hasMore,
+    }); */
+
+    return result;
   } catch (error) {
-    logger.error(`Erro ao carregar seção ${sectionName}`, error);
-    return [];
+    logger.error("Erro ao carregar produtos para tabela", error);
+    return {
+      products: [],
+      total: 0,
+      hasMore: false,
+      currentPage: 0,
+      error: error instanceof Error ? error.message : "Erro desconhecido",
+    };
   }
 }
 
-function withDefaultParams(
-  overrides: Partial<ProductWebSectionsRequest>,
-): Partial<ProductWebSectionsRequest> {
-  return {
-    pe_qt_registros: DEFAULT_SECTION_LIMIT,
-    pe_pagina_id: DEFAULT_PAGE_ID,
-    pe_coluna_id: DEFAULT_COLUMN_ID,
-    pe_ordem_id: DEFAULT_ORDER_ID,
-    ...overrides,
-  };
-}
-
-export async function getHighlightSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: 0,
-      pe_flag_highlight: 1,
-      pe_flag_promotions: 0,
-      pe_flag_lancamento: 0,
-    }),
-    "destaques",
-  );
-}
-
-export async function getPromotionSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: 0,
-      pe_flag_highlight: 0,
-      pe_flag_promotions: 1,
-      pe_flag_lancamento: 0,
-    }),
-    "promocoes",
-  );
-}
-
-export async function getNewReleasesSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: 0,
-      pe_flag_highlight: 0,
-      pe_flag_promotions: 0,
-      pe_flag_lancamento: 1,
-      pe_coluna_id: 2,
-      pe_ordem_id: 2,
-    }),
-    "novidades",
-  );
-}
-
-export async function getCategoryOneSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: envs.HOME_CATEGORY1_ID,
-      pe_flag_highlight: 0,
-      pe_flag_promotions: 0,
-      pe_flag_lancamento: 0,
-    }),
-    "categoria1",
-  );
-}
-
-export async function getCategoryTwoSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: envs.HOME_CATEGORY2_ID,
-      pe_flag_highlight: 0,
-      pe_flag_promotions: 0,
-      pe_flag_lancamento: 0,
-    }),
-    "categoria2",
-  );
-}
-
-export async function getCategoryThreeSectionProducts(): Promise<
-  ProductWithMetadata[]
-> {
-  return fetchSectionProducts(
-    withDefaultParams({
-      pe_id_taxonomy: envs.HOME_CATEGORY3_ID,
-      pe_flag_highlight: 0,
-      pe_flag_promotions: 0,
-      pe_flag_lancamento: 0,
-    }),
-    "categoria3",
-  );
+/**
+ * Load more products (for pagination)
+ */
+export async function loadMoreProducts(
+  currentFilters: ProductTableFilters,
+  nextPage: number,
+): Promise<ProductTableResult> {
+  return getTableProducts({
+    ...currentFilters,
+    page: nextPage,
+  });
 }
