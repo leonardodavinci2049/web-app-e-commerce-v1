@@ -7,7 +7,7 @@
 
 import { Package } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
 import CartSidebarFixo from "@/app/(home)/components/sidebar/cart-sidebar-fixo";
 import FilterSidebar from "@/app/(home)/components/sidebar/filter-sidebar";
@@ -20,6 +20,7 @@ import { DataTable } from "@/app/(home)/components/tabela/data-table";
 import Footer from "@/components/home/footer";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
+import { BrandFilter } from "../filter/brand-filter";
 import { useTableSearch } from "./table-search-context";
 
 interface TabelaPageContentProps {
@@ -46,6 +47,7 @@ export default function TabelaPageContent({
   const [totalCount, setTotalCount] = useState(initialProducts.total);
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
   const [loading, setLoading] = useState(false);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const updateURL = useCallback(
     (filters: { searchTerm: string; brandId?: number }) => {
@@ -134,6 +136,26 @@ export default function TabelaPageContent({
     [handleFilter, productSearchTerm, updateURL],
   );
 
+  const handleMobileBrandFilter = useCallback(
+    (brandId: number) => {
+      handleBrandFilter(brandId);
+
+      // Scroll suave para a tabela após selecionar o filtro no mobile
+      // Pequeno delay para garantir que a UI respondeu ao clique
+      setTimeout(() => {
+        if (tableRef.current) {
+          const yOffset = -100; // Ajuste para compensar header fixo e dar um respiro
+          const element = tableRef.current;
+          const y =
+            element.getBoundingClientRect().top + window.scrollY + yOffset;
+
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }, 100);
+    },
+    [handleBrandFilter],
+  );
+
   useEffect(() => {
     setProductSearchTerm(initialSearchTerm);
     setHeaderInputValue(initialSearchTerm);
@@ -197,13 +219,23 @@ export default function TabelaPageContent({
                       <Package className="h-5 w-5 text-primary" />
                       Tabela de Produtos
                     </h1>
-                    <div className="text-sm text-muted-foreground">
+                    <div className="hidden lg:block text-sm text-muted-foreground">
+                      {products.length} produtos carregados
+                    </div>
+                  </div>
+
+                  <div className="lg:hidden space-y-2">
+                    <BrandFilter
+                      selectedBrandId={selectedBrandId}
+                      onSelectBrand={handleMobileBrandFilter}
+                    />
+                    <div className="text-sm text-muted-foreground px-1">
                       {products.length} produtos carregados
                     </div>
                   </div>
 
                   <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
-                    <div className="min-w-0">
+                    <div className="min-w-0" ref={tableRef}>
                       <DataTable
                         columns={columns}
                         data={products}
