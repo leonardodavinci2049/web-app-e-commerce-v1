@@ -1,4 +1,4 @@
-import { getHighlightSectionProducts } from "@/app/(home)/actions";
+import { getHighlightSectionProducts } from "@/app/home-desabled/actions";
 import { envs } from "@/core/config/envs";
 import ProductsSection from "./products-section";
 

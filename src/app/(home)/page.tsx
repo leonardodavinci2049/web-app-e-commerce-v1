@@ -1,132 +1,80 @@
 /**
- * Homepage - E-commerce B2B CAIXAFECHADA
- * Complete homepage with all sections in the correct order
+ * Products Table Page
+ * Modern table listing with search interface
  */
 
+import { Loader2 } from "lucide-react";
+import type { Metadata } from "next";
 import { Suspense } from "react";
-import AboutSection from "@/components/home/about-section";
-import Advantages from "@/components/home/advantages";
-import CustomerSegments from "@/components/home/customer-segments";
-import DepartmentsNav from "@/components/home/departments-nav";
-import Footer from "@/components/home/footer";
-import HeroSlider from "@/components/home/hero-slider";
-import LocationSection from "@/components/home/location-section";
 import MobileBottomNav from "@/components/home/mobile-bottom-nav";
-import Newsletter from "@/components/home/newsletter";
-import PromoBanner from "@/components/home/promo-banner";
-import PromoBannersGrid from "@/components/home/promo-banners-grid";
-import ProductSectionCat01 from "@/components/home/sections/ProductSectionCat01";
-import ProductSectionCat02 from "@/components/home/sections/ProductSectionCat02";
-import ProductSectionCat03 from "@/components/home/sections/ProductSectionCat03";
-import ProductSectionHighlights from "@/components/home/sections/ProductSectionHighlights";
-import ProductSectionNewReleases from "@/components/home/sections/ProductSectionNewReleases";
-import ProductSectionPromotions from "@/components/home/sections/ProductSectionPromotions";
-import ProductsSection from "@/components/home/sections/products-section";
-import { envs } from "@/core/config/envs";
+import { getTableProducts } from "./actions";
+import TabelaPageContent from "./components/table/tabela-page-content";
 
-export default function HomePage() {
-  const renderLoadingSection = (id: string, title: string) => (
-    <ProductsSection id={id} title={title} isLoading />
-  );
+export const metadata: Metadata = {
+  title: "Tabela de Produtos | Loja",
+  description:
+    "Navegue pela tabela completa de produtos com busca inteligente e confira preços competitivos em tempo real.",
+};
+
+interface TabelaPageProps {
+  searchParams: Promise<{
+    tableSearch?: string;
+    page?: string;
+  }>;
+}
+
+async function TabelaPageData({ searchParams }: TabelaPageProps) {
+  const params = await searchParams;
+  const searchTerm = params.tableSearch || "";
+  const page = params.page ? parseInt(params.page, 10) : 0;
+
+  const productsResult = await getTableProducts({
+    searchTerm,
+    page,
+    pageSize: 100,
+  });
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* 1. Top Bar */}
-      {/* <TopBar /> */}
+    <TabelaPageContent
+      initialProducts={productsResult}
+      initialSearchTerm={searchTerm}
+    />
+  );
+}
 
-      {/* Main Content */}
-      <main className="flex-1">
-        {/* 4. Hero Slider */}
-        <HeroSlider />
+function TabelaPageLoading() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="space-y-8">
+        {/* Header skeleton */}
+        <div className="space-y-4">
+          <div className="h-8 bg-muted rounded-lg w-1/3 animate-pulse" />
+          <div className="h-4 bg-muted rounded w-2/3 animate-pulse" />
+        </div>
 
-        {/* 5. Departments Navigation */}
-        <DepartmentsNav />
-
-        {/* 6. Featured Products Section */}
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-destaque",
-            envs.HOME_SECTION_1_TITLE,
-          )}
-        >
-          <ProductSectionHighlights />
-        </Suspense>
-
-        {/* 7. Promo Banner - Novidades */}
-        <PromoBanner />
-
-        {/* 8. New Products Section */}
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-promocoes",
-            envs.HOME_SECTION_2_TITLE,
-          )}
-        >
-          <ProductSectionPromotions />
-        </Suspense>
-
-        {/* 9. New Releases Section */}
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-novidades",
-            envs.HOME_SECTION_3_TITLE,
-          )}
-        >
-          <ProductSectionNewReleases />
-        </Suspense>
-
-        {/* 10. Promotional Banners Grid */}
-        <PromoBannersGrid />
-
-        {/* 11. Category Sections */}
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-categoria-1",
-            envs.HOME_SECTION_4_TITLE,
-          )}
-        >
-          <ProductSectionCat01 />
-        </Suspense>
-
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-categoria-2",
-            envs.HOME_SECTION_5_TITLE,
-          )}
-        >
-          <ProductSectionCat02 />
-        </Suspense>
-
-        <Suspense
-          fallback={renderLoadingSection(
-            "home-produtos-categoria-3",
-            envs.HOME_SECTION_6_TITLE,
-          )}
-        >
-          <ProductSectionCat03 />
-        </Suspense>
-
-        {/* 12. Customer Segments / Testimonials */}
-        <CustomerSegments />
-
-        {/* 13. Advantages Section */}
-        <Advantages />
-
-        {/* 14. About Section */}
-        <AboutSection />
-
-        {/* 15. Location Section */}
-        <LocationSection />
-
-        {/* 16. Newsletter */}
-        <Newsletter />
-      </main>
-
-      {/* Footer */}
-      <Footer />
-
-      {/* Mobile Bottom Navigation - Only visible on mobile */}
-      <MobileBottomNav />
+        {/* Table skeleton */}
+        <div className="border rounded-lg">
+          <div className="p-4">
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+              <Loader2 className="w-6 h-6 animate-spin" />
+              <span>Carregando tabela de produtos...</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  );
+}
+
+export default function TabelaPage(props: TabelaPageProps) {
+  return (
+    <>
+      <Suspense fallback={<TabelaPageLoading />}>
+        <TabelaPageData {...props} />
+      </Suspense>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
+    </>
   );
 }

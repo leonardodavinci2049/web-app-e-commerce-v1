@@ -1,21 +1,19 @@
-import { Suspense } from "react";
-import MainHeader from "@/components/header/main-header";
-import MobileHeader from "@/components/header/mobile-header";
+import TableMainHeader from "./components/header/main-header";
+import TableMobileHeader from "./components/header/mobile-header";
+import { TableSearchProvider } from "./components/table/table-search-context";
 
-const HomeLayout = ({
+const TableLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   return (
-    <>
-      <MobileHeader />
-      <Suspense fallback={<div className="h-16" />}>
-        <MainHeader />
-      </Suspense>
+    <TableSearchProvider>
+      <TableMobileHeader />
+      <TableMainHeader />
       {children}
-    </>
+    </TableSearchProvider>
   );
 };
 
-export default HomeLayout;
+export default TableLayout;
