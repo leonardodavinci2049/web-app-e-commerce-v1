@@ -9,14 +9,14 @@ import { Package } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
-import CartSidebarFixo from "@/app/(table)/tabela/components/sidebar/cart-sidebar-fixo";
-import FilterSidebar from "@/app/(table)/tabela/components/sidebar/filter-sidebar";
+import CartSidebarFixo from "@/app/(home)/components/sidebar/cart-sidebar-fixo";
+import FilterSidebar from "@/app/(home)/components/sidebar/filter-sidebar";
 import {
   columns,
   type ProductTableItem,
   transformProductsForTable,
-} from "@/app/(table)/tabela/components/tabela/columns";
-import { DataTable } from "@/app/(table)/tabela/components/tabela/data-table";
+} from "@/app/(home)/components/tabela/columns";
+import { DataTable } from "@/app/(home)/components/tabela/data-table";
 import Footer from "@/components/home/footer";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
