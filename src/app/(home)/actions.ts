@@ -5,6 +5,7 @@
 
 "use server";
 
+import { unstable_cache } from "next/cache";
 import { createLogger } from "@/core/logger";
 import { BrandServiceApi } from "@/services/api-main/brand/brand-service-api";
 import type {
@@ -40,6 +41,14 @@ export interface BrandFilterItem {
   id: number;
   name: string;
 }
+
+const getBrandsCached = unstable_cache(
+  async (params: Partial<FindBrandRequest>) => {
+    return await BrandServiceApi.findBrands(params);
+  },
+  ["brands-filter-cache"],
+  { revalidate: 3600 },
+);
 
 /**
  * Fetches products for the table with pagination and filters
@@ -105,7 +114,7 @@ export async function findBrandsForFilter(
   params: Partial<FindBrandRequest> = {},
 ): Promise<BrandFilterItem[]> {
   try {
-    const response = await BrandServiceApi.findBrands(params);
+    const response = await getBrandsCached(params);
 
     if (!BrandServiceApi.isValidBrandResponse(response)) {
       return [
