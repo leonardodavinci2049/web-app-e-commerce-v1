@@ -54,7 +54,7 @@ export default function MobileBottomNav() {
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50">
       {/* Bottom Navigation Bar */}
-      <nav className="bg-card/95 backdrop-blur-sm border-t border-border px-2 py-2 shadow-lg">
+      <nav className="bg-card/20 backdrop-blur-md border-t border-border px-2 py-2 shadow-lg">
         <div className="flex items-center justify-around max-w-md mx-auto">
           {/* Menu - Hambúrguer */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
