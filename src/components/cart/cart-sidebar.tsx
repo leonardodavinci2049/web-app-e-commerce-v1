@@ -7,7 +7,6 @@
 "use client";
 
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
-import Link from "next/link";
 import { type SVGProps, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
