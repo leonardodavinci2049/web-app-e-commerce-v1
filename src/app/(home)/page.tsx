@@ -11,14 +11,17 @@ import { getTableProducts } from "./actions";
 import TabelaPageContent from "./components/table/tabela-page-content";
 
 export const metadata: Metadata = {
-  title: "Tabela de Produtos | Loja",
+  title:
+    "Caixa Fechada | Peças para Celulares em Ribeirão Preto – Atacado e Varejo",
   description:
-    "Navegue pela tabela completa de produtos com busca inteligente e confira preços competitivos em tempo real.",
+    "A Caixa Fechada é a maior distribuidora de peças para celulares em Ribeirão Preto. Vendas no atacado e varejo com variedade, qualidade e entrega rápida",
 };
 
 interface TabelaPageProps {
   searchParams: Promise<{
     tableSearch?: string;
+    brandId?: string;
+    stock?: string;
     page?: string;
   }>;
 }
@@ -28,8 +31,13 @@ async function TabelaPageData({ searchParams }: TabelaPageProps) {
   const searchTerm = params.tableSearch || "";
   const page = params.page ? parseInt(params.page, 10) : 0;
 
+  const brandId = params.brandId ? parseInt(params.brandId, 10) : 0;
+  const stockOnly = params.stock === "1";
+
   const productsResult = await getTableProducts({
     searchTerm,
+    brandId,
+    stockOnly,
     page,
     pageSize: 100,
   });

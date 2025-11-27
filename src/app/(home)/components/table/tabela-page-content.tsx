@@ -43,7 +43,10 @@ export default function TabelaPageContent({
   const [products, setProducts] = useState<ProductTableItem[]>(
     transformProductsForTable(initialProducts.products),
   );
-  const [selectedBrandId, setSelectedBrandId] = useState<number>(0);
+  const [selectedBrandId, setSelectedBrandId] = useState<number>(() => {
+    const param = searchParams.get("brandId");
+    return param ? parseInt(param, 10) : 0;
+  });
   const [hasMore, setHasMore] = useState(initialProducts.hasMore);
   const [totalCount, setTotalCount] = useState(initialProducts.total);
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
@@ -208,6 +211,32 @@ export default function TabelaPageContent({
     setProductSearchTerm(initialSearchTerm);
     setHeaderInputValue(initialSearchTerm);
   }, [initialSearchTerm, setHeaderInputValue]);
+
+  // Sync products when initialProducts changes (server re-render)
+  useEffect(() => {
+    setProducts(transformProductsForTable(initialProducts.products));
+    setHasMore(initialProducts.hasMore);
+    setTotalCount(initialProducts.total);
+    setCurrentPage(initialProducts.currentPage);
+  }, [initialProducts]);
+
+  // Sync filters from URL
+  useEffect(() => {
+    const brandIdParam = searchParams.get("brandId");
+    const stockParam = searchParams.get("stock");
+
+    if (brandIdParam) {
+      setSelectedBrandId(parseInt(brandIdParam, 10));
+    } else {
+      setSelectedBrandId(0);
+    }
+
+    if (stockParam === "1") {
+      setShowStock(true);
+    } else {
+      setShowStock(false);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const unregister = registerSearchHandler(applySearch);

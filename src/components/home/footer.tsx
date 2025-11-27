@@ -164,7 +164,9 @@ export default function Footer() {
             <h3 className="font-bold">Contato</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <span className="text-primary font-medium">(11) 9999-9999</span>
+                <span className="text-primary font-medium">
+                  (16) 99277-0660
+                </span>
               </li>
               <li>
                 <span className="text-muted-foreground">
@@ -234,8 +236,8 @@ export default function Footer() {
       <div className="border-t border-border bg-muted">
         <div className="container mx-auto max-w-7xl px-4 py-4">
           <p className="text-center text-sm text-muted-foreground">
-            © 2024 CAIXAFECHADA - Todos os direitos reservados | CNPJ:
-            XX.XXX.XXX/0001-XX
+            © {new Date().getFullYear()} CAIXAFECHADA - Todos os direitos
+            reservados | CNPJ: 09.061.131/0001-53
           </p>
         </div>
       </div>
