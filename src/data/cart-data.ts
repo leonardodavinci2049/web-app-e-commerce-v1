@@ -41,8 +41,8 @@ export function calculateCartSummary(items: CartItem[]) {
 
   const hasItems = items.length > 0;
 
-  // Free shipping for orders above R$ 299 (only when there are items)
-  const shipping = !hasItems ? 0 : subtotal >= 299 ? 0 : 14.5;
+  // Free shipping for orders above R$ 300 (only when there are items)
+  const shipping = !hasItems ? 0 : subtotal >= 300 ? 0 : 15.0;
 
   // Mock discount calculation
   const discount = 0;

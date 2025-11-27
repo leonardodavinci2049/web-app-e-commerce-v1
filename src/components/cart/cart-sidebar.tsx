@@ -247,7 +247,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                 <span className="text-muted-foreground">Frete</span>
                 <span className="font-medium">
                   {summary.shipping === 0 ? (
-                    <span className="text-green-600">Negociado</span>
+                    <span className="text-green-600">Grátis</span>
                   ) : (
                     formatCurrency(summary.shipping)
                   )}

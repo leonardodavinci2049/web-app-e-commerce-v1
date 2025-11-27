@@ -61,12 +61,19 @@ function CartContent() {
       return `${index + 1}. ${item.name} - ${item.quantity}x ${formatCurrencyBRL(item.price)} = ${subtotal}`;
     });
 
+    const shippingLabel =
+      summary.shipping === 0
+        ? "Frete: Grátis"
+        : `Frete: ${formatCurrencyBRL(summary.shipping)}`;
+
     const message = [
       "Olá! Gostaria de realizar um pedido.",
       "",
       "Itens:",
       ...lines,
       "",
+      `Subtotal: ${formatCurrencyBRL(summary.subtotal)}`,
+      shippingLabel,
       `Total: ${formatCurrencyBRL(summary.total)}`,
       `Forma de pagamento: ${paymentLabel}`,
     ].join("\n");
@@ -220,8 +227,33 @@ function CartContent() {
           </p>
         </div>
 
-        {/* Total */}
+        {/* Summary */}
         <div className="space-y-2 pt-2">
+          {/* Subtotal */}
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">Subtotal:</span>
+            <span className="font-medium">
+              {formatCurrencyBRL(summary.subtotal)}
+            </span>
+          </div>
+
+          {/* Shipping */}
+          <div className="flex justify-between items-center text-sm">
+            <span className="text-muted-foreground">Frete:</span>
+            <span className="font-medium">
+              {summary.shipping === 0 ? (
+                <span className="text-green-600 dark:text-green-400">
+                  Grátis
+                </span>
+              ) : (
+                formatCurrencyBRL(summary.shipping)
+              )}
+            </span>
+          </div>
+
+          <Separator />
+
+          {/* Total */}
           <div className="flex justify-between items-center">
             <span className="text-lg font-bold">Total:</span>
             <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
