@@ -21,7 +21,7 @@ import Footer from "@/components/home/footer";
 import { Switch } from "@/components/ui/switch";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
-import { BrandFilter } from "../filter/brand-filter";
+import { BrandFilterMobile } from "../filter/brand-filter-mobile";
 import { useTableSearch } from "./table-search-context";
 
 interface TabelaPageContentProps {
@@ -291,7 +291,7 @@ export default function TabelaPageContent({
                   </div>
 
                   <div className="lg:hidden space-y-4">
-                    <BrandFilter
+                    <BrandFilterMobile
                       selectedBrandId={selectedBrandId}
                       onSelectBrand={handleMobileBrandFilter}
                     />
