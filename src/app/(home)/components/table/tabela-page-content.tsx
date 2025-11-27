@@ -18,6 +18,7 @@ import {
 } from "@/app/(home)/components/tabela/columns";
 import { DataTable } from "@/app/(home)/components/tabela/data-table";
 import Footer from "@/components/home/footer";
+import { Switch } from "@/components/ui/switch";
 import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
 import { BrandFilter } from "../filter/brand-filter";
@@ -47,10 +48,15 @@ export default function TabelaPageContent({
   const [totalCount, setTotalCount] = useState(initialProducts.total);
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
   const [loading, setLoading] = useState(false);
+  const [showStock, setShowStock] = useState(searchParams.get("stock") === "1");
   const tableRef = useRef<HTMLDivElement>(null);
 
   const updateURL = useCallback(
-    (filters: { searchTerm: string; brandId?: number }) => {
+    (filters: {
+      searchTerm: string;
+      brandId?: number;
+      stockOnly?: boolean;
+    }) => {
       const params = new URLSearchParams(searchParams.toString());
 
       // Ensure catalog search params do not leak into tabela route
@@ -68,6 +74,12 @@ export default function TabelaPageContent({
         } else {
           params.delete("brandId");
         }
+      }
+
+      if (filters.stockOnly) {
+        params.set("stock", "1");
+      } else {
+        params.delete("stock");
       }
 
       params.delete("page");
@@ -117,11 +129,19 @@ export default function TabelaPageContent({
       setProductSearchTerm(normalizedTerm);
 
       startTransition(() => {
-        updateURL({ searchTerm: normalizedTerm, brandId: selectedBrandId });
-        handleFilter({ searchTerm: normalizedTerm, brandId: selectedBrandId });
+        updateURL({
+          searchTerm: normalizedTerm,
+          brandId: selectedBrandId,
+          stockOnly: showStock,
+        });
+        handleFilter({
+          searchTerm: normalizedTerm,
+          brandId: selectedBrandId,
+          stockOnly: showStock,
+        });
       });
     },
-    [handleFilter, selectedBrandId, setHeaderInputValue, updateURL],
+    [handleFilter, selectedBrandId, setHeaderInputValue, updateURL, showStock],
   );
 
   const handleBrandFilter = useCallback(
@@ -129,11 +149,39 @@ export default function TabelaPageContent({
       setSelectedBrandId(brandId);
 
       startTransition(() => {
-        updateURL({ searchTerm: productSearchTerm, brandId });
-        handleFilter({ searchTerm: productSearchTerm, brandId });
+        updateURL({
+          searchTerm: productSearchTerm,
+          brandId,
+          stockOnly: showStock,
+        });
+        handleFilter({
+          searchTerm: productSearchTerm,
+          brandId,
+          stockOnly: showStock,
+        });
       });
     },
-    [handleFilter, productSearchTerm, updateURL],
+    [handleFilter, productSearchTerm, updateURL, showStock],
+  );
+
+  const handleStockFilter = useCallback(
+    (checked: boolean) => {
+      setShowStock(checked);
+
+      startTransition(() => {
+        updateURL({
+          searchTerm: productSearchTerm,
+          brandId: selectedBrandId,
+          stockOnly: checked,
+        });
+        handleFilter({
+          searchTerm: productSearchTerm,
+          brandId: selectedBrandId,
+          stockOnly: checked,
+        });
+      });
+    },
+    [handleFilter, productSearchTerm, selectedBrandId, updateURL],
   );
 
   const handleMobileBrandFilter = useCallback(
@@ -177,6 +225,7 @@ export default function TabelaPageContent({
         {
           searchTerm: productSearchTerm,
           brandId: selectedBrandId,
+          stockOnly: showStock,
         },
         nextPage,
       );
@@ -198,7 +247,14 @@ export default function TabelaPageContent({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, currentPage, productSearchTerm, selectedBrandId]);
+  }, [
+    loading,
+    hasMore,
+    currentPage,
+    productSearchTerm,
+    selectedBrandId,
+    showStock,
+  ]);
 
   return (
     <>
@@ -219,21 +275,39 @@ export default function TabelaPageContent({
                       <Package className="h-5 w-5 text-primary" />
                       Tabela de Produtos
                     </h1>
-                    <div className="hidden lg:block text-sm text-muted-foreground">
+                    <div className="hidden lg:flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={showStock}
+                          onCheckedChange={handleStockFilter}
+                        />
+                        <span className="font-medium text-foreground">
+                          Estoque
+                        </span>
+                      </div>
+                      <div className="h-4 w-px bg-border" />
                       {products.length} produtos carregados
                     </div>
                   </div>
 
-                  <div className="lg:hidden space-y-2">
+                  <div className="lg:hidden space-y-4">
                     <BrandFilter
                       selectedBrandId={selectedBrandId}
                       onSelectBrand={handleMobileBrandFilter}
                     />
-                    <div className="text-sm text-muted-foreground px-1">
-                      {products.length} produtos carregados
+                    <div className="flex items-center justify-between px-1">
+                      <div className="text-sm text-muted-foreground">
+                        {products.length} produtos carregados
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={showStock}
+                          onCheckedChange={handleStockFilter}
+                        />
+                        <span className="text-sm font-medium">Estoque</span>
+                      </div>
                     </div>
                   </div>
-
                   <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
                     <div className="min-w-0" ref={tableRef}>
                       <DataTable

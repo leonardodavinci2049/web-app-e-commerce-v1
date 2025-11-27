@@ -27,6 +27,7 @@ export interface ProductTableFilters {
   pageSize?: number;
   sortColumn?: number;
   sortOrder?: number;
+  stockOnly?: boolean;
 }
 
 export interface ProductTableResult {
@@ -64,6 +65,7 @@ export async function getTableProducts(
       pageSize = 100,
       sortColumn = 1,
       sortOrder = 1,
+      stockOnly = false,
     } = filters;
 
     // Build request parameters
@@ -74,6 +76,7 @@ export async function getTableProducts(
       pe_pagina_id: page,
       pe_coluna_id: sortColumn,
       pe_ordem_id: sortOrder,
+      pe_flag_estoque: stockOnly ? 1 : 0,
     };
 
     /*    logger.info("Buscando produtos para tabela", { params }); */
