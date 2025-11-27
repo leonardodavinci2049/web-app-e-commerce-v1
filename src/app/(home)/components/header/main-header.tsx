@@ -5,24 +5,25 @@
 
 "use client";
 
-import { ChevronDown, Menu, Moon, ShoppingCart, Sun } from "lucide-react";
+import { Moon, Search, ShoppingCart, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { type SVGProps, useEffect, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  type SVGProps,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import CartSidebar from "@/components/cart/cart-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
 import { envs } from "@/core/config/envs";
-import { navigationItems } from "@/data/mock-data";
+import { useTableSearch } from "../table/table-search-context";
 
 function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -41,14 +42,37 @@ function WhatsAppIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 export default function MainHeader() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const { itemCount } = useCart();
   const [mounted, setMounted] = useState(false);
+  const { inputValue, setInputValue, submitSearch, clearSearch } =
+    useTableSearch();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+
+      if (value === "") {
+        clearSearch();
+        return;
+      }
+
+      setInputValue(value);
+    },
+    [clearSearch, setInputValue],
+  );
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      submitSearch();
+    },
+    [submitSearch],
+  );
 
   const handleWhatsAppClick = () => {
     const message =
@@ -62,65 +86,8 @@ export default function MainHeader() {
   return (
     <header className="hidden md:block bg-card border-b border-border py-4 px-4">
       <div className="container mx-auto max-w-7xl grid grid-cols-3 items-center">
-        {/* Mobile Menu Hamburger - Left */}
+        {/* Logo - Left */}
         <div className="flex justify-start">
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="shrink-0 border-2 shadow-md hover:shadow-lg bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 transition-all duration-200 hover:bg-accent flex flex-col items-center gap-1 h-auto py-2 px-3"
-              >
-                <Menu className="h-4 w-4" />
-                <span className="text-xs font-medium">Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[350px]">
-              <SheetHeader>
-                <SheetTitle className="text-primary text-left">
-                  Menu de Navegação
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="mt-6">
-                <ul className="space-y-1">
-                  {navigationItems.map((item) => (
-                    <li key={item.id}>
-                      <Link
-                        href={item.href}
-                        className="flex items-center justify-between px-4 py-3 hover:bg-muted rounded-lg transition-colors font-medium"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <span>{item.label}</span>
-                        {item.hasDropdown && (
-                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </Link>
-                      {/* Dropdown items for mobile */}
-                      {item.hasDropdown && item.dropdownItems && (
-                        <ul className="ml-4 mt-2 space-y-1 border-l-2 border-muted pl-4">
-                          {item.dropdownItems.map((subItem) => (
-                            <li key={subItem.id}>
-                              <Link
-                                href={subItem.href}
-                                className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {subItem.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
-
-        {/* Logo - Center */}
-        <div className="flex justify-center">
           <Link href="/" className="shrink-0 flex items-center gap-2">
             <Image
               src="/images/logo/logo-header.png"
@@ -133,6 +100,29 @@ export default function MainHeader() {
               {envs.NEXT_PUBLIC_COMPANY_NAME}
             </h1>
           </Link>
+        </div>
+
+        {/* Search Bar - Center */}
+        <div className="flex justify-center px-4">
+          <form
+            onSubmit={handleSubmit}
+            className="w-full max-w-xl relative flex items-center"
+          >
+            <Input
+              type="search"
+              placeholder="O que você procura?"
+              className="w-full pl-4 pr-12 h-10 rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+              value={inputValue}
+              onChange={handleChange}
+            />
+            <Button
+              type="submit"
+              size="icon"
+              className="h-10 w-12 rounded-l-none shrink-0"
+            >
+              <Search className="h-5 w-5" />
+            </Button>
+          </form>
         </div>
 
         {/* Action Icons - Right */}
