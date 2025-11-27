@@ -27,48 +27,66 @@ export const categories: Category[] = [
 // Navigation menu items
 export const navigationItems: NavigationItem[] = [
   {
-    id: "departamentos",
-    label: "DEPARTAMENTOS",
-    href: "#departamentos",
-    hasDropdown: true,
-    dropdownItems: categories,
+    id: "samsung",
+    label: "SAMSUNG",
+    href: "/?brandId=12",
+  },
+  {
+    id: "motorola",
+    label: "MOTOROLA",
+    href: "/?brandId=13",
+  },
+  {
+    id: "redmi",
+    label: "REDMI",
+    href: "/?brandId=22",
+  },
+  {
+    id: "iphone",
+    label: "IPHONE",
+    href: "/?brandId=14",
+  },
+  {
+    id: "xiaomi",
+    label: "XIAOMI",
+    href: "/?brandId=17",
   },
 
   {
-    id: "catalogo",
-    label: "CATALOGO",
-    href: "/products",
+    id: "lg",
+    label: "LG",
+    href: "/?brandId=16",
   },
   {
-    id: "tabela",
-    label: "TABELA",
-    href: "/tabela",
+    id: "poco",
+    label: "POCO",
+    href: "/?brandId=20",
   },
   {
-    id: "pecas-e-componentes",
-    label: "PEÇAS E COMPONENTES",
-    href: "/products",
+    id: "realme",
+    label: "REALME",
+    href: "/?brandId=18",
   },
   {
-    id: "flontal",
-    label: "FLONTAL",
-    href: "/products",
+    id: "mi-note",
+    label: "MI-NOTE",
+    href: "/?brandId=21",
   },
   {
-    id: "capas-e-peliculas",
-    label: "CAPAS E PELÍCULAS",
-    href: "/products",
+    id: "nokia",
+    label: "NOKIA",
+    href: "/?brandId=23",
   },
 
   {
-    id: "baterias-e-carregadores  ",
-    label: "BATERIAS E CARREGADORES",
-    href: "/products",
+    id: "oppo-celulares",
+    label: "OPPO CELULARES",
+    href: "/?brandId=24",
   },
   {
-    id: "suprimentos",
-    label: "SUPRIMENTOS",
-    href: "/products",
+    id: "asus celulares",
+    label: "ASUS CELULARES",
+    href: "/?brandId=19",
   },
 ];
 

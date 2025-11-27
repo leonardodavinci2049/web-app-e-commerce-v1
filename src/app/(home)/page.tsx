@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 interface TabelaPageProps {
   searchParams: Promise<{
     tableSearch?: string;
+    brandId?: string;
+    stock?: string;
     page?: string;
   }>;
 }
@@ -28,8 +30,13 @@ async function TabelaPageData({ searchParams }: TabelaPageProps) {
   const searchTerm = params.tableSearch || "";
   const page = params.page ? parseInt(params.page, 10) : 0;
 
+  const brandId = params.brandId ? parseInt(params.brandId, 10) : 0;
+  const stockOnly = params.stock === "1";
+
   const productsResult = await getTableProducts({
     searchTerm,
+    brandId,
+    stockOnly,
     page,
     pageSize: 100,
   });
