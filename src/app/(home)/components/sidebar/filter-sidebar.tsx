@@ -5,11 +5,6 @@
 
 "use client";
 
-import { Search, SlidersHorizontal } from "lucide-react";
-
-import { type ChangeEvent, type FormEvent, useCallback } from "react";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -17,10 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { BrandFilter } from "../filter/brand-filter";
-import { useTableSearch } from "../table/table-search-context";
 
 interface FilterSidebarProps {
   className?: string;
@@ -33,62 +26,8 @@ export default function FilterSidebar({
   selectedBrandId,
   onSelectBrand,
 }: FilterSidebarProps) {
-  const { inputValue, setInputValue, submitSearch, clearSearch } =
-    useTableSearch();
-
-  const handleChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-
-      if (value === "") {
-        clearSearch();
-        return;
-      }
-
-      setInputValue(value);
-    },
-    [clearSearch, setInputValue],
-  );
-
-  const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      submitSearch();
-    },
-    [submitSearch],
-  );
-
   return (
     <aside className={cn("space-y-6", className)}>
-      <Card className="gap-4">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
-            Filtros principais
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 pt-0">
-          <label className="text-sm font-medium" htmlFor="sidebar-search">
-            Pesquisa por nome
-          </label>
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                id="sidebar-search"
-                type="search"
-                placeholder="Digite um termo ou modelo..."
-                value={inputValue}
-                onChange={handleChange}
-                className="pl-10 h-11"
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Buscar
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
       {/* Filtro por Marca */}
       <BrandFilter
         selectedBrandId={selectedBrandId}
