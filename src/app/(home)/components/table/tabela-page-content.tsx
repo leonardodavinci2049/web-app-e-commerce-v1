@@ -22,6 +22,7 @@ import type { ProductTableFilters, ProductTableResult } from "../../actions";
 import { getTableProducts, loadMoreProducts } from "../../actions";
 import { BrandFilter } from "../filter/brand-filter";
 import { useTableSearch } from "./table-search-context";
+import { Switch } from "@/components/ui/switch";
 
 interface TabelaPageContentProps {
   initialProducts: ProductTableResult;
@@ -47,6 +48,7 @@ export default function TabelaPageContent({
   const [totalCount, setTotalCount] = useState(initialProducts.total);
   const [currentPage, setCurrentPage] = useState(initialProducts.currentPage);
   const [loading, setLoading] = useState(false);
+  const [showStock, setShowStock] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
 
   const updateURL = useCallback(
@@ -219,21 +221,39 @@ export default function TabelaPageContent({
                       <Package className="h-5 w-5 text-primary" />
                       Tabela de Produtos
                     </h1>
-                    <div className="hidden lg:block text-sm text-muted-foreground">
+                    <div className="hidden lg:flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={showStock}
+                          onCheckedChange={setShowStock}
+                        />
+                        <span className="font-medium text-foreground">
+                          Estoque
+                        </span>
+                      </div>
+                      <div className="h-4 w-px bg-border" />
                       {products.length} produtos carregados
                     </div>
                   </div>
 
-                  <div className="lg:hidden space-y-2">
+                  <div className="lg:hidden space-y-4">
                     <BrandFilter
                       selectedBrandId={selectedBrandId}
                       onSelectBrand={handleMobileBrandFilter}
                     />
-                    <div className="text-sm text-muted-foreground px-1">
-                      {products.length} produtos carregados
+                    <div className="flex items-center justify-between px-1">
+                      <div className="text-sm text-muted-foreground">
+                        {products.length} produtos carregados
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={showStock}
+                          onCheckedChange={setShowStock}
+                        />
+                        <span className="text-sm font-medium">Estoque</span>
+                      </div>
                     </div>
                   </div>
-
                   <div className="grid gap-6 md:grid-cols-[minmax(0,3fr)_minmax(260px,1fr)] md:items-start">
                     <div className="min-w-0" ref={tableRef}>
                       <DataTable
