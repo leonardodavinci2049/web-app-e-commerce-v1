@@ -248,7 +248,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                 <span className="text-muted-foreground">Frete</span>
                 <span className="font-medium">
                   {summary.shipping === 0 ? (
-                    <span className="text-green-600">Grátis</span>
+                    <span className="text-green-600">Negociado</span>
                   ) : (
                     formatCurrency(summary.shipping)
                   )}
@@ -266,13 +266,13 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
               </div>
 
               {/* Installments */}
-              {summary.installments && (
+{/*               {summary.installments && (
                 <p className="text-xs text-center text-muted-foreground">
                   ou {summary.installments.count}x de{" "}
                   {formatCurrency(summary.installments.value)} sem juros
                 </p>
               )}
-
+ */}
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Button
