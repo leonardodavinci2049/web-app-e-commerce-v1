@@ -51,7 +51,7 @@ export default function MobileHeader() {
   );
 
   return (
-    <header className="bg-card border-b border-border py-3 px-4 md:hidden">
+    <header className="sticky top-0 z-50 bg-card border-b border-border py-3 px-4 md:hidden">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           {/* Mobile Menu Hamburger */}
@@ -59,11 +59,11 @@ export default function MobileHeader() {
             <SheetTrigger asChild>
               <Button
                 variant="outline"
-                size="sm"
-                className="shrink-0 border-2 shadow-md hover:shadow-lg bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 transition-all duration-200 hover:bg-accent flex flex-col items-center gap-1 h-auto py-2 px-3"
+                size="icon"
+                className="shrink-0 border-border shadow-sm hover:bg-accent h-10 w-10"
               >
-                <Menu className="h-4 w-4" />
-                <span className="text-xs font-medium">Menu</span>
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[350px]">
@@ -130,23 +130,20 @@ export default function MobileHeader() {
         </div>
 
         {/* Search Bar */}
-        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="O que você procura?"
-              value={inputValue}
-              onChange={handleInputChange}
-              className="h-11 w-full pl-10"
-            />
-          </div>
+        <form onSubmit={handleSearchSubmit} className="flex items-center">
+          <Input
+            type="search"
+            placeholder="O que você procura?"
+            value={inputValue}
+            onChange={handleInputChange}
+            className="h-11 w-full rounded-r-none border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
           <Button
             type="submit"
-            size="sm"
-            className="h-11 px-4 font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+            className="h-11 px-4 rounded-l-none bg-primary text-primary-foreground hover:bg-primary/90"
           >
-            Buscar
+            <Search className="h-5 w-5" />
+            <span className="sr-only">Buscar</span>
           </Button>
         </form>
       </div>

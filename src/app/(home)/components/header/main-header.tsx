@@ -84,7 +84,7 @@ export default function MainHeader() {
   };
 
   return (
-    <header className="hidden md:block bg-card border-b border-border py-4 px-4">
+    <header className="hidden md:block sticky top-0 z-50 bg-card border-b border-border py-4 px-4">
       <div className="container mx-auto max-w-7xl grid grid-cols-3 items-center">
         {/* Logo - Left */}
         <div className="flex justify-start">
