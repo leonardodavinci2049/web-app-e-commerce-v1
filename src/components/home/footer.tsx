@@ -164,7 +164,9 @@ export default function Footer() {
             <h3 className="font-bold">Contato</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <span className="text-primary font-medium">(16) 99277-0660</span>
+                <span className="text-primary font-medium">
+                  (16) 99277-0660
+                </span>
               </li>
               <li>
                 <span className="text-muted-foreground">

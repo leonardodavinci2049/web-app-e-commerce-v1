@@ -11,8 +11,10 @@ import { getTableProducts } from "./actions";
 import TabelaPageContent from "./components/table/tabela-page-content";
 
 export const metadata: Metadata = {
-  title: "Caixa Fechada | Peças para Celulares em Ribeirão Preto – Atacado e Varejo",
-  description: "A Caixa Fechada é a maior distribuidora de peças para celulares em Ribeirão Preto. Vendas no atacado e varejo com variedade, qualidade e entrega rápida",
+  title:
+    "Caixa Fechada | Peças para Celulares em Ribeirão Preto – Atacado e Varejo",
+  description:
+    "A Caixa Fechada é a maior distribuidora de peças para celulares em Ribeirão Preto. Vendas no atacado e varejo com variedade, qualidade e entrega rápida",
 };
 
 interface TabelaPageProps {
