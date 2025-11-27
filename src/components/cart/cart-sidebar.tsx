@@ -7,7 +7,6 @@
 "use client";
 
 import { Minus, Plus, ShoppingBag, ShoppingCart, X } from "lucide-react";
-import Link from "next/link";
 import { type SVGProps, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -248,7 +247,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                 <span className="text-muted-foreground">Frete</span>
                 <span className="font-medium">
                   {summary.shipping === 0 ? (
-                    <span className="text-green-600">Grátis</span>
+                    <span className="text-green-600">Negociado</span>
                   ) : (
                     formatCurrency(summary.shipping)
                   )}
@@ -266,13 +265,13 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
               </div>
 
               {/* Installments */}
-              {summary.installments && (
+              {/*               {summary.installments && (
                 <p className="text-xs text-center text-muted-foreground">
                   ou {summary.installments.count}x de{" "}
                   {formatCurrency(summary.installments.value)} sem juros
                 </p>
               )}
-
+ */}
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Button
@@ -292,27 +291,7 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                     </span>
                   </span>
                 </Button>
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  size="lg"
-                  asChild
-                  onClick={() => setOpen(false)}
-                >
-                  <Link href="/cart">
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Ver Carrinho
-                  </Link>
-                </Button>
               </div>
-
-              {/* Free shipping message */}
-              {summary.subtotal < 299 && (
-                <div className="text-xs text-center text-muted-foreground bg-muted/50 rounded-md py-2 px-3">
-                  Faltam {formatCurrency(299 - summary.subtotal)} para frete
-                  grátis
-                </div>
-              )}
             </div>
           </div>
         )}
