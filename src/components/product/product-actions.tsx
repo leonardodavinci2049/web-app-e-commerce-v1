@@ -31,7 +31,7 @@ export function ProductActions({
     const message = encodeURIComponent(
       `Olá! Tenho interesse no produto: ${productName}\nPreço: R$ ${productPrice.toFixed(2).replace(".", ",")}\nQuantidade: ${quantity}`,
     );
-    const whatsappUrl = `https://wa.me/5511999999999?text=${message}`;
+    const whatsappUrl = `https://wa.me/5516992770660?text=${message}`;
     window.open(whatsappUrl, "_blank");
   };
 
