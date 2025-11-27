@@ -57,7 +57,7 @@ export default function LocationSection() {
                   <p className="font-medium text-foreground">
                     Telefone e WhatsApp
                   </p>
-                  <p className="text-primary font-medium">(11) 9999-9999</p>
+                  <p className="text-primary font-medium">(16) 99277-0660</p>
                 </div>
               </div>
 

@@ -176,7 +176,7 @@ Preço: R$ [Preço]
 Quantidade: [Quantidade]
 ```
 
-**Número configurado:** +55 11 99999-9999 (mock)
+**Número configurado:** +55 (16) 99277-0660 (mock)
 
 ## 🔗 Navegação
 

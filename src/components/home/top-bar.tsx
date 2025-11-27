@@ -17,7 +17,7 @@ export default function TopBar() {
           Atendimento ao Cliente
         </Link>
 
-        <div className="text-sm font-medium">Televendas: (11) 9999-9999</div>
+        <div className="text-sm font-medium">Televendas: (16) 99277-0660</div>
 
         <ModeToggle />
       </div>
