@@ -9,7 +9,13 @@ import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { type SVGProps, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ClientOnly } from "@/components/ui/client-only";
 import { Separator } from "@/components/ui/separator";
 import { cn, formatCurrencyBRL } from "@/lib/utils";
@@ -281,6 +287,15 @@ function CartContent() {
           </span>
         </Button>
       </CardContent>
+
+      <CardFooter className="flex-col gap-0">
+        {/* Free shipping message */}
+        {summary.subtotal < 300 && (
+          <div className="text-xs text-center text-muted-foreground bg-muted/50 rounded-md  px-3">
+            Faltam {formatCurrencyBRL(299 - summary.subtotal)} para frete grátis
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 }
