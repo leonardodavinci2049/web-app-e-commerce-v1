@@ -292,6 +292,13 @@ export default function CartSidebar({ trigger }: CartSidebarProps) {
                   </span>
                 </Button>
               </div>
+              {/* Free shipping message */}
+              {summary.subtotal < 300 && (
+                <div className="text-xs text-center text-muted-foreground bg-muted/50 rounded-md py-2 px-3">
+                  Faltam {formatCurrency(299 - summary.subtotal)} para frete
+                  grátis
+                </div>
+              )}
             </div>
           </div>
         )}
