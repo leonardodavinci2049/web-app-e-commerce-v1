@@ -199,6 +199,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
         if (result.status === "added") {
           toast.success("Produto adicionado", {
             description: `${name} foi incluído no carrinho (${formattedPrice}).`,
+            duration: 1000,
           });
           return;
         }
@@ -206,6 +207,7 @@ export const columns: ColumnDef<ProductTableItem>[] = [
         if (result.status === "updated") {
           toast.success("Quantidade atualizada", {
             description: `${formattedQuantity} unidades de ${name} no carrinho.`,
+            duration: 1000,
           });
           return;
         }
