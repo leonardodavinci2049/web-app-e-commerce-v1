@@ -1,4 +1,4 @@
-// Tipos para o serviço de marcas (Brand)
+// Tipos para o serviço de marcas (Brand) - API V2
 
 /**
  * Custom error class for brand-related errors
@@ -44,37 +44,79 @@ export class BrandValidationError extends BrandError {
 }
 
 /**
- * Base request interface with common parameters
+ * Base request interface with common parameters (API V2)
  */
 interface BaseBrandRequest {
   pe_app_id: number;
   pe_system_client_id: number;
   pe_store_id: number;
-  pe_organization_id?: string;
-  pe_member_id?: string;
+  pe_organization_id: string;
   pe_user_id?: string;
+  pe_user_name: string;
+  pe_user_role: string;
   pe_person_id?: number;
 }
 
 /**
- * Requisição para listar marcas
+ * Requisição para listar marcas (V2)
  */
 export interface FindBrandRequest extends BaseBrandRequest {
-  pe_id_marca?: number;
-  pe_marca?: string;
+  pe_search?: string;
+  pe_inactive?: number;
   pe_limit?: number;
 }
 
 /**
- * Estrutura de dados da marca
+ * Requisição para buscar marca por ID (V2)
+ */
+export interface FindBrandByIdRequest extends BaseBrandRequest {
+  pe_brand_id: number;
+}
+
+/**
+ * Requisição para criar marca (V2)
+ */
+export interface CreateBrandRequest extends BaseBrandRequest {
+  pe_brand: string;
+  pe_slug: string;
+  pe_image_path?: string;
+  pe_notes?: string;
+}
+
+/**
+ * Requisição para atualizar marca (V2)
+ */
+export interface UpdateBrandRequest extends BaseBrandRequest {
+  pe_brand_id: number;
+  pe_brand?: string;
+  pe_slug?: string;
+  pe_image_path?: string;
+  pe_notes?: string;
+  pe_inactive?: number;
+}
+
+/**
+ * Requisição para excluir marca (V2)
+ */
+export interface DeleteBrandRequest extends BaseBrandRequest {
+  pe_brand_id: number;
+}
+
+/**
+ * Estrutura de dados da marca (V2)
  */
 export interface BrandData {
   ID_MARCA: number;
   MARCA: string | null;
+  SLUG: string | null;
+  PATH_IMAGEM: string | null;
+  INATIVO: number;
+  ANOTACOES?: string | null;
+  DT_UPDATE?: string | null;
 }
 
 /**
- * Estrutura de resposta da stored procedure
+ * Estrutura de resposta da stored procedure (V2)
  */
 export interface StoredProcedureResponse {
   sp_return_id: number;
@@ -83,32 +125,30 @@ export interface StoredProcedureResponse {
 }
 
 /**
- * Estrutura de metadados MySQL
- */
-export interface MySQLMetadata {
-  fieldCount: number;
-  affectedRows: number;
-  insertId: number;
-  info: string;
-  serverStatus: number;
-  warningStatus: number;
-  changedRows: number;
-}
-
-/**
- * Base response interface
+ * Base response interface (V2)
  */
 interface BaseBrandResponse {
   statusCode: number;
   message: string;
   recordId: number;
   quantity: number;
-  info1: string;
+  errorId: number;
+  info1?: string;
 }
 
 /**
- * Resposta da listagem de marcas
+ * Resposta da listagem de marcas (V2)
+ * Nova estrutura: data é um objeto com chave "Brand find All"
  */
 export interface FindBrandResponse extends BaseBrandResponse {
-  data: [BrandData[], [StoredProcedureResponse], MySQLMetadata];
+  data: {
+    "Brand find All": BrandData[];
+  };
+}
+
+/**
+ * Resposta de criação/atualização/exclusão de marca (V2)
+ */
+export interface MutateBrandResponse extends BaseBrandResponse {
+  data: StoredProcedureResponse[];
 }
