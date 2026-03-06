@@ -51,7 +51,7 @@ export function HeroSlider() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, slides.length]);
+  }, [isAutoPlaying]);
 
   const nextSlide = () => {
     if (isTransitioning) return;

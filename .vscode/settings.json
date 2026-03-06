@@ -35,5 +35,12 @@
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
+  "json.schemas": [
+    {
+      "fileMatch": ["biome.json"],
+      "url": "https://biomejs.dev/schemas/2.4.4/schema.json"
+    }
+  ],
+  "http.systemCertificates": true,
   "cSpell.words": ["datasource", "wserpapp"]
 }

@@ -1,5 +1,5 @@
 /**
- * Serviço de marcas para interagir com a API
+ * Serviço de marcas para interagir com a API (V2)
  */
 
 import { envs } from "@/core/config";
@@ -14,22 +14,37 @@ import { BaseApiService } from "@/lib/axios/base-api-service";
 
 import type {
   BrandData,
+  CreateBrandRequest,
+  DeleteBrandRequest,
+  FindBrandByIdRequest,
   FindBrandRequest,
   FindBrandResponse,
+  MutateBrandResponse,
   StoredProcedureResponse,
+  UpdateBrandRequest,
 } from "./types/brand-types";
 
-import { FindBrandSchema } from "./validation/brand-schemas";
+import {
+  CreateBrandSchema,
+  DeleteBrandSchema,
+  FindBrandByIdSchema,
+  FindBrandSchema,
+  UpdateBrandSchema,
+} from "./validation/brand-schemas";
 
 // Logger instance
 const logger = createLogger("BrandService");
 
+// Default values for user info (should be overridden by caller when needed)
+const DEFAULT_USER_NAME = "System";
+const DEFAULT_USER_ROLE = "system";
+
 /**
- * Serviço para operações relacionadas a marcas
+ * Serviço para operações relacionadas a marcas (API V2)
  */
 export class BrandServiceApi extends BaseApiService {
   /**
-   * Build base payload with environment variables
+   * Build base payload with environment variables (V2)
    */
   private static buildBasePayload(
     additionalData: Record<string, unknown> = {},
@@ -39,12 +54,17 @@ export class BrandServiceApi extends BaseApiService {
       pe_system_client_id: envs.SYSTEM_CLIENT_ID,
       pe_store_id: envs.STORE_ID,
       pe_organization_id: envs.ORGANIZATION_ID,
-      pe_member_id: envs.MEMBER_ID,
       pe_user_id: envs.USER_ID,
+      pe_user_name: DEFAULT_USER_NAME,
+      pe_user_role: DEFAULT_USER_ROLE,
       pe_person_id: envs.PERSON_ID,
       ...additionalData,
     };
   }
+
+  // ========================================
+  // FIND ALL BRANDS
+  // ========================================
 
   /**
    * Endpoint - Listar Marcas v2
@@ -83,15 +103,15 @@ export class BrandServiceApi extends BaseApiService {
   }
 
   /**
-   * Constrói payload de busca com valores padrão
+   * Constrói payload de busca com valores padrão (V2)
    * @private
    */
   private static buildSearchPayload(
     params: Partial<FindBrandRequest>,
   ): Record<string, unknown> {
     const payload = BrandServiceApi.buildBasePayload({
-      pe_id_marca: 0, // Valor padrão - sem filtro específico
-      pe_marca: "", // Valor padrão - sem filtro por nome
+      pe_search: "", // Valor padrão - sem filtro de pesquisa
+      pe_inactive: 0, // Valor padrão - apenas ativos
       pe_limit: 100, // Valor padrão - 100 registros
       ...params,
     });
@@ -114,7 +134,7 @@ export class BrandServiceApi extends BaseApiService {
   }
 
   /**
-   * Trata resposta da busca de marcas
+   * Trata resposta da busca de marcas (V2)
    * @private
    */
   private static handleSearchResponse(
@@ -130,25 +150,10 @@ export class BrandServiceApi extends BaseApiService {
         ...data,
         statusCode: API_STATUS_CODES.SUCCESS,
         quantity: 0,
-        data: [
-          [],
-          [
-            {
-              sp_return_id: 0,
-              sp_message: "Nenhuma marca encontrada",
-              sp_error_id: 0,
-            },
-          ],
-          {
-            fieldCount: 0,
-            affectedRows: 0,
-            insertId: 0,
-            info: "",
-            serverStatus: 0,
-            warningStatus: 0,
-            changedRows: 0,
-          },
-        ],
+        errorId: 0,
+        data: {
+          "Brand find All": [],
+        },
       };
     }
 
@@ -161,27 +166,170 @@ export class BrandServiceApi extends BaseApiService {
   }
 
   // ========================================
+  // FIND BRAND BY ID
+  // ========================================
+
+  /**
+   * Endpoint - Buscar Marca por ID (V2)
+   * @param params - Parâmetros com ID da marca
+   * @returns Promise com dados da marca
+   */
+  static async findBrandById(
+    params: Partial<FindBrandByIdRequest>,
+  ): Promise<FindBrandResponse> {
+    try {
+      const validatedParams = FindBrandByIdSchema.partial().parse(params);
+      const requestBody = BrandServiceApi.buildBasePayload({
+        pe_brand_id: validatedParams.pe_brand_id ?? 0,
+        ...validatedParams,
+      });
+
+      const instance = new BrandServiceApi();
+      const response = await instance.post<FindBrandResponse>(
+        BRAND_ENDPOINTS.FIND_BY_ID,
+        requestBody,
+      );
+
+      return BrandServiceApi.handleSearchResponse(response);
+    } catch (error) {
+      logger.error("Erro no serviço de marcas (buscar por ID)", error);
+      throw error;
+    }
+  }
+
+  // ========================================
+  // CREATE BRAND
+  // ========================================
+
+  /**
+   * Endpoint - Criar Marca (V2)
+   * @param params - Dados da marca a ser criada
+   * @returns Promise com resposta da criação
+   */
+  static async createBrand(
+    params: Partial<CreateBrandRequest>,
+  ): Promise<MutateBrandResponse> {
+    try {
+      const validatedParams = CreateBrandSchema.partial().parse(params);
+      const requestBody = BrandServiceApi.buildBasePayload({
+        pe_brand: "",
+        pe_slug: "",
+        pe_image_path: "",
+        pe_notes: "",
+        ...validatedParams,
+      });
+
+      const instance = new BrandServiceApi();
+      const response = await instance.post<MutateBrandResponse>(
+        BRAND_ENDPOINTS.CREATE,
+        requestBody,
+      );
+
+      if (isApiError(response.statusCode)) {
+        throw new Error(response.message || "Erro ao criar marca");
+      }
+
+      return response;
+    } catch (error) {
+      logger.error("Erro no serviço de marcas (criar)", error);
+      throw error;
+    }
+  }
+
+  // ========================================
+  // UPDATE BRAND
+  // ========================================
+
+  /**
+   * Endpoint - Atualizar Marca (V2)
+   * @param params - Dados da marca a ser atualizada
+   * @returns Promise com resposta da atualização
+   */
+  static async updateBrand(
+    params: Partial<UpdateBrandRequest>,
+  ): Promise<MutateBrandResponse> {
+    try {
+      const validatedParams = UpdateBrandSchema.partial().parse(params);
+      const requestBody = BrandServiceApi.buildBasePayload({
+        pe_brand_id: validatedParams.pe_brand_id ?? 0,
+        ...validatedParams,
+      });
+
+      const instance = new BrandServiceApi();
+      const response = await instance.post<MutateBrandResponse>(
+        BRAND_ENDPOINTS.UPDATE,
+        requestBody,
+      );
+
+      if (isApiError(response.statusCode)) {
+        throw new Error(response.message || "Erro ao atualizar marca");
+      }
+
+      return response;
+    } catch (error) {
+      logger.error("Erro no serviço de marcas (atualizar)", error);
+      throw error;
+    }
+  }
+
+  // ========================================
+  // DELETE BRAND
+  // ========================================
+
+  /**
+   * Endpoint - Excluir Marca (V2)
+   * @param params - ID da marca a ser excluída
+   * @returns Promise com resposta da exclusão
+   */
+  static async deleteBrand(
+    params: Partial<DeleteBrandRequest>,
+  ): Promise<MutateBrandResponse> {
+    try {
+      const validatedParams = DeleteBrandSchema.partial().parse(params);
+      const requestBody = BrandServiceApi.buildBasePayload({
+        pe_brand_id: validatedParams.pe_brand_id ?? 0,
+        ...validatedParams,
+      });
+
+      const instance = new BrandServiceApi();
+      const response = await instance.post<MutateBrandResponse>(
+        BRAND_ENDPOINTS.DELETE,
+        requestBody,
+      );
+
+      if (isApiError(response.statusCode)) {
+        throw new Error(response.message || "Erro ao excluir marca");
+      }
+
+      return response;
+    } catch (error) {
+      logger.error("Erro no serviço de marcas (excluir)", error);
+      throw error;
+    }
+  }
+
+  // ========================================
   // UTILITY METHODS
   // ========================================
 
   /**
-   * Extrai lista de marcas da resposta da API
+   * Extrai lista de marcas da resposta da API (V2)
    * @param response - Resposta da API
    * @returns Lista de marcas ou array vazio
    */
   static extractBrandList(response: FindBrandResponse): BrandData[] {
-    return response.data?.[0] ?? [];
+    return response.data?.["Brand find All"] ?? [];
   }
 
   /**
-   * Extrai resposta da stored procedure
+   * Extrai resposta da stored procedure de mutação
    * @param response - Resposta da API com stored procedure
    * @returns Resposta da stored procedure ou null
    */
-  static extractStoredProcedureResponse(
-    response: FindBrandResponse,
+  static extractMutateResponse(
+    response: MutateBrandResponse,
   ): StoredProcedureResponse | null {
-    return response.data?.[1]?.[0] ?? null;
+    return response.data?.[0] ?? null;
   }
 
   // ========================================
@@ -189,7 +337,7 @@ export class BrandServiceApi extends BaseApiService {
   // ========================================
 
   /**
-   * Valida se a resposta de busca de marcas é válida
+   * Valida se a resposta de busca de marcas é válida (V2)
    * @param response - Resposta da API
    * @returns true se válida, false caso contrário
    */
@@ -197,17 +345,17 @@ export class BrandServiceApi extends BaseApiService {
     return (
       isApiSuccess(response.statusCode) &&
       response.data &&
-      Array.isArray(response.data[0])
+      Array.isArray(response.data["Brand find All"])
     );
   }
 
   /**
-   * Verifica se a operação foi bem-sucedida baseado na stored procedure
+   * Verifica se a operação de mutação foi bem-sucedida
    * @param response - Resposta da API
    * @returns true se bem-sucedida, false caso contrário
    */
-  static isOperationSuccessful(response: FindBrandResponse): boolean {
-    const spResponse = BrandServiceApi.extractStoredProcedureResponse(response);
+  static isMutationSuccessful(response: MutateBrandResponse): boolean {
+    const spResponse = BrandServiceApi.extractMutateResponse(response);
     return spResponse ? spResponse.sp_error_id === 0 : false;
   }
 }
